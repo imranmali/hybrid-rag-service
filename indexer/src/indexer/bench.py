@@ -12,6 +12,8 @@ from typing import Any
 import psycopg
 from pgvector.psycopg import register_vector
 
+FILTERED_EF_SEARCH = 40  # pgvector's default, i.e. what an unconfigured service session runs
+
 
 def recall_at_k(exact_ids: list[int], approximate_ids: list[int], k: int = 10) -> float:
     """Recall of the exact top-k ids retained by an approximate result."""
@@ -32,6 +34,7 @@ def run_benchmark(database_url: str, *, queries: int = 200, seed: int = 42) -> d
                 from chunks c join documents d on d.id = c.document_id
                 """
             )
+            cursor.execute("analyze bench_vec")
             row_count = cursor.execute("select count(*) from bench_vec").fetchone()[0]
             if row_count < 2:
                 raise ValueError("benchmark requires at least two chunks")
@@ -108,7 +111,7 @@ def write_results(results: dict[str, Any], directory: Path) -> tuple[Path, Path]
     lines.extend(
         [
             "",
-            "## Filtered HNSW recall",
+            f"## Filtered HNSW recall (ef_search = {FILTERED_EF_SEARCH}, post-filter)",
             "",
             "| Filter | Selectivity | Recall@10 |",
             "| --- | ---: | ---: |",
@@ -137,6 +140,7 @@ def _measure_ann(
         exact = _nearest(cursor, query_id, embedding, exact=True)
         cursor.execute("set local enable_indexscan = on")
         cursor.execute("set local enable_bitmapscan = on")
+        cursor.execute("set local enable_seqscan = off")
         started = time.perf_counter()
         cursor.execute(f"set local {setting_name} = {setting}")
         approximate = _nearest(cursor, query_id, embedding, exact=False)
@@ -157,15 +161,17 @@ def _measure_filtered(
     ).fetchall()
     year_rows = cursor.execute("select distinct year from bench_vec order by 1").fetchall()
     values = [
-        *[("category", value) for (value,) in category_rows],
+        *[("primary_category", value) for (value,) in category_rows],
         *[("year", value) for (value,) in year_rows],
     ]
     measurements: list[dict[str, float | str]] = []
+    # Pin the setting: set local otherwise carries over the last unfiltered ef_search (250).
+    cursor.execute(f"set local hnsw.ef_search = {FILTERED_EF_SEARCH}")
     for column, value in values:
         count = cursor.execute(
             f"select count(*) from bench_vec where {column} = %s", (value,)
         ).fetchone()[0]
-        rows = [row for row in sample if row[2 if column == "category" else 3] == value]
+        rows = [row for row in sample if row[2 if column == "primary_category" else 3] == value]
         if not rows:
             rows = cursor.execute(
                 f"select id, embedding, primary_category, year "
@@ -177,6 +183,7 @@ def _measure_filtered(
             exact = _nearest(cursor, query_id, embedding, exact=True, column=column, value=value)
             cursor.execute("set local enable_indexscan = on")
             cursor.execute("set local enable_bitmapscan = on")
+            cursor.execute("set local enable_seqscan = off")
             cursor.execute("set local hnsw.iterative_scan = off")
             approximate = _nearest(
                 cursor, query_id, embedding, exact=False, column=column, value=value
@@ -184,7 +191,7 @@ def _measure_filtered(
             recalls.append(recall_at_k(exact, approximate))
         measurements.append(
             {
-                "filter": f"{column}={value}",
+                "filter": f"{'category' if column == 'primary_category' else column}={value}",
                 "selectivity": count / row_count,
                 "recall_at_10": statistics.fmean(recalls) if recalls else 1.0,
             }
@@ -202,6 +209,7 @@ def _nearest(
     value: Any | None = None,
 ) -> list[int]:
     if exact:
+        cursor.execute("set local enable_seqscan = on")
         cursor.execute("set local enable_indexscan = off")
         cursor.execute("set local enable_bitmapscan = off")
     where = "id <> %s"

@@ -48,7 +48,7 @@ def parse_atom(xml: str) -> list[Paper]:
 
 def query_url(category: str, start: date, end: date, *, max_results: int = 50) -> str:
     """Build the deterministic category-quarter query specified by D2."""
-    submitted = f"{start:%Y%m%d}0000+TO+{end:%Y%m%d}2359"
+    submitted = f"{start:%Y%m%d}0000 TO {end:%Y%m%d}2359"
     parameters = {
         "search_query": f"cat:{category} AND submittedDate:[{submitted}]",
         "start": 0,
