@@ -7,7 +7,7 @@
 // below are this machine's budget, not a portable SLO. Load tests do not run in CI (only `k6 inspect`).
 //
 // Run: make load                       all scenarios; writes load/results/summary-all-<timestamp>.json
-//      SCENARIO=retrieval <docker run>  one scenario; see load/README.md for the full command
+//      SCENARIO=retrieval make load     one scenario (retrieval | rerank | full)
 import http from 'k6/http';
 import exec from 'k6/execution';
 import { check } from 'k6';
