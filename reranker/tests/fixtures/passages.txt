@@ -1,0 +1,9 @@
+Cross-encoder reranking compares a query with each retrieved passage and produces a relevance
+score. It is applied after candidate retrieval because pairwise inference is more expensive than
+embedding search. The Hybrid RAG Service retrieves arXiv chunks with dense and lexical signals,
+fuses them with reciprocal-rank fusion, and sends the leading candidates to a self-hosted CPU
+cross-encoder. The reranker evaluates the whole query-passage pair, so it can distinguish lexical
+overlap from whether a passage actually answers the question. Results are returned in descending
+sigmoid score order, with original request index as a deterministic tie-break. The service bounds
+each request to one hundred passages and truncates every pair to five hundred and twelve model
+tokens. This fixture is repeated by the latency probe to approximate a four-hundred-token passage.
