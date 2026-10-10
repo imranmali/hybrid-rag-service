@@ -344,9 +344,11 @@ def dataset_generate(
             existing_samples=samples,
             seed=seed,
         )
-        candidates += new
+        # Re-read before writing so a concurrent `generate --type X` is not overwritten.
+        candidates = work.read_jsonl(work.CANDIDATES) + new
         work.write_jsonl(work.CANDIDATES, candidates)
-        sample_mod.write_samples(work.SAMPLES, samples)
+        fresh = [s for s in sample_mod.read_samples(work.SAMPLES) if s.type != t]
+        sample_mod.write_samples(work.SAMPLES, fresh + [s for s in samples if s.type == t])
         typer.echo(
             f"{t}: +{len(new)} candidates (total {have + len(new)}), dropped {stats.dropped or 0}"
         )

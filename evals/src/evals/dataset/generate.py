@@ -62,7 +62,7 @@ SINGLE_FACT_PROMPT = (
     "stated in the passage.",
 )
 MULTI_PROMPT_VERSION = "qgen-multi-v2"
-MAX_MULTI_PARTS = 3
+MAX_MULTI_PARTS = 2  # pairs: each extra part lowers the chance the whole question is correct
 _NOT_SELF_CONTAINED = re.compile(
     r"\b(this|the|that) (paper|study|work|article|passage|text|chunk|section|excerpt)\b"
     r"|\bthe authors\b",
@@ -334,13 +334,19 @@ FILTER_PROMPT_VERSION = "qgen-filter-v2"
 _PREFIX = {
     "year": "Among papers published {phrase}: {q}",
     "author": "In a paper {phrase}: {q}",
-    "category_year": "In one of the {phrase}: {q}",
+    "category_year": "Among {category} papers published in {year}: {q}",
 }
 
 
 def filter_question(phrase: dict[str, Any], question: str) -> str:
-    """Deterministically embed the metadata phrase (verbatim) in front of a single-fact question."""
-    return _PREFIX[phrase["kind"]].format(phrase=phrase["text"], q=question.strip())
+    """Deterministically embed the metadata phrase in front of a single-fact question. The service
+    reads "papers from 2024" as "since 2024", so category + year is phrased "published in 2024"."""
+    ef = phrase["expected_filters"]
+    category = (ef.get("categories") or [""])[0]
+    year = (ef.get("published_from") or "")[:4]
+    return _PREFIX[phrase["kind"]].format(
+        phrase=phrase["text"], category=category, year=year, q=question.strip()
+    )
 
 
 def generate_filter_composed(

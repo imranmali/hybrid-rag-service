@@ -161,7 +161,7 @@ aggregate, 8 unanswerable); 50 of them are flagged `ci_subset` (20/12/10/5/3). G
 re-index. `dataset/MANIFEST.json` records the sha256, counts, seed, generator and digests;
 `dataset/DATASET_CARD.md` describes provenance.
 
-**Provenance, stated plainly:** candidates are LLM-generated (llama3.1:8b by default; aggregate
+**Provenance, stated plainly (details and deviations are in `dataset/DATASET_CARD.md`):** candidates are LLM-generated (llama3.1:8b by default; aggregate
 questions come from SQL templates whose answers are computed by SQL, never by the LLM), pass an
 automated LLM precheck, and are then verified by an agent against the source chunks, with every
 verdict (verifier identity and notes) logged in `dataset/work/verification.jsonl`. **Human review
