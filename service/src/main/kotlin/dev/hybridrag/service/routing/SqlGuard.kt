@@ -35,7 +35,12 @@ class SqlGuard {
             "unsupported SELECT form (${statement.javaClass.simpleName})"
         }
         val visitor = GuardVisitor()
-        visitor.getTables(statement)
+        try {
+            visitor.getTables(statement)
+        } catch (error: Exception) {
+            // Fail closed: anything the visitor cannot walk is not executed.
+            throw GuardRejectedException("unsupported construct: ${error.message ?: error.javaClass.simpleName}")
+        }
         visitor.problems.firstOrNull()?.let { throw GuardRejectedException(it) }
         val disallowed =
             visitor.tables
@@ -69,7 +74,7 @@ class SqlGuard {
             context: S,
         ): Void? {
             withItem.aliasName?.let { cteNames += it.lowercase().trim('"') }
-            if (withItem.select == null) problems += "data-modifying WITH item"
+            if (withItem.parenthesedStatement !is ParenthesedSelect) problems += "data-modifying WITH item"
             return super.visit(withItem, context)
         }
 

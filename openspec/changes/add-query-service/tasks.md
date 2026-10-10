@@ -29,9 +29,9 @@ Scope: this change owns `service/**` only. Read-only inputs: `infra/migrations/*
 
 ## 5. Routing (query-routing spec)
 
-- [ ] 5.1 Implement `RouteClassifier` (`route-v1`) and `SqlGenerator` (`sqlgen-v1`) prompts per design D7; WireMock tests: `{"route":"sql"}` → SQL path; garbage → vector + `router_unavailable` + `route_source` `fallback`; routing disabled → `route_source` `disabled` and no chat request. Verify `./gradlew test --tests '*Route*'`.
-- [ ] 5.2 Implement `SqlGuard` per design D7 with ≥ 8 accept and ≥ 15 reject unit cases listed in design D13; verify `./gradlew test --tests '*SqlGuard*'`.
-- [ ] 5.3 Implement `SqlExecutor` (router pool, wrapper `limit 101`, 2 s timeout, JSON-safe values); integration tests: count query returns the fixture's expected number; a 500-row query (e.g. cross join of authors and paper_categories) → 100 rows + `truncated`; `select count(*) from generate_series(1, 1e10)` → `execution_failed` + fallback to vector with `sql_fallback`; direct execution of `select raw_text from documents` on the router pool → permission error. Verify `./gradlew test --tests '*SqlExecutor*'`.
+- [x] 5.1 Implement `RouteClassifier` (`route-v1`) and `SqlGenerator` (`sqlgen-v1`) prompts per design D7; WireMock tests: `{"route":"sql"}` → SQL path; garbage → vector + `router_unavailable` + `route_source` `fallback`; routing disabled → `route_source` `disabled` and no chat request. Verify `./gradlew test --tests '*Route*'`.
+- [x] 5.2 Implement `SqlGuard` per design D7 with ≥ 8 accept and ≥ 15 reject unit cases listed in design D13; verify `./gradlew test --tests '*SqlGuard*'`.
+- [x] 5.3 Implement `SqlExecutor` (router pool, wrapper `limit 101`, 2 s timeout, JSON-safe values); integration tests: count query returns the fixture's expected number; a 500-row query (e.g. cross join of authors and paper_categories) → 100 rows + `truncated`; `select count(*) from generate_series(1, 1e10)` → `execution_failed` + fallback to vector with `sql_fallback`; direct execution of `select raw_text from documents` on the router pool → permission error. Verify `./gradlew test --tests '*SqlExecutor*'`.
 
 ## 6. Generation (answer-generation spec)
 
