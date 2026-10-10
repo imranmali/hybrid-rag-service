@@ -60,8 +60,10 @@ def parse_table(text: str, heading: str | None = None) -> list[dict[str, str]]:
 def clean(cell: str | None) -> str:
     if cell is None:
         return NOT_MEASURED
-    value = re.sub(r"\s*\(est\.\)$", "", cell.strip().strip("`"))
-    return NOT_MEASURED if value in ("", "-") else value
+    value = cell.strip().strip("`")
+    value = re.sub(r"\s*\(ci50\)$", "", value)  # generation/judge columns: 50-question subset
+    value = re.sub(r"\s*\(est\.\)$", "", value)
+    return NOT_MEASURED if value in ("", "-", "\u2014") else value
 
 
 def number(cell: str | None) -> float | None:
@@ -99,7 +101,7 @@ class Sources:
             return NOT_MEASURED
         cell = row.get(f"`{config}`", "-")
         parts = [p.strip() for p in cell.split("/")]
-        if len(parts) != 2 or parts[0] == "-":
+        if len(parts) != 2 or parts[0] in ("-", "\u2014"):
             return NOT_MEASURED
         return parts[0 if which == "p50" else 1]
 
@@ -146,7 +148,11 @@ def resolve(metric: str, source: str, src: Sources) -> str | None:
     m = re.fullmatch(r"(nDCG@10|Recall@20|p95 e2e latency ms|Cost/query) row (\d)", metric)
     if m and source == "evals/results.md":
         row = src.grid_row(int(m[2]))
-        return clean(row.get(MAIN_COLUMNS[m[1]])) if row else None
+        if not row:
+            return None
+        value = clean(row.get(MAIN_COLUMNS[m[1]]))
+        # cost is only reported where generation ran; the README intro explains the gap
+        return "n/a" if m[1] == "Cost/query" and value == NOT_MEASURED else value
     if metric == "p95 rerank stage ms":
         row = src.grid_row(5)
         return clean(row.get("p95 rerank ms")) if row else None
