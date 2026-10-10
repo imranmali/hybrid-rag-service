@@ -46,7 +46,7 @@ bge-reranker-v2-m3 (568M params) on Docker Desktop CPU with 20 pairs of ~490 tok
 ### Contracts used (copied verbatim from add-platform-foundation)
 
 <!-- CONTRACT:reranker-api -->
-Base URL: `http://reranker:8080` (containers) / `http://localhost:8081` (host).
+Base URL: `http://host.docker.internal:8081` (from containers) / `http://localhost:8081` (host). The server runs on the host by default (`make reranker`) or as the opt-in container; see C2.
 
 `POST /rerank` — request:
 ```json
@@ -69,7 +69,7 @@ Base URL: `http://reranker:8080` (containers) / `http://localhost:8081` (host).
 - Errors: `422` for validation failures (FastAPI default body); `503 {"detail": "model not ready"}` while the model loads; `500` on inference failure.
 - Each (query, passage) pair is truncated to `RERANKER_MAX_LENGTH` (512) tokens.
 
-`GET /healthz` → `200 {"status": "ok", "model": "BAAI/bge-reranker-v2-m3", "revision": "<sha or main>", "device": "cpu", "max_length": 512, "ready": true}` once loaded; `503` with `"ready": false` before.
+`GET /healthz` → `200 {"status": "ok", "model": "BAAI/bge-reranker-v2-m3", "revision": "<sha or main>", "device": "<resolved device: mps | cuda | cpu>", "max_length": 512, "ready": true}` once loaded; `503` with `"ready": false` before.
 
 `RERANKER_MODEL=fake` selects a deterministic, dependency-free scorer (token-overlap Jaccard) for tests and CI image builds.
 <!-- /CONTRACT:reranker-api -->
@@ -81,7 +81,7 @@ Compose project: `infra/docker-compose.yml`, invoked as `docker compose --env-fi
 |---|---|---|---|---|---|
 | `postgres` | `pgvector/pgvector:pg17` | 5432 | `${POSTGRES_HOST_PORT:-5433}` | — | `pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}` |
 | `flyway` | `flyway/flyway:11` (one-shot, `migrate`) | — | — | postgres healthy | exit code 0 |
-| `reranker` | build `../reranker` | 8080 | `${RERANKER_HOST_PORT:-8081}` | — | `GET /healthz` = 200, `start_period: 600s` (first model download) |
+| `reranker` (opt-in profile `reranker-container`; `RERANKER_DEVICE=cpu`) | build `../reranker` | 8080 | `${RERANKER_HOST_PORT:-8081}` | — | `GET /healthz` = 200, `start_period: 600s` (first model download) |
 | `service` | build `../service` | 8080 | `${SERVICE_HOST_PORT:-8080}` | postgres healthy, flyway completed successfully | `GET /actuator/health` = 200, `start_period: 60s` |
 | `otel-collector` | `otel/opentelemetry-collector-contrib:0.111.0` | 4317 (gRPC), 4318 (HTTP), 13133 (health) | 4317, 4318 | tempo | `GET :13133/` |
 | `tempo` | `grafana/tempo:2.6.1` | 3200 (HTTP), 4317 (OTLP gRPC, internal) | 3200 | — | `GET :3200/ready` |
@@ -89,6 +89,8 @@ Compose project: `infra/docker-compose.yml`, invoked as `docker compose --env-fi
 | `wiremock` (replay overlay only) | `wiremock/wiremock:3.9.1` | 8080 | 8089 | — | `GET /__admin/health` |
 
 `service` and `reranker` declare `extra_hosts: ["host.docker.internal:host-gateway"]` (needed on Linux/CI; harmless on Docker Desktop). Volumes: `pgdata` (postgres), `hf-cache` (reranker `HF_HOME=/models`), `tempo-data`.
+
+**Reranker placement.** The default reranker is a host process, `make reranker` (`uv run uvicorn reranker.app:app --port ${RERANKER_HOST_PORT}`, `RERANKER_DEVICE=auto` → `mps` on Apple Silicon, else `cuda`, else `cpu`). Measured on the M4 dev machine with 20 passages of ~384 tokens: MPS p50 6.0 s / p95 6.7 s, the CPU container p50 39–54 s, so the container cannot meet the 10 s rerank timeout (Docker Desktop has no GPU access). The container stays as the opt-in `reranker-container` profile (`make up-reranker-container`) for Linux/CUDA-less hosts, publishing the same host port. Either way the service and WireMock reach it at `http://host.docker.internal:${RERANKER_HOST_PORT}`; `make up` does not start a reranker.
 
 `.env.example` (copied to `.env`; `.env` is git-ignored):
 
@@ -118,7 +120,11 @@ LLM_PROVIDER=ollama
 ANTHROPIC_API_KEY=
 ANTHROPIC_MODEL=
 
-# ---- Reranker container ----
+# ---- Reranker ----
+# Default: run natively on the host with `make reranker` (MPS on Apple Silicon).
+# Opt-in CPU container: `make up-reranker-container` (same host port).
+RERANKER_DEVICE=auto
+RERANKER_CONTAINER_URL=http://host.docker.internal:8081
 RERANKER_MODEL=BAAI/bge-reranker-v2-m3
 RERANKER_MODEL_REVISION=main
 RERANKER_MAX_LENGTH=512
@@ -143,7 +149,7 @@ Environment passed to each container by compose:
 
 - `postgres`: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`.
 - `flyway`: `FLYWAY_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}`, `FLYWAY_USER=${POSTGRES_USER}`, `FLYWAY_PASSWORD=${POSTGRES_PASSWORD}`, `FLYWAY_LOCATIONS=filesystem:/flyway/sql` (mount `./migrations:/flyway/sql:ro`), `FLYWAY_PLACEHOLDERS_INDEXER_PASSWORD=${RAG_INDEXER_PASSWORD}`, `FLYWAY_PLACEHOLDERS_READER_PASSWORD=${RAG_READER_PASSWORD}`, `FLYWAY_PLACEHOLDERS_ROUTER_PASSWORD=${RAG_ROUTER_PASSWORD}`, `FLYWAY_CONNECT_RETRIES=10`.
-- `reranker`: `RERANKER_MODEL`, `RERANKER_MODEL_REVISION`, `RERANKER_MAX_LENGTH`, `RERANKER_BATCH_SIZE`, `RERANKER_MAX_PASSAGES`, `RERANKER_TORCH_THREADS`, `RERANKER_MAX_CONCURRENCY=1`, `PORT=8080`, `HF_HOME=/models`.
+- `reranker` (container profile only): `RERANKER_DEVICE=cpu`, `RERANKER_MODEL`, `RERANKER_MODEL_REVISION`, `RERANKER_MAX_LENGTH`, `RERANKER_BATCH_SIZE`, `RERANKER_MAX_PASSAGES`, `RERANKER_TORCH_THREADS`, `RERANKER_MAX_CONCURRENCY=1`, `PORT=8080`, `HF_HOME=/models`.
 - `service` (Spring relaxed binding: `RAG_DB_URL` → `rag.db.url`):
   `RAG_DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}`,
   `RAG_DB_READER_USER=rag_reader`, `RAG_DB_READER_PASSWORD=${RAG_READER_PASSWORD}`,
@@ -151,7 +157,7 @@ Environment passed to each container by compose:
   `RAG_OLLAMA_URL=${OLLAMA_CONTAINER_URL}`, `RAG_EMBED_MODEL=${OLLAMA_EMBED_MODEL}`, `RAG_LLM_MODEL=${OLLAMA_LLM_MODEL}`,
   `RAG_LLM_PROVIDER=${LLM_PROVIDER}`, `RAG_LLM_SEED=${LLM_SEED}`, `RAG_OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE}`,
   `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL`,
-  `RAG_RERANKER_URL=http://reranker:8080`,
+  `RAG_RERANKER_URL=${RERANKER_CONTAINER_URL:-http://host.docker.internal:8081}`,
   `RAG_RETRIEVAL_EXACT_VECTOR_SEARCH=${RAG_RETRIEVAL_EXACT_VECTOR_SEARCH}`,
   `GIT_SHA` (build arg, default `unknown`),
   `OTEL_SERVICE_NAME=rag-query-service`, `OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318`, `OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf`, `OTEL_TRACES_SAMPLER=always_on`, `OTEL_METRICS_EXPORTER=none`, `OTEL_LOGS_EXPORTER=none`.
@@ -159,7 +165,7 @@ Environment passed to each container by compose:
 - `tempo`: config `infra/tempo/tempo.yaml` (single binary, local storage under `/var/tempo`, OTLP gRPC receiver).
 - `grafana`: `GF_AUTH_ANONYMOUS_ENABLED=true`, `GF_AUTH_ANONYMOUS_ORG_ROLE=Admin`; provisioning `infra/grafana/provisioning/datasources/tempo.yaml` (Tempo at `http://tempo:3200`, default datasource).
 
-Host processes: indexer reads `INDEXER_DATABASE_URL`, `OLLAMA_HOST_URL`, model vars, `LLM_*`, `ANTHROPIC_*`, `ARXIV_CONTACT`; evals reads `EVALS_DATABASE_URL`, `RAG_SERVICE_URL`, `OLLAMA_HOST_URL`, model vars, `LLM_*`, `ANTHROPIC_*`. Both load the repo-root `.env` (python-dotenv, path resolved relative to the package directory as `../.env`) and real environment variables override it.
+Host processes: the reranker (`make reranker`) reads every `RERANKER_*` variable from `.env`; indexer reads `INDEXER_DATABASE_URL`, `OLLAMA_HOST_URL`, model vars, `LLM_*`, `ANTHROPIC_*`, `ARXIV_CONTACT`; evals reads `EVALS_DATABASE_URL`, `RAG_SERVICE_URL`, `OLLAMA_HOST_URL`, model vars, `LLM_*`, `ANTHROPIC_*`. Both load the repo-root `.env` (python-dotenv, path resolved relative to the package directory as `../.env`) and real environment variables override it.
 <!-- /CONTRACT:env -->
 
 ## Risks / Trade-offs
