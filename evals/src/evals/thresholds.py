@@ -8,6 +8,11 @@ from typing import Any
 
 import yaml
 
+# Degradation codes that come from the LLM's own output rather than a failed dependency. A
+# `sql_fallback` (the guard rejected the generated SQL, so the query fell back to the vector
+# route) is the designed fallback and replays identically, so the baseline may carry it; every
+# other code means a model server, the reranker or the router was unavailable (a cassette miss).
+TOLERABLE_DEGRADED = ("sql_fallback",)
 TOLERANCE = {
     "ndcg_at_10": 0.03,
     "recall_at_20": 0.03,
@@ -63,10 +68,17 @@ def build_thresholds(records: dict[str, dict[str, Any]]) -> dict[str, Any]:
                 raise ThresholdError(f"{name}: baseline has no value for {metric}")
             entry[metric] = max(0.0, round(value - TOLERANCE[metric], 3))
         configs[name] = entry
+    seen = {
+        code
+        for rec in records.values()
+        for code in (rec["degraded"].get("by_code") or {})
+        if code in TOLERABLE_DEGRADED
+    }
     return {
         "baseline_run": run_ids.pop(),
         "tolerance": dict(TOLERANCE),
         "max_degraded": 0,
+        "allowed_degraded_codes": sorted(seen),
         "configs": configs,
     }
 

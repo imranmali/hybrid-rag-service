@@ -32,11 +32,25 @@ class GateResult:
     problems: list[str] = field(default_factory=list)
 
 
+def untolerated_degraded(record: dict[str, Any], allowed: set[str]) -> int:
+    """Responses degraded by a code outside `allowed`. Without per-question detail, fall back to
+    the plain degraded count."""
+    questions = record.get("questions")
+    if questions is None:
+        return record["degraded"]["count"]
+    return sum(
+        1
+        for q in questions
+        if q.get("response") and set(q["response"].get("degraded") or []) - allowed
+    )
+
+
 def evaluate(
     thresholds: dict[str, Any], records: dict[str, dict[str, Any]], *, replay: bool = False
 ) -> GateResult:
     result = GateResult()
     max_degraded = int(thresholds.get("max_degraded", 0))
+    allowed = set(thresholds.get("allowed_degraded_codes") or [])
     missing = degraded_or_failed = below = False
     for name, mins in thresholds["configs"].items():
         rec = records.get(name)
@@ -44,7 +58,7 @@ def evaluate(
             result.problems.append(f"{name}: no run record in this grid")
             missing = True
             continue
-        degraded, errors = rec["degraded"]["count"], rec["errors"]["count"]
+        degraded, errors = untolerated_degraded(rec, allowed), rec["errors"]["count"]
         if degraded > max_degraded:
             result.problems.append(f"{name}: {degraded} degraded response(s) (max {max_degraded})")
             degraded_or_failed = True

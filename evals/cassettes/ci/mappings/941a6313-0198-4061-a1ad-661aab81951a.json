@@ -1,0 +1,17 @@
+{
+  "id": "941a6313-0198-4061-a1ad-661aab81951a",
+  "name": "api_tags",
+  "request": {
+    "url": "/api/tags",
+    "method": "GET"
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"models\":[{\"name\":\"bge-m3:latest\",\"model\":\"bge-m3:latest\",\"modified_at\":\"2026-10-10T15:07:13.286989172+02:00\",\"size\":1157672605,\"digest\":\"7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab\",\"details\":{\"parent_model\":\"\",\"format\":\"gguf\",\"family\":\"bert\",\"families\":[\"bert\"],\"parameter_size\":\"566.70M\",\"quantization_level\":\"F16\",\"context_length\":8192,\"embedding_length\":1024},\"capabilities\":[\"embedding\"]},{\"name\":\"llama3.1:8b\",\"model\":\"llama3.1:8b\",\"modified_at\":\"2026-10-10T15:07:13.908200451+02:00\",\"size\":4920753328,\"digest\":\"46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e\",\"details\":{\"parent_model\":\"\",\"format\":\"gguf\",\"family\":\"llama\",\"families\":[\"llama\"],\"parameter_size\":\"8.0B\",\"quantization_level\":\"Q4_K_M\",\"context_length\":131072,\"embedding_length\":4096},\"capabilities\":[\"completion\",\"tools\"]},{\"name\":\"qwen:7b\",\"model\":\"qwen:7b\",\"modified_at\":\"2026-03-26T21:40:50.141204799+01:00\",\"size\":4511914544,\"digest\":\"2091ee8c8d8f27f790c298265b1353da099a276e6c612e3b4864e72f1993cc33\",\"details\":{\"parent_model\":\"\",\"format\":\"gguf\",\"family\":\"qwen2\",\"families\":[\"qwen2\"],\"parameter_size\":\"8B\",\"quantization_level\":\"Q4_0\",\"context_length\":32768,\"embedding_length\":4096},\"capabilities\":[\"completion\"]},{\"name\":\"qwen2.5-coder:14b\",\"model\":\"qwen2.5-coder:14b\",\"modified_at\":\"2026-03-03T15:59:36.780756432+01:00\",\"size\":8988124298,\"digest\":\"9ec8897f747e246e970bc5cfdda85d22f1123dc2e3d34978a010a75968716849\",\"details\":{\"parent_model\":\"\",\"format\":\"gguf\",\"family\":\"qwen2\",\"families\":[\"qwen2\"],\"parameter_size\":\"14.8B\",\"quantization_level\":\"Q4_K_M\",\"context_length\":32768,\"embedding_length\":5120},\"capabilities\":[\"completion\",\"tools\",\"insert\"]},{\"name\":\"gemma3:latest\",\"model\":\"gemma3:latest\",\"modified_at\":\"2026-01-26T12:31:43.574901474+01:00\",\"size\":3338801804,\"digest\":\"a2af6cc3eb7fa8be8504abaf9b04e88f17a119ec3f04a3addf55f92841195f5a\",\"details\":{\"parent_model\":\"\",\"format\":\"gguf\",\"family\":\"gemma3\",\"families\":[\"gemma3\"],\"parameter_size\":\"4.3B\",\"quantization_level\":\"Q4_K_M\"},\"capabilities\":[\"completion\"]}]}",
+    "headers": {
+      "Date": "Sat, 10 Oct 2026 23:58:08 GMT",
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  },
+  "uuid": "941a6313-0198-4061-a1ad-661aab81951a"
+}

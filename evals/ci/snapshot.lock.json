@@ -1,0 +1,8 @@
+{
+  "release_tag": "index-snapshot-33b6d6becba5",
+  "asset_name": "rag-index-33b6d6becba5.dump",
+  "sha256": "6c42821bde2704dbad7fd092abda0ea849ed4b34d7a8f955ead8b3b66b4a32ad",
+  "pipeline_fingerprint": "33b6d6becba537c6b8bbe2b22f1d27812f1fdcf64dae662693d0cabcef6583eb",
+  "document_count": 92,
+  "chunk_count": 5486
+}

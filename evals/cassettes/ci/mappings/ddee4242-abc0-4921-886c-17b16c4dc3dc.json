@@ -1,0 +1,24 @@
+{
+  "id": "ddee4242-abc0-4921-886c-17b16c4dc3dc",
+  "name": "api_chat",
+  "request": {
+    "url": "/api/chat",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "equalToJson": "{\"model\":\"llama3.1:8b\",\"messages\":[{\"role\":\"system\",\"content\":\"You write one PostgreSQL query that answers a question about arXiv paper metadata.\\nSchema (the only tables and columns you may use):\\n  documents(id uuid, external_id text, arxiv_version int, title text, abstract text, primary_category text,\\n            published_on date, updated_on date, source_url text)\\n  authors(id bigint, name text, name_normalized text)\\n  paper_authors(document_id uuid -> documents.id, author_id bigint -> authors.id, position int)\\n  paper_categories(document_id uuid -> documents.id, category text, is_primary boolean)\\nRules:\\n- PostgreSQL dialect, exactly one SELECT statement (WITH is allowed), no semicolons, never SELECT *.\\n- Match authors with authors.name_normalized = '<name lowercased, accents and punctuation removed>'.\\n- Match categories through paper_categories.category (primary and cross-listed), e.g. 'cs.IR'.\\n- Filter dates with documents.published_on.\\nReply with only a JSON object: {\\\"sql\\\": \\\"<query>\\\"}.\\n\\nExamples:\\nQ: How many cs.CL papers were published in 2025?\\n{\\\"sql\\\": \\\"select count(distinct d.id) as n from documents d join paper_categories pc on pc.document_id = d.id where pc.category = 'cs.CL' and d.published_on between '2025-01-01' and '2025-12-31'\\\"}\\nQ: List the titles of papers by Jimmy Lin.\\n{\\\"sql\\\": \\\"select d.title from documents d join paper_authors pa on pa.document_id = d.id join authors a on a.id = pa.author_id where a.name_normalized = 'jimmy lin' order by d.published_on\\\"}\\nQ: Which three authors have the most cs.IR papers?\\n{\\\"sql\\\": \\\"select a.name, count(*) as papers from authors a join paper_authors pa on pa.author_id = a.id join paper_categories pc on pc.document_id = pa.document_id where pc.category = 'cs.IR' group by a.name order by papers desc, a.name limit 3\\\"}\\nQ: How many papers were published per year?\\n{\\\"sql\\\": \\\"select extract(year from published_on)::int as year, count(*) as papers from documents group by 1 order by 1\\\"}\"},{\"role\":\"user\",\"content\":\"Which author has the most math.DS papers?\"}],\"stream\":false,\"format\":\"json\",\"keep_alive\":\"30m\",\"options\":{\"temperature\":0,\"seed\":42,\"num_ctx\":8192,\"num_predict\":256}}",
+        "ignoreArrayOrder": false,
+        "ignoreExtraElements": false
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"model\":\"llama3.1:8b\",\"created_at\":\"2026-10-10T23:57:42.062675Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"sql\\\": \\\"select a.name, count(*) as papers from authors a join paper_authors pa on pa.author_id = a.id join paper_categories pc on pc.document_id = pa.document_id where pc.category = 'math.DS' group by a.name order by papers desc limit 1\\\"}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":5760605750,\"load_duration\":102304000,\"prompt_eval_count\":476,\"prompt_eval_duration\":406849000,\"eval_count\":61,\"eval_duration\":5233179000}",
+    "headers": {
+      "Date": "Sat, 10 Oct 2026 23:57:42 GMT",
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  },
+  "uuid": "ddee4242-abc0-4921-886c-17b16c4dc3dc"
+}
