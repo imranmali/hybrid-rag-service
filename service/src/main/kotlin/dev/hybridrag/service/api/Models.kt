@@ -3,8 +3,11 @@ package dev.hybridrag.service.api
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDate
 
+// Request and response bodies of contract C6. Property names are camelCase here and snake_case on the wire
+// (`spring.jackson.property-naming-strategy=SNAKE_CASE`); every default below is the C6 default.
+
 data class QueryRequest(
-    val question: String = "",
+    val question: String,
     val pipeline: Pipeline = Pipeline(),
 )
 
@@ -37,15 +40,19 @@ data class FilterSettings(
     val strategy: String = "auto",
     val selectivityThreshold: Double = 0.25,
     val overfetchFactor: Int = 5,
-    val explicit: ExplicitFilters? = null,
+    val explicit: FilterValues? = null,
 )
 
-data class ExplicitFilters(
+/** Filter values: the request's `explicit` object and the response's `applied` / `extracted` objects. */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class FilterValues(
     val categories: List<String>? = null,
     val authors: List<String>? = null,
     val publishedFrom: LocalDate? = null,
     val publishedTo: LocalDate? = null,
-)
+) {
+    fun isEmpty(): Boolean = categories.isNullOrEmpty() && authors.isNullOrEmpty() && publishedFrom == null && publishedTo == null
+}
 
 data class RerankSettings(
     val enabled: Boolean = true,
@@ -61,7 +68,11 @@ data class GenerationSettings(
     val contextK: Int = 6,
 )
 
+/** The default pipeline is the full pipeline (grid row 6); omitted request fields take these values. */
 object PipelineDefaults {
+    val PIPELINE = Pipeline()
+
+    /** Jackson already fills omitted fields from the data-class defaults; this is the resolved, echoed pipeline. */
     fun resolve(request: QueryRequest): Pipeline = request.pipeline
 }
 
@@ -74,67 +85,64 @@ class RequestValidationException(
     val errors: List<FieldError>,
 ) : RuntimeException(errors.joinToString("; ") { "${it.field}: ${it.message}" })
 
+/** Validation rules of contract C6, collecting every violation as `{field, message}`. */
 object QueryValidator {
     private val categoryPattern = Regex("^[a-z-]+(\\.[A-Za-z-]+)?$")
 
     fun validate(request: QueryRequest) {
+        val errors = mutableListOf<FieldError>()
         val pipeline = request.pipeline
         val retrieval = pipeline.retrieval
-        val errors =
-            buildList {
-                if (request.question.trim().length !in 1..2000) {
-                    add(FieldError("question", "must contain 1 to 2000 non-whitespace characters"))
-                }
-                if (!retrieval.vector && !retrieval.bm25) {
-                    add(FieldError("pipeline.retrieval", "vector or bm25 must be enabled"))
-                }
-                range("pipeline.retrieval.vector_k", retrieval.vectorK, 1, 200, this)
-                range("pipeline.retrieval.bm25_k", retrieval.bm25K, 1, 200, this)
-                range("pipeline.retrieval.return_k", retrieval.returnK, 1, 200, this)
-                if (retrieval.fusion.method != "rrf") {
-                    add(FieldError("pipeline.retrieval.fusion.method", "must be rrf"))
-                }
-                range("pipeline.retrieval.fusion.k", retrieval.fusion.k, 1, 1000, this)
-                if (pipeline.filters.strategy !in setOf("auto", "pre", "post")) {
-                    add(FieldError("pipeline.filters.strategy", "must be auto, pre, or post"))
-                }
-                if (pipeline.filters.selectivityThreshold !in 0.0..1.0) {
-                    add(FieldError("pipeline.filters.selectivity_threshold", "must be between 0 and 1"))
-                }
-                range("pipeline.filters.overfetch_factor", pipeline.filters.overfetchFactor, 1, 20, this)
-                if (retrieval.vectorK * pipeline.filters.overfetchFactor > 1000) {
-                    add(FieldError("pipeline.filters.overfetch_factor", "vector_k × overfetch_factor must not exceed 1000"))
-                }
-                pipeline.filters.explicit?.categories?.forEachIndexed { index, category ->
-                    if (!categoryPattern.matches(category)) {
-                        add(FieldError("pipeline.filters.explicit.categories[$index]", "must be a category code"))
-                    }
-                }
-                val explicit = pipeline.filters.explicit
-                if (explicit?.publishedFrom != null && explicit.publishedTo != null && explicit.publishedFrom > explicit.publishedTo) {
-                    add(FieldError("pipeline.filters.explicit", "published_from must not exceed published_to"))
-                }
-                range("pipeline.rerank.candidates", pipeline.rerank.candidates, 1, 100, this)
-                if (pipeline.rerank.candidates > retrieval.returnK) {
-                    add(FieldError("pipeline.rerank.candidates", "must not exceed return_k"))
-                }
-                range("pipeline.generation.context_k", pipeline.generation.contextK, 1, 20, this)
+        val filters = pipeline.filters
+        if (request.question.trim().length !in 1..2000) {
+            errors += FieldError("question", "must be 1 to 2000 characters after trimming")
+        }
+        if (!retrieval.vector && !retrieval.bm25) {
+            errors += FieldError("pipeline.retrieval", "at least one of vector and bm25 must be true")
+        }
+        errors.range("pipeline.retrieval.vector_k", retrieval.vectorK, 1, 200)
+        errors.range("pipeline.retrieval.bm25_k", retrieval.bm25K, 1, 200)
+        errors.range("pipeline.retrieval.return_k", retrieval.returnK, 1, 200)
+        if (retrieval.fusion.method != "rrf") errors += FieldError("pipeline.retrieval.fusion.method", "must be \"rrf\"")
+        errors.range("pipeline.retrieval.fusion.k", retrieval.fusion.k, 1, 1000)
+        if (filters.strategy !in setOf("auto", "pre", "post")) {
+            errors += FieldError("pipeline.filters.strategy", "must be one of auto, pre, post")
+        }
+        if (filters.selectivityThreshold.isNaN() || filters.selectivityThreshold !in 0.0..1.0) {
+            errors += FieldError("pipeline.filters.selectivity_threshold", "must be between 0 and 1")
+        }
+        errors.range("pipeline.filters.overfetch_factor", filters.overfetchFactor, 1, 20)
+        if (retrieval.vectorK.toLong() * filters.overfetchFactor > 1000) {
+            errors += FieldError("pipeline.filters.overfetch_factor", "vector_k × overfetch_factor must be at most 1000")
+        }
+        filters.explicit?.categories?.forEachIndexed { index, category ->
+            if (!categoryPattern.matches(category)) {
+                errors += FieldError("pipeline.filters.explicit.categories[$index]", "must match ${categoryPattern.pattern}")
             }
+        }
+        val from = filters.explicit?.publishedFrom
+        val to = filters.explicit?.publishedTo
+        if (from != null && to != null && from > to) {
+            errors += FieldError("pipeline.filters.explicit.published_from", "must not be after published_to")
+        }
+        errors.range("pipeline.rerank.candidates", pipeline.rerank.candidates, 1, 100)
+        if (pipeline.rerank.candidates > retrieval.returnK) {
+            errors += FieldError("pipeline.rerank.candidates", "must not exceed pipeline.retrieval.return_k")
+        }
+        errors.range("pipeline.generation.context_k", pipeline.generation.contextK, 1, 20)
         if (errors.isNotEmpty()) throw RequestValidationException(errors)
     }
 
-    private fun range(
+    private fun MutableList<FieldError>.range(
         field: String,
         value: Int,
         min: Int,
         max: Int,
-        errors: MutableList<FieldError>,
     ) {
-        if (value !in min..max) errors += FieldError(field, "must be between $min and $max")
+        if (value !in min..max) add(FieldError(field, "must be between $min and $max"))
     }
 }
 
-@JsonInclude(JsonInclude.Include.ALWAYS)
 data class QueryResponse(
     val requestId: String,
     val traceId: String,
@@ -147,12 +155,12 @@ data class QueryResponse(
     val answer: AnswerResponse,
     val degraded: List<String>,
     val timingsMs: Map<String, Double>,
-    val usage: Usage = Usage(),
+    val usage: Usage,
 )
 
 data class FilterResult(
-    val applied: ExplicitFilters,
-    val extracted: ExplicitFilters,
+    val applied: FilterValues,
+    val extracted: FilterValues,
     val strategy: String,
     val estimatedSelectivity: Double?,
     val matchingChunks: Long?,
@@ -198,7 +206,15 @@ data class AnswerResponse(
     val abstained: Boolean,
     val citations: List<Long>?,
     val error: String?,
-)
+) {
+    companion object {
+        val DISABLED = AnswerResponse("disabled", null, null, false, null, null)
+
+        fun unavailable(error: String) = AnswerResponse("unavailable", 503, null, false, null, error)
+
+        fun error(error: String) = AnswerResponse("error", 500, null, false, null, error)
+    }
+}
 
 data class Usage(
     val embedPromptTokens: Int = 0,
@@ -208,6 +224,7 @@ data class Usage(
     val llmCalls: Int = 0,
 )
 
+/** No retrieval is possible: DB error in a retrieval statement, pool timeout, or embedding down without bm25 (D11). */
 class RetrievalUnavailableException(
     message: String,
     cause: Throwable? = null,

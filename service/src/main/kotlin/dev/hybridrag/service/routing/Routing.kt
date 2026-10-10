@@ -1,135 +1,109 @@
 package dev.hybridrag.service.routing
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import dev.hybridrag.service.RagProperties
-import dev.hybridrag.service.api.SqlResult
-import dev.hybridrag.service.llm.OllamaClient
-import net.sf.jsqlparser.parser.CCJSqlParserUtil
-import net.sf.jsqlparser.statement.select.Select
-import org.springframework.beans.factory.annotation.Qualifier
-import org.springframework.jdbc.core.ResultSetExtractor
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import dev.hybridrag.service.llm.LlmClient
+import dev.hybridrag.service.llm.LlmReply
+import dev.hybridrag.service.llm.LlmUse
 import org.springframework.stereotype.Component
-import org.springframework.transaction.support.TransactionTemplate
-import java.sql.Date
-import java.sql.ResultSet
-import java.time.LocalDate
+
+private val replyMapper = jacksonObjectMapper()
+
+/** A structured LLM reply that is not the expected JSON object. */
+class UnparseableReplyException(
+    message: String,
+) : RuntimeException(message)
 
 data class RouteDecision(
     val route: String,
-    val source: String,
+    val reply: LlmReply,
 )
 
+/** `route-v1` classifier (design D7): `{"route": "sql"|"vector"}`. */
 @Component
 class RouteClassifier(
-    private val ollama: OllamaClient,
-    private val mapper: ObjectMapper,
-    private val properties: RagProperties,
+    private val llm: LlmClient,
 ) {
     fun classify(question: String): RouteDecision {
-        val system =
+        val reply = llm.chat(LlmUse.ROUTE, SYSTEM, question)
+        val route =
+            runCatching { replyMapper.readTree(reply.content).path("route").asText() }
+                .getOrNull()
+                ?.takeIf { it == "sql" || it == "vector" }
+                ?: throw UnparseableReplyException("route classifier reply is not {\"route\": \"sql\"|\"vector\"}")
+        return RouteDecision(route, reply)
+    }
+
+    companion object {
+        const val VERSION = "route-v1"
+
+        val SYSTEM =
             """
-            route-v1: Classify a question as JSON {"route":"sql"} only for count, list, rank, or aggregate
-            questions over paper titles, authors, categories, and publication dates. Use {"route":"vector"} for
-            questions about what papers say, propose, find, or evaluate.
+            You route questions about a collection of arXiv computer-science papers.
+            Answer "sql" when the question asks to count, list, rank or aggregate papers using only their metadata:
+            titles, authors, categories (for example cs.IR, cs.CL, cs.DB) and publication dates. Such questions do not
+            need to read what the papers say.
+            Answer "vector" for anything about what papers say, propose, find, compare or evaluate.
+            Reply with only a JSON object: {"route": "sql"} or {"route": "vector"}.
+
+            Examples:
+            Q: How many cs.CL papers were published in 2025? -> {"route": "sql"}
+            Q: List the titles of papers co-authored by Jimmy Lin. -> {"route": "sql"}
+            Q: Which author has the most cs.IR papers since 2024? -> {"route": "sql"}
+            Q: Which reranking models are evaluated in the indexed cs.IR papers? -> {"route": "vector"}
+            Q: How does ColBERT's late interaction differ from a cross-encoder? -> {"route": "vector"}
+            Q: What datasets do the 2024 retrieval-augmented generation papers use for evaluation? -> {"route": "vector"}
             """.trimIndent()
-        val reply = ollama.chat(system, question, true, 32, properties.timeouts.routeMs).content
-        val route = mapper.readTree(reply).path("route").asText()
-        require(route == "sql" || route == "vector") { "unrecognised route" }
-        return RouteDecision(route, "llm")
     }
 }
 
+data class GeneratedSql(
+    val sql: String,
+    val reply: LlmReply,
+)
+
+/** `sqlgen-v1` generator (design D7): `{"sql": "…"}` over the tables and columns granted to `rag_router`. */
 @Component
 class SqlGenerator(
-    private val ollama: OllamaClient,
-    private val mapper: ObjectMapper,
-    private val properties: RagProperties,
+    private val llm: LlmClient,
 ) {
-    fun generate(question: String): String {
-        val system =
+    fun generate(question: String): GeneratedSql {
+        val reply = llm.chat(LlmUse.SQL_GENERATION, SYSTEM, question)
+        val sql =
+            runCatching { replyMapper.readTree(reply.content).path("sql").asText() }
+                .getOrNull()
+                ?.takeIf { it.isNotBlank() }
+                ?: throw UnparseableReplyException("SQL generator reply is not {\"sql\": \"…\"}")
+        return GeneratedSql(sql, reply)
+    }
+
+    companion object {
+        const val VERSION = "sqlgen-v1"
+
+        val SYSTEM =
             """
-            sqlgen-v1: Return JSON {"sql":"..."} with one PostgreSQL SELECT only; never use SELECT *.
-            Allowed tables: documents(id, external_id, arxiv_version, title, abstract, primary_category,
-            published_on, updated_on, source_url), authors, paper_authors, paper_categories. Match normalized
-            author names through authors.name_normalized; use paper_categories for categories.
+            You write one PostgreSQL query that answers a question about arXiv paper metadata.
+            Schema (the only tables and columns you may use):
+              documents(id uuid, external_id text, arxiv_version int, title text, abstract text, primary_category text,
+                        published_on date, updated_on date, source_url text)
+              authors(id bigint, name text, name_normalized text)
+              paper_authors(document_id uuid -> documents.id, author_id bigint -> authors.id, position int)
+              paper_categories(document_id uuid -> documents.id, category text, is_primary boolean)
+            Rules:
+            - PostgreSQL dialect, exactly one SELECT statement (WITH is allowed), no semicolons, never SELECT *.
+            - Match authors with authors.name_normalized = '<name lowercased, accents and punctuation removed>'.
+            - Match categories through paper_categories.category (primary and cross-listed), e.g. 'cs.IR'.
+            - Filter dates with documents.published_on.
+            Reply with only a JSON object: {"sql": "<query>"}.
+
+            Examples:
+            Q: How many cs.CL papers were published in 2025?
+            {"sql": "select count(distinct d.id) as n from documents d join paper_categories pc on pc.document_id = d.id where pc.category = 'cs.CL' and d.published_on between '2025-01-01' and '2025-12-31'"}
+            Q: List the titles of papers by Jimmy Lin.
+            {"sql": "select d.title from documents d join paper_authors pa on pa.document_id = d.id join authors a on a.id = pa.author_id where a.name_normalized = 'jimmy lin' order by d.published_on"}
+            Q: Which three authors have the most cs.IR papers?
+            {"sql": "select a.name, count(*) as papers from authors a join paper_authors pa on pa.author_id = a.id join paper_categories pc on pc.document_id = pa.document_id where pc.category = 'cs.IR' group by a.name order by papers desc, a.name limit 3"}
+            Q: How many papers were published per year?
+            {"sql": "select extract(year from published_on)::int as year, count(*) as papers from documents group by 1 order by 1"}
             """.trimIndent()
-        return mapper
-            .readTree(ollama.chat(system, question, true, 256, properties.timeouts.sqlGenerateMs).content)
-            .path("sql")
-            .asText()
-            .also { require(it.isNotBlank()) { "missing generated sql" } }
-    }
-}
-
-@Component
-class SqlGuard {
-    private val allowedTables = setOf("documents", "authors", "paper_authors", "paper_categories")
-    private val forbiddenFunctions =
-        Regex("(?i)\\b(pg_[a-z0-9_]*|lo_[a-z0-9_]*|dblink[a-z0-9_]*|set_config|current_setting|query_to_xml[a-z0-9_]*)\\s*\\(")
-
-    fun validate(candidate: String): String {
-        val sql = candidate.trim().removeSuffix(";").trim()
-        require(sql.isNotBlank()) { "empty SQL" }
-        require(sql.length <= 4000) { "SQL exceeds 4000 characters" }
-        require(!sql.contains(';')) { "multiple statements are not allowed" }
-        require(!Regex("(?i)\\b(for\\s+update|select\\s+.*\\s+into\\s+)").containsMatchIn(sql)) { "locking or SELECT INTO is not allowed" }
-        require(!forbiddenFunctions.containsMatchIn(sql)) { "disallowed function" }
-        val statement = CCJSqlParserUtil.parse(sql)
-        require(statement is Select) { "only SELECT statements are allowed" }
-        val tables =
-            Regex("(?i)\\b(?:from|join)\\s+(?:public\\.)?([a-z_]+)")
-                .findAll(sql)
-                .map { it.groupValues[1].lowercase() }
-                .toSet()
-        require(tables.all { it in allowedTables }) { "disallowed table: ${(tables - allowedTables).joinToString()}" }
-        return sql
-    }
-}
-
-@Component
-class SqlExecutor(
-    @Qualifier("routerJdbcTemplate") private val jdbc: NamedParameterJdbcTemplate,
-    @Qualifier("readerTransactionTemplate") private val transaction: TransactionTemplate,
-) {
-    fun execute(query: String): SqlResult {
-        val wrapped = "select * from ($query) as q limit 101"
-        return try {
-            transaction.execute<SqlResult> {
-                jdbc.jdbcTemplate.query(
-                    wrapped,
-                    ResultSetExtractor { result ->
-                        val metadata = result.metaData
-                        val columns = (1..metadata.columnCount).map(metadata::getColumnLabel)
-                        val rows = mutableListOf<List<Any?>>()
-                        while (result.next()) rows += (1..metadata.columnCount).map { jsonValue(result, it) }
-                        SqlResult(query, columns, rows.take(100), rows.size, rows.size > 100, null)
-                    },
-                )
-            } ?: throw IllegalStateException("SQL transaction returned null")
-        } catch (error: Exception) {
-            SqlResult(query, emptyList(), emptyList(), 0, false, "execution_failed: ${error.sqlState()}")
-        }
-    }
-
-    private fun jsonValue(
-        result: ResultSet,
-        column: Int,
-    ): Any? =
-        when (val value = result.getObject(column)) {
-            is Date -> value.toLocalDate().toString()
-            is LocalDate -> value.toString()
-            is Number, is Boolean, is String -> value
-            null -> null
-            else -> value.toString()
-        }
-
-    private fun Throwable.sqlState(): String {
-        var current: Throwable? = this
-        while (current != null) {
-            if (current is java.sql.SQLException) return current.sqlState ?: "unknown"
-            current = current.cause
-        }
-        return "unknown"
     }
 }

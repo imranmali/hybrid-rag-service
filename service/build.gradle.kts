@@ -15,6 +15,9 @@ repositories {
     mavenCentral()
 }
 
+// Testcontainers 1.21.4 negotiates the API version with Docker Engine 29 (1.21.3 sends a too-old one).
+extra["testcontainers.version"] = "1.21.4"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -30,8 +33,9 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(kotlin("test"))
-    testImplementation("org.testcontainers:postgresql:1.21.3")
-    testImplementation("org.testcontainers:junit-jupiter:1.21.3")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.wiremock:wiremock-standalone:3.13.1")
     testImplementation("org.flywaydb:flyway-core:11.10.5")
     testImplementation("org.flywaydb:flyway-database-postgresql:11.10.5")
     testImplementation("io.opentelemetry:opentelemetry-sdk-testing:1.54.1")
