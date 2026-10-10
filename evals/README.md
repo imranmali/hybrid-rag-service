@@ -64,6 +64,23 @@ against schema, gold rules, exact type counts and the manifest hash.
 
 Exit 2 outranks exit 1: a cassette miss both degrades the response and lowers the metrics.
 
+## Behaviours worth knowing
+
+- **`--limit N` interleaves question types.** It takes the first N questions round-robin across
+  types, so a 10-question smoke run covers every type rather than 10 factoids.
+- **Exit 2 outranks exit 1.** A cassette miss both degrades a response and lowers the metrics, so
+  the gate reports the degraded/failed-request code, and prints the re-record hint in `--replay`.
+- **Failed requests are never dropped.** An errored request scores zero retrieval, a wrong route
+  and a wrong SQL answer, is excluded from latency and the confusion matrix, and is reported in
+  the error rate. Rows with degraded or failed requests are flagged in `results.md`.
+- **`results.md` has strict eligibility.** It is rebuilt from the latest run file per config and
+  only counts full, live runs: all five question types, generation and judge on, and none of
+  `--subset`, `--limit`, `--replay`, `--no-generation`, `--no-judge`. Everything else is kept
+  under `runs/` but never reaches `results.md`.
+- The judge runs after all queries, so judge calls never sit inside latency measurements.
+- `--replay` still compares the digests recorded in `cassettes/ci/meta.json` with
+  `infra/models.lock.json` and exits 3 on mismatch unless `--allow-model-drift` is given.
+
 ## Config files
 
 `configs/<name>.yaml` follows the eval-config contract (C7 in
