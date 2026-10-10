@@ -30,6 +30,14 @@ def _make_scorer(settings: Settings) -> Scorer:
     )
 
 
+def _warm_up(scorer: Scorer, settings: Settings) -> None:
+    """Score one full-size batch so first-request kernel compilation happens before readiness."""
+
+    # One word per token at least, so each pair is truncated to max_length.
+    passage = " ".join(["passage"] * settings.max_length)
+    scorer.score("warm up query", [passage] * settings.batch_size)
+
+
 def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -> FastAPI:
     """Build an app instance; injection points make lifecycle behavior testable."""
 
@@ -48,16 +56,34 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
             except Exception as error:  # readiness must remain false after model-load failure
                 app.state.load_error = error
                 LOGGER.exception("model load failed", extra={"event": "model_load_failed"})
-            else:
-                app.state.ready = True
+                return
+            LOGGER.info(
+                "model loaded",
+                extra={
+                    "event": "model_loaded",
+                    "model": active_scorer.model,
+                    "load_seconds": round(perf_counter() - started, 3),
+                },
+            )
+            if active_settings.model != "fake":
+                warm_up_started = perf_counter()
+                try:
+                    await anyio.to_thread.run_sync(_warm_up, active_scorer, active_settings)
+                except Exception as error:  # a model that cannot score must not report ready
+                    app.state.load_error = error
+                    LOGGER.exception("model warm-up failed", extra={"event": "warm_up_failed"})
+                    return
                 LOGGER.info(
-                    "model loaded",
+                    "model warmed up",
                     extra={
-                        "event": "model_loaded",
+                        "event": "warm_up",
                         "model": active_scorer.model,
-                        "load_seconds": round(perf_counter() - started, 3),
+                        "device": active_scorer.device,
+                        "n_passages": active_settings.batch_size,
+                        "warm_up_seconds": round(perf_counter() - warm_up_started, 3),
                     },
                 )
+            app.state.ready = True
 
         app.state.load_task = asyncio.create_task(load_model())
         try:

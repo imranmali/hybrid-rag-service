@@ -88,6 +88,8 @@ vary a lot between runs with contention for the GPU and CPU. The CPU container m
 for 20 truncated passages, so it cannot meet the target at that size; use it only where no GPU is
 available, and reduce the rerank candidate count or `RERANKER_MAX_LENGTH` there.
 
-Note: on MPS the first request after the model loads or after an idle period was observed to take
-14–28 s even for two short passages, while the following requests took 26–200 ms. Send a warm-up
-request before measuring or serving latency-sensitive traffic.
+Note: on MPS the first request after the model loaded took 14–28 s even for two short passages,
+while the following requests took 26–200 ms. The service therefore scores one warm-up batch
+(`RERANKER_BATCH_SIZE` pairs at `RERANKER_MAX_LENGTH` tokens) after loading and before `/healthz`
+reports `ready: true`, and logs it as event `warm_up` with `warm_up_seconds`. `RERANKER_MODEL=fake`
+skips the warm-up.

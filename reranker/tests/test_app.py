@@ -156,3 +156,54 @@ def test_request_log_has_required_fields() -> None:
         json.loads(record) for record in records if json.loads(record)["event"] == "rerank"
     )
     assert {"event", "n_passages", "queue_ms", "inference_ms", "model"} <= payload.keys()
+
+
+class BlockingWarmUpScorer(CountingScorer):
+    def __init__(self) -> None:
+        super().__init__()
+        self.release = threading.Event()
+        self.batches: list[tuple[str, int, int]] = []
+
+    def score(self, query: str, passages: list[str]) -> list[float]:
+        self.batches.append((query, len(passages), max(len(p.split()) for p in passages)))
+        self.release.wait(timeout=2)
+        return super().score(query, passages)
+
+
+def test_ready_flips_only_after_warm_up() -> None:
+    records: list[logging.LogRecord] = []
+
+    class Capture(logging.Handler):
+        def emit(self, record: logging.LogRecord) -> None:
+            records.append(record)
+
+    scorer = BlockingWarmUpScorer()
+    app_settings = Settings(model="stub/real-model", batch_size=4, max_length=64)
+    capture = Capture()
+    LOGGER.addHandler(capture)
+    try:
+        with TestClient(create_app(app_settings, scorer)) as client:
+            for _ in range(100):
+                if scorer.batches:
+                    break
+                time.sleep(0.01)
+            assert len(scorer.batches) == 1
+            assert client.get("/healthz").status_code == 503
+            assert client.post("/rerank", json=request_payload()).status_code == 503
+
+            scorer.release.set()
+            wait_until_ready(client)
+    finally:
+        LOGGER.removeHandler(capture)
+
+    assert scorer.batches == [("warm up query", 4, 64)]
+    warm_up = next(record for record in records if getattr(record, "event", None) == "warm_up")
+    assert warm_up.warm_up_seconds >= 0
+
+
+def test_fake_model_skips_warm_up() -> None:
+    scorer = CountingScorer()
+    with TestClient(create_app(settings(), scorer)) as client:
+        wait_until_ready(client)
+
+    assert scorer.calls == 0
