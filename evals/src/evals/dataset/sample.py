@@ -227,10 +227,12 @@ def draw_samples(
     return rows
 
 
-def sample_all(corpus: Corpus, seed: int = SEED, oversample: int = OVERSAMPLE) -> list[SampleRow]:
+def sample_all(corpus: Corpus, seed: int = SEED, oversample: float = OVERSAMPLE) -> list[SampleRow]:
     rows: list[SampleRow] = []
     for qtype in ("factoid", "multi_chunk", "filter", "unanswerable"):
-        rows += draw_samples(corpus, qtype, QUOTA[qtype] * oversample, seed=seed, existing=rows)
+        rows += draw_samples(
+            corpus, qtype, round(QUOTA[qtype] * oversample), seed=seed, existing=rows
+        )
     return rows
 
 

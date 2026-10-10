@@ -1,0 +1,2 @@
+{"at": "2026-10-10T20:04:07.287273+00:00", "step": "sample", "documents": 86, "chunks": 4829, "seed": 42, "oversample": 1.4}
+{"at": "2026-10-10T20:04:17.284875+00:00", "step": "generate", "documents": 86, "chunks": 4829, "type": "factoid", "oversample": 1.4}

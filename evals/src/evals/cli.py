@@ -23,6 +23,7 @@ from evals.dataset import generate as generate_mod
 from evals.dataset import precheck as precheck_mod
 from evals.dataset import review as review_mod
 from evals.dataset import sample as sample_mod
+from evals.dataset.scope import record_scope
 from evals.grid import run_grid
 from evals.metrics.cost import Pricing  # noqa: F401  (re-exported for convenience)
 from evals.ollama import LLMError, default_generator_llm, fetch_digests
@@ -290,9 +291,14 @@ def _extractor() -> check_filters.Extractor:
 
 @dataset_app.command("sample")
 @guarded
-def dataset_sample(seed: Annotated[int, typer.Option("--seed")] = 42) -> None:
-    """Seeded chunk samples per type (2x oversampling) -> work/samples.jsonl."""
-    rows = sample_mod.sample_all(_corpus(), seed=seed)
+def dataset_sample(
+    seed: Annotated[int, typer.Option("--seed")] = 42,
+    oversample: Annotated[float, typer.Option("--oversample", help="Samples per quota slot")] = 2.0,
+) -> None:
+    """Seeded chunk samples per type (default 2x oversampling) -> work/samples.jsonl."""
+    corpus = _corpus()
+    record_scope(corpus, "sample", seed=seed, oversample=oversample)
+    rows = sample_mod.sample_all(corpus, seed=seed, oversample=oversample)
     sample_mod.write_samples(work.SAMPLES, rows)
     counts = {t: sum(1 for r in rows if r.type == t) for t in sample_mod.SAMPLERS}
     typer.echo(f"wrote {len(rows)} samples to {work.SAMPLES}: {counts}")
@@ -304,11 +310,15 @@ def dataset_generate(
     qtype: Annotated[str | None, typer.Option("--type", help="Only this question type")] = None,
     n: Annotated[int | None, typer.Option("--n", help="New candidates to add")] = None,
     seed: Annotated[int, typer.Option("--seed")] = 42,
+    oversample: Annotated[
+        float, typer.Option("--oversample", help="Candidates per quota slot")
+    ] = 2.0,
 ) -> None:
     """LLM candidates (+ SQL-template aggregates) -> work/candidates.jsonl."""
     if qtype is not None and qtype not in schema.QUOTA:
         _fail(f"--type must be one of {list(schema.QUOTA)}")
     corpus = _corpus()
+    record_scope(corpus, "generate", type=qtype, oversample=oversample)
     candidates = work.read_jsonl(work.CANDIDATES)
     samples = sample_mod.read_samples(work.SAMPLES)
     llm = default_generator_llm()
@@ -318,7 +328,7 @@ def dataset_generate(
             n
             if n is not None
             else max(
-                schema.QUOTA[t] * sample_mod.OVERSAMPLE - have,
+                round(schema.QUOTA[t] * oversample) - have,
                 0 if qtype is None else schema.QUOTA[t] // 2,
             )
         )
@@ -454,6 +464,8 @@ def dataset_freeze(
         pipeline_fingerprint=ci_lock_mod.PostgresCorpusStats(
             settings.evals_database_url
         ).pipeline_fingerprint(),
+        scope=work.read_jsonl(work.SCOPE),
+        corpus=_corpus(),
     )
     manifest = freeze_mod.freeze(
         inp, drift.PostgresGoldStore(settings.evals_database_url), version=version, seed=seed

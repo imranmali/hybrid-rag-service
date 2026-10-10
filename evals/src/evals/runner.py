@@ -294,6 +294,26 @@ def _question_entry(i: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def results_role(config: EvalConfig, opts: RunOptions) -> str | None:
+    """How a run may feed `results.md` (None = not at all):
+
+    - "full": full dataset, generation and judge on;
+    - "retrieval": full dataset, generation off (retrieval, routing and latency columns only);
+    - "gen_subset": CI subset with generation and judge on (generation/judge columns only).
+    """
+    if opts.replay or opts.limit is not None:
+        return None
+    if set(config.question_types) != set(QUESTION_TYPES):
+        return None
+    if opts.subset is None:
+        if opts.no_generation:
+            return "retrieval"
+        return None if opts.no_judge else "full"
+    if opts.subset == "ci" and not opts.no_generation and not opts.no_judge:
+        return "gen_subset"
+    return None
+
+
 def run_config(
     config_path: str | Path,
     opts: RunOptions,
@@ -366,14 +386,7 @@ def run_config(
     errors_n = sum(1 for i in items if i["response"] is None)
     n = len(items)
 
-    full_dataset = (
-        opts.subset is None
-        and opts.limit is None
-        and set(config.question_types) == set(QUESTION_TYPES)
-        and not opts.replay
-        and not opts.no_generation
-        and not opts.no_judge
-    )
+    role = results_role(config, opts)
     finished = ctx.now()
     record: dict[str, Any] = {
         "run_id": run_id,
@@ -405,7 +418,8 @@ def run_config(
             "allow_drift": opts.allow_drift,
         },
         "replayed": opts.replay,
-        "results_eligible": full_dataset,
+        "results_role": role,
+        "results_eligible": role is not None,
         "model_digests": pre["model_digests"],
         "gold_drift": pre["gold_drift"],
         "warnings": pre["warnings"],
@@ -434,7 +448,10 @@ def run_config(
         "questions": [_question_entry(i) for i in items],
     }
 
-    out_dir = ctx.evals_dir / "runs" / ("ci" if opts.subset == "ci" else "") / run_id
+    # CI gate runs (subset, no generation) are isolated under runs/ci/; a subset run WITH
+    # generation is a results run (role "gen_subset") and lives next to the full runs.
+    ci_dir = opts.subset == "ci" and opts.no_generation
+    out_dir = ctx.evals_dir / "runs" / ("ci" if ci_dir else "") / run_id
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{config.name}.json"
     path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")

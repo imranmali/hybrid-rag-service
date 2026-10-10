@@ -96,10 +96,11 @@ def test_every_number_comes_from_a_run_file(env):
 
 def test_non_eligible_runs_are_ignored_by_report(env):
     run_config(env.config("05-rerank"), RunOptions(limit=2), env.ctx())
-    run_config(env.config("05-rerank"), RunOptions(subset="ci"), env.ctx())
+    run_config(env.config("05-rerank"), RunOptions(subset="ci", no_generation=True), env.ctx())
+    run_config(env.config("05-rerank"), RunOptions(no_judge=True), env.ctx())
     assert report.load_eligible_runs(env.evals_dir) == []
     report.write_results(env.evals_dir)
-    assert "No full-dataset runs yet" in env.results_md.read_text()
+    assert "No results runs yet" in env.results_md.read_text()
 
 
 def test_latest_full_run_wins(env):
@@ -197,3 +198,66 @@ def test_cohens_kappa():
     assert judge_agreement.cohens_kappa([]) is None
     assert judge_agreement.cohens_kappa([("a", "a"), ("b", "b")]) == 1.0
     assert judge_agreement.cohens_kappa([("a", "b"), ("b", "a")]) == -1.0
+
+
+# --- retrieval-only + gen/judge subset composition ---------------------------------------------------
+
+
+def cells(env, number):
+    row = next(
+        ln for ln in env.results_md.read_text().splitlines() if ln.startswith(f"| {number} |")
+    )
+    return dict(zip(report.COLUMNS, [c.strip() for c in row.strip("|").split("|")], strict=True))
+
+
+def test_retrieval_only_run_fills_retrieval_columns_and_dashes_the_rest(env):
+    run_config(env.config("06-routing"), RunOptions(no_generation=True, no_judge=True), env.ctx())
+    c = cells(env, 6)
+    assert c["Mode"] == "retrieval-only"
+    assert (
+        c["nDCG@10"] != "—"
+        and c["R@20"] != "—"
+        and c["Route acc."] != "—"
+        and c["p50 e2e ms"] != "—"
+    )
+    for col in (
+        "Faithfulness",
+        "Answer rel.",
+        "Abstain acc.",
+        "Cost/query (est.)",
+        "Tokens/query",
+        "Gen/judge run",
+    ):
+        assert c[col] == "—", col
+    assert "retrieval-only" in env.results_md.read_text()
+
+
+def test_gen_subset_run_fills_generation_columns_marked_ci50(env):
+    run_config(env.config("06-routing"), RunOptions(no_generation=True, no_judge=True), env.ctx())
+    gen = run_config(env.config("06-routing"), RunOptions(subset="ci"), env.ctx())
+    c = cells(env, 6)
+    assert c["Mode"] == "retrieval-only"  # retrieval columns still come from the full-dataset run
+    assert c["Faithfulness"].endswith("(ci50)") and c["Abstain acc."].endswith("(ci50)")
+    assert c["Tokens/query"].endswith("(ci50)")
+    assert "(est.)" in c["Cost/query (est.)"]
+    assert gen.record["run_id"] in c["Gen/judge run"] and "runs/" in c["Gen/judge run"]
+    assert gen.record["run_id"] not in c["Run"]
+    # numbers come from the right run files
+    main_rec = next(
+        r for _, r in report.load_eligible_runs(env.evals_dir) if r["results_role"] == "retrieval"
+    )
+    assert f"{main_rec['metrics']['retrieval']['ndcg_at_10']['mean']:.3f}" in c["nDCG@10"]
+    assert f"{gen.record['metrics']['answers']['faithfulness']['mean']:.3f}" in c["Faithfulness"]
+
+
+def test_gen_subset_alone_leaves_retrieval_columns_blank(env):
+    run_config(env.config("06-routing"), RunOptions(subset="ci"), env.ctx())
+    c = cells(env, 6)
+    assert c["nDCG@10"] == "—" and c["Mode"] == "—" and c["Run"] == "—"
+    assert c["Faithfulness"].endswith("(ci50)")
+
+
+def test_full_run_supersedes_nothing_but_provides_every_column(env):
+    run_config(env.config("06-routing"), RunOptions(), env.ctx())
+    c = cells(env, 6)
+    assert c["Mode"] == "full" and "(ci50)" not in c["Faithfulness"] and c["Faithfulness"] != "—"

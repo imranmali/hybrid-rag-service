@@ -106,9 +106,8 @@ def test_full_run_upserts_exactly_one_row(env):
     "opts",
     [
         {"limit": 2},
-        {"no_generation": True},
         {"no_judge": True},
-        {"subset": "ci"},
+        {"subset": "ci", "no_judge": True},
         {"replay": True},
     ],
 )
@@ -130,7 +129,7 @@ def test_filter_only_config_is_not_results_eligible(env):
 
 
 def test_subset_ci_writes_under_runs_ci_and_selects_flagged_questions(env):
-    outcome = run(env, subset="ci")
+    outcome = run(env, subset="ci", no_generation=True)
     assert outcome.path.parent.parent == env.evals_dir / "runs" / "ci"
     assert [q["id"] for q in outcome.record["questions"]] == ["q0005", "q0006"]
 
@@ -282,3 +281,26 @@ def test_service_client_applies_a_per_request_timeout():
     res = ServiceClient(SERVICE).query("q", {}, timeout_s=3)
     assert res.status is None and "ReadTimeout" in res.error
     assert route.calls.last.request.extensions["timeout"]["read"] == 3
+
+
+def test_results_roles(env):
+    from evals.runner import results_role
+
+    cfg, _ = load_config(env.config("05-rerank"))
+    filt, _ = load_config(env.config("filter-auto"))
+    assert results_role(cfg, RunOptions()) == "full"
+    assert results_role(cfg, RunOptions(no_generation=True, no_judge=True)) == "retrieval"
+    assert results_role(cfg, RunOptions(no_generation=True)) == "retrieval"
+    assert results_role(cfg, RunOptions(subset="ci")) == "gen_subset"
+    assert results_role(cfg, RunOptions(subset="ci", no_generation=True)) is None  # CI gate runs
+    assert results_role(cfg, RunOptions(no_judge=True)) is None
+    assert results_role(cfg, RunOptions(limit=3)) is None
+    assert results_role(cfg, RunOptions(replay=True)) is None
+    assert results_role(filt, RunOptions()) is None
+    assert results_role(filt, RunOptions(no_generation=True)) is None  # filter-only: not a grid row
+
+
+def test_subset_run_with_generation_is_a_results_run_but_outside_runs_ci(env):
+    outcome = run(env, subset="ci")
+    assert outcome.record["results_role"] == "gen_subset"
+    assert outcome.path.parent.parent == env.evals_dir / "runs"  # not runs/ci

@@ -215,3 +215,15 @@ def generate_aggregates(
             chosen.append(cand)
             seen.add(cand.question)
     return chosen[:total]
+
+
+def recompute_answer(
+    corpus: Corpus, template: str, query: str, params: dict[str, Any]
+) -> str | None:
+    """Re-run a candidate's recorded SQL; the answer in the same format `generate` stored."""
+    rows = corpus.fetch(query, params)
+    if not rows:
+        return None
+    if template == "T5":
+        return json.dumps([r[0] for r in rows])
+    return str(rows[0][0])

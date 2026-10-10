@@ -37,15 +37,15 @@ Flags shared by `run` and `grid`:
 
 | Flag | Meaning |
 |---|---|
-| `--subset ci` | only the 50 `ci_subset` questions; results go to `runs/ci/`, never `results.md` |
+| `--subset ci` | only the 50 `ci_subset` questions. With `--no-generation` (the CI gate) results go to `runs/ci/` and never `results.md`; with generation and judge on it is a `gen_subset` results run stored under `runs/` |
 | `--limit N` | first N questions, interleaved across types so a smoke run covers every type; never writes `results.md` |
-| `--no-generation` | sends `generation.enabled=false`; skips judging; never writes `results.md` |
+| `--no-generation` | sends `generation.enabled=false`; skips judging; a full-dataset run is a `retrieval-only` results run |
 | `--no-judge` | skip the LLM judge; never writes `results.md` |
 | `--replay` | take model digests from `cassettes/ci/meta.json` instead of live Ollama |
 | `--allow-model-drift` / `--allow-drift` | continue despite Ollama digest drift / gold chunk drift; recorded in the run file |
 
-A run writes `results.md` only when it is a full-dataset, live, generation-and-judge-on run. Every
-other run is stored under `runs/` and is ignored by `evals report`.
+Only the run kinds listed under [Behaviours worth knowing](#behaviours-worth-knowing) reach
+`results.md`; every other run is stored under `runs/` and ignored by `evals report`.
 
 ### Dataset commands
 
@@ -73,10 +73,14 @@ Exit 2 outranks exit 1: a cassette miss both degrades the response and lowers th
 - **Failed requests are never dropped.** An errored request scores zero retrieval, a wrong route
   and a wrong SQL answer, is excluded from latency and the confusion matrix, and is reported in
   the error rate. Rows with degraded or failed requests are flagged in `results.md`.
-- **`results.md` has strict eligibility.** It is rebuilt from the latest run file per config and
-  only counts full, live runs: all five question types, generation and judge on, and none of
-  `--subset`, `--limit`, `--replay`, `--no-generation`, `--no-judge`. Everything else is kept
-  under `runs/` but never reaches `results.md`.
+- **`results.md` is built from three kinds of run, never from anything else.** It is rebuilt
+  from the latest run file per config and role: `full` (all five question types, generation and
+  judge on) fills every column; `retrieval` (all types, `--no-generation`) fills the retrieval,
+  routing and latency columns and the Mode column reads `retrieval-only`; `gen_subset`
+  (`--subset ci` with generation and judge on) fills the generation/judge columns, marked
+  `(ci50)`, with a separate "Gen/judge run" link. A cell with no measurement shows `—`. Runs with
+  `--limit`, `--replay`, `--no-judge`, or `--subset ci --no-generation` (the CI gate runs, kept
+  under `runs/ci/`) never reach `results.md`.
 - The judge runs after all queries, so judge calls never sit inside latency measurements.
 - `--replay` still compares the digests recorded in `cassettes/ci/meta.json` with
   `infra/models.lock.json` and exits 3 on mismatch unless `--allow-model-drift` is given.
@@ -168,8 +172,8 @@ seeded answerable ids for the judge-agreement check.
 Workflow (needs the indexed database and the running service):
 
 ```bash
-uv run evals dataset sample --seed 42     # seeded chunk samples, 2x oversampled
-uv run evals dataset generate             # LLM candidates + SQL-template aggregates
+uv run evals dataset sample --seed 42     # seeded chunk samples (--oversample, default 2x)
+uv run evals dataset generate             # LLM candidates + SQL-template aggregates (--type, --n, --oversample)
 uv run evals dataset precheck             # LLM answerability check
 uv run evals dataset check-filters        # expected filters vs what the service extracts
 uv run evals dataset review --next 20     # evidence for the verifier
