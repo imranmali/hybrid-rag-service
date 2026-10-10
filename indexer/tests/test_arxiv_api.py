@@ -18,3 +18,13 @@ def test_parse_atom_extracts_versioned_metadata() -> None:
     assert papers[0].version == 2
     assert papers[0].primary_category == "cs.IR"
     assert papers[0].categories == ("cs.IR", "cs.CL")
+
+
+def test_query_url_encodes_date_range_with_spaces_not_literal_plus() -> None:
+    from datetime import date
+
+    from indexer.arxiv.api import query_url
+
+    url = query_url("cs.IR", date(2023, 1, 1), date(2023, 3, 31))
+    assert "%5B202301010000+TO+202303312359%5D" in url  # '+' here is an encoded space
+    assert "%2B" not in url

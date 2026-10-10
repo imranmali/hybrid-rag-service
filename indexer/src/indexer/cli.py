@@ -1,6 +1,7 @@
 """Typer command line interface for reproducible corpus indexing."""
 
 import json
+from collections.abc import Sequence
 from datetime import date
 from pathlib import Path
 from typing import Annotated
@@ -127,6 +128,7 @@ def fetch() -> None:
 @app.command()
 def ingest(
     limit: Annotated[int | None, typer.Option(min=1)] = None,
+    offset: Annotated[int, typer.Option(min=0, help="Skip the first N manifest papers.")] = 0,
     force: bool = False,
     prune: bool = False,
     allow_model_drift: bool = False,
@@ -134,7 +136,10 @@ def ingest(
     """Parse, enrich, embed, and atomically upsert manifest papers."""
     settings = _settings()
     manifest = _require_manifest()
-    records = manifest[:limit] if limit else manifest
+    if prune and offset:
+        typer.echo("--prune cannot be combined with --offset", err=True)
+        raise typer.Exit(2)
+    records = manifest[offset:][:limit] if limit else manifest[offset:]
     try:
         digests = verify_model_lock(settings, allow_drift=allow_model_drift)
     except ModelDriftError as error:
@@ -154,23 +159,10 @@ def ingest(
     tokenizer = BgeM3Tokenizer()
     llm = LlmClient(settings)
     embedder = OllamaEmbedder(settings)
-    summary = IngestSummary()
     try:
-        for record in records:
-            paper = _paper_from_record(record)
-            try:
-                indexed = _index_paper(
-                    paper, writer, tokenizer, llm, embedder, fingerprint, force=force
-                )
-                if indexed is None:
-                    summary.unchanged += 1
-                    continue
-                result = writer.write(indexed, force=force)
-                setattr(summary, result, getattr(summary, result) + 1)
-            except Exception as error:
-                # Keep other papers runnable; final error budget decides exit.
-                summary.failed += 1
-                typer.echo(f"{paper.external_id}: {error}", err=True)
+        summary = ingest_records(
+            records, writer, tokenizer, llm, embedder, fingerprint, force=force
+        )
         if prune:
             writer.prune(str(record["external_id"]) for record in records)
         writer.finalize(
@@ -188,6 +180,35 @@ def ingest(
     typer.echo(json.dumps(summary.as_dict(), sort_keys=True))
     if summary.failed > len(records) * 0.05:
         raise typer.Exit(1)
+
+
+def ingest_records(
+    records: Sequence[dict[str, object]],
+    writer: IndexWriter,
+    tokenizer: BgeM3Tokenizer,
+    llm: LlmClient,
+    embedder: OllamaEmbedder,
+    fingerprint: str,
+    *,
+    force: bool = False,
+) -> IngestSummary:
+    """Index each manifest record; one failing paper is counted and never aborts the run."""
+    summary = IngestSummary()
+    for record in records:
+        paper = _paper_from_record(record)
+        try:
+            indexed = _index_paper(
+                paper, writer, tokenizer, llm, embedder, fingerprint, force=force
+            )
+            if indexed is None:
+                summary.unchanged += 1
+                continue
+            result = writer.write(indexed, force=force)
+            setattr(summary, result, getattr(summary, result) + 1)
+        except Exception as error:
+            typer.echo(f"{paper.external_id}: {error}", err=True)
+            summary.failed += 1
+    return summary
 
 
 @app.command()
