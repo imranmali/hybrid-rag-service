@@ -1,0 +1,50 @@
+schema: spec-driven
+
+context: |
+  Project: Hybrid RAG Service. The source of truth for intent is docs/BUILD_SPEC.md — read it before
+  planning anything. Portfolio-grade: measurement discipline, backend seniority, operational restraint.
+
+  Locked decisions (made by the orchestrator, do not re-litigate):
+  - Monorepo layout exactly as BUILD_SPEC "Repo, tooling, observability": service/ (Kotlin + Spring Boot),
+    indexer/ (Python), evals/ (Python), reranker/ (Python FastAPI cross-encoder), infra/ (docker-compose,
+    Flyway migrations, otel collector config, grafana), load/ (k6), docs/adr/.
+  - Corpus: arXiv full-text papers (HTML from arxiv.org/html/<id>, metadata from export.arxiv.org API),
+    ~150-250 papers from cs.IR, cs.CL, cs.DB published 2023-2026. English only.
+    Structured side the router queries with SQL: authors, paper_authors, paper_categories
+    (+ documents table metadata). Aggregate questions ("how many cs.IR papers did X publish in 2025")
+    must route to SQL.
+  - Models, all local, no paid API key required to run anything:
+    * Embeddings: bge-m3 via Ollama running on the HOST (http://localhost:11434, from containers
+      http://host.docker.internal:11434), 1024 dims. Pin the Ollama model digest in config and record it
+      with every eval run. Both indexer (documents) and service (queries) use the same endpoint.
+    * Reranker: BAAI/bge-reranker-v2-m3 via sentence-transformers CrossEncoder in a FastAPI container
+      (reranker/), CPU; model name configurable (bge-reranker-base as a faster fallback).
+    * LLM (generation, contextual headers, LLM judge, SQL generation): llama3.1:8b via host Ollama,
+      temperature 0, fixed seed. Provider abstraction with an optional Anthropic provider used only if
+      ANTHROPIC_API_KEY is set (model id configurable). Never require a key.
+  - Python: 3.12 managed with uv (pyproject per package or one uv workspace), ruff, pytest.
+  - Kotlin: Spring Boot 3.x, Kotlin 2.x, Gradle wrapper (Kotlin DSL), must build with the locally
+    installed JDK 25 (target JVM 21 bytecode is fine). ktlint. JDBC (Spring JdbcClient/NamedParameterJdbcTemplate),
+    HikariCP, Resilience4j, OpenTelemetry (Java agent or Spring Boot OTel starter), Testcontainers
+    (pgvector/pgvector image) for integration tests.
+  - Postgres 16/17 with pgvector (pgvector/pgvector image), pg_trgm. Flyway migrations in infra/migrations
+    applied by a flyway container in compose. Kotlin service is read-only against the DB.
+  - Eval dataset: 150 questions (cap per BUILD_SPEC risk table), LLM-generated candidates then verified
+    by an agent against the source chunks. Be honest in the README and dataset metadata that verification
+    was agent-assisted and human review is pending. Never fabricate metric numbers: results.md contains
+    only numbers produced by actually running the runner.
+  - Machine: Apple Silicon, 24 GB RAM, Docker Desktop up, Ollama installed on host, ~55 GB free disk.
+
+  Conventions:
+  - Conventional commits. Implementation agents never run git commit/push — the orchestrator commits.
+  - Each capability gets a spec under openspec/specs/<capability>/ via change deltas.
+  - Every component must be toggleable from an eval config so the ablation grid can run.
+
+rules:
+  proposal:
+    - Include a Non-goals section that references BUILD_SPEC non-goals where relevant
+  tasks:
+    - Tasks must be concrete and verifiable (name files, commands, and the check that proves done)
+    - Group tasks so one implementation agent can own a whole change without touching other changes' directories
+  design:
+    - State interfaces/contracts other changes depend on (HTTP API shapes, table names, config keys) explicitly

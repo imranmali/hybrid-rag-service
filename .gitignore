@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+# JVM / Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+*.class
+.kotlin/
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+# Data & secrets
+.env
+data/raw/
+data/cache/
+*.log
