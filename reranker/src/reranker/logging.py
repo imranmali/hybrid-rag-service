@@ -23,6 +23,8 @@ class JsonFormatter(logging.Formatter):
             "latency_ms",
             "model",
             "load_seconds",
+            "device",
+            "warm_up_seconds",
         ):
             value = getattr(record, key, None)
             if value is not None:

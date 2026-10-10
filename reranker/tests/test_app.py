@@ -198,7 +198,9 @@ def test_ready_flips_only_after_warm_up() -> None:
 
     assert scorer.batches == [("warm up query", 4, 64)]
     warm_up = next(record for record in records if getattr(record, "event", None) == "warm_up")
-    assert warm_up.warm_up_seconds >= 0
+    logged = json.loads(LOGGER.handlers[0].formatter.format(warm_up))
+    assert logged["warm_up_seconds"] >= 0
+    assert logged["device"] == "cpu"
 
 
 def test_fake_model_skips_warm_up() -> None:
