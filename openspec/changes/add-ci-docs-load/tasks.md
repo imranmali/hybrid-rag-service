@@ -12,8 +12,8 @@ Scope: this change owns `.github/**`, `load/**`, `docs/adr/**`, `docs/architectu
 ## 2. Load test (load-testing spec)
 
 - [x] 2.1 Write `load/query.js` per design D3 (pipelines copied from the three eval configs with a source comment, three scenarios, `SCENARIO` filter, thresholds, `rag_degraded`, stage trends, `handleSummary`) and `load/results/.gitkeep`; verify `docker run --rm -v "$PWD/load:/load" grafana/k6:0.54.0 inspect /load/query.js` exits 0 and a small node/jq check confirms each JS pipeline equals the YAML config's (`python3 -c` comparing the JSON printed by `k6 inspect` options or a `--env PRINT_PIPELINES=1` dry path).
-- [ ] 2.2 With the stack up and indexed, run `SCENARIO=retrieval make load`; verify a `load/results/summary-retrieval-*.json` file appears and the text summary shows the threshold result. Then run the full `make load`; verify three scenario results.
-- [ ] 2.3 Write `load/README.md` (how to run, scenarios, thresholds, where summaries go, the measured numbers from 2.2 copied from the summary files with their filenames); verify the commands run as written.
+- [x] 2.2 With the stack up and indexed, run `SCENARIO=retrieval make load`; verify a `load/results/summary-retrieval-*.json` file appears and the text summary shows the threshold result. Then run the full `make load`; verify three scenario results. **Done for `retrieval` only** (full `make load` skipped for time, as instructed): summary files written, thresholds FAILED at 20 rps and at 5 rps (p95 3 058 ms / 2 006 ms vs 500 ms), recorded in `load/README.md`.
+- [x] 2.3 Write `load/README.md` (how to run, scenarios, thresholds, where summaries go, the measured numbers from 2.2 copied from the summary files with their filenames); verify the commands run as written. Numbers cover the `retrieval` scenario only.
 
 ## 3. Documentation (project-documentation spec)
 
