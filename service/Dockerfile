@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certifi
     rm -rf /var/lib/apt/lists/* && \
     useradd --system --uid 10001 app && \
     mkdir /otel && \
-    curl -fsSL https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.10.0/opentelemetry-javaagent.jar \
+    curl -fsSL https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.31.1/opentelemetry-javaagent.jar \
       -o /otel/opentelemetry-javaagent.jar
 COPY --from=build /workspace/build/libs/*.jar /app/app.jar
 RUN chown -R app:app /app /otel
