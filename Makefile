@@ -11,6 +11,8 @@ SHELL := /bin/bash
 POSTGRES_DB ?= rag
 POSTGRES_USER ?= rag_owner
 SERVICE_HOST_PORT ?= 8080
+RERANKER_HOST_PORT ?= 8081
+RERANKER_DEVICE ?= auto
 RAG_SERVICE_URL ?= http://localhost:$(SERVICE_HOST_PORT)
 OLLAMA_EMBED_MODEL ?= bge-m3
 OLLAMA_LLM_MODEL ?= llama3.1:8b
@@ -31,7 +33,8 @@ SNAPSHOT ?= $(lastword $(sort $(wildcard $(SNAPSHOT_DIR)/*.dump)))
 SHA256 = $(shell command -v sha256sum >/dev/null 2>&1 && echo sha256sum || echo "shasum -a 256")
 
 .PHONY: help doctor models models-lock up down clean index query eval eval-record-ci eval-ci \
-	snapshot snapshot-restore test lint load up-infra _require-env
+	snapshot snapshot-restore test lint load up-infra reranker up-reranker-container \
+	_require-env _require-reranker
 
 help: ## List the available targets
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -49,8 +52,18 @@ models-lock: ## Regenerate infra/models.lock.json (Ollama digests + reranker rev
 	python3 infra/scripts/models_lock.py > infra/models.lock.json.tmp && mv infra/models.lock.json.tmp infra/models.lock.json \
 		|| { rm -f infra/models.lock.json.tmp; exit 1; }
 
-up: _require-env ## Build and start the whole stack and wait until healthy
+up: _require-env ## Build and start the stack (reranker runs separately: make reranker) and wait until healthy
 	$(COMPOSE) up -d --build --wait
+
+reranker: _require-env ## Run the reranker natively on the host (MPS on Apple Silicon) on RERANKER_HOST_PORT; foreground
+	@test -f reranker/pyproject.toml || { echo "error: reranker/ is not present yet" >&2; exit 1; }
+	cd reranker && set -a && . ../.env && set +a && RERANKER_DEVICE=$(RERANKER_DEVICE) uv run uvicorn reranker.app:app --host 0.0.0.0 --port $(RERANKER_HOST_PORT) --workers 1 --no-access-log
+
+up-reranker-container: _require-env ## Opt-in: run the reranker as a CPU container instead of `make reranker`
+	$(COMPOSE) --profile reranker-container up -d --build --wait reranker
+
+_require-reranker:
+	@curl -fsS -m 3 http://localhost:$(RERANKER_HOST_PORT)/healthz >/dev/null || { echo "error: no reranker on localhost:$(RERANKER_HOST_PORT); start it with 'make reranker' (or 'make up-reranker-container')" >&2; exit 1; }
 
 up-infra: _require-env ## Start only postgres, migrations and tracing (no service/reranker images needed)
 	$(COMPOSE) up -d --wait postgres otel-collector tempo grafana
@@ -74,8 +87,8 @@ query: ## Ask the running service a question: make query Q="..."
 eval: ## Run the full ablation grid against the running stack
 	cd evals && uv run evals grid
 
-eval-record-ci: _require-env ## Record the CI cassettes (WireMock proxying live Ollama and the reranker)
-	$(COMPOSE) up -d --build --wait postgres flyway reranker
+eval-record-ci: _require-env _require-reranker ## Record the CI cassettes (WireMock proxying live Ollama and the reranker)
+	$(COMPOSE) up -d --build --wait postgres flyway
 	$(REPLAY_RECORD) $(COMPOSE_REPLAY) up -d --build --wait --force-recreate --no-deps wiremock service
 	@rc=0; \
 	( cd evals && uv run evals grid --subset ci --no-generation --no-judge && uv run evals cassettes snapshot ) || rc=$$?; \
@@ -106,17 +119,9 @@ snapshot: _require-env ## Dump the indexed corpus (data only) to data/snapshots/
 	echo "wrote $$out"; \
 	$(SHA256) "$$out"
 
-snapshot-restore: _require-env ## Restore a snapshot into the migrated DB: make snapshot-restore SNAPSHOT=<path> [FORCE=1]
+snapshot-restore: _require-env ## Restore a snapshot into the migrated DB (replaces the corpus): make snapshot-restore SNAPSHOT=<path>
 	@test -n "$(SNAPSHOT)" -a -f "$(SNAPSHOT)" || { echo "error: snapshot file not found; pass SNAPSHOT=<path>" >&2; exit 1; }
-	@n="$$($(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -tA -c 'select count(*) from documents' | tr -d '[:space:]')"; \
-	if [ "$$n" != "0" ]; then \
-		if [ -n "$(FORCE)" ]; then \
-			echo "FORCE set: truncating existing corpus tables ($$n documents)"; \
-			$(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -v ON_ERROR_STOP=1 -c 'truncate documents, authors, index_metadata cascade'; \
-		else \
-			echo "error: database already holds $$n documents; re-run with FORCE=1 to replace them" >&2; exit 1; \
-		fi; \
-	fi
+	$(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -v ON_ERROR_STOP=1 -c 'truncate documents, authors, paper_authors, paper_categories, chunks, index_metadata restart identity cascade'
 	$(PG_EXEC) pg_restore -U $(POSTGRES_USER) -d $(POSTGRES_DB) --data-only --disable-triggers --single-transaction < "$(SNAPSHOT)"
 	$(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -v ON_ERROR_STOP=1 -c 'ANALYZE'
 
@@ -146,4 +151,4 @@ lint: ## Lint every package that exists (ruff for Python, ktlint for the service
 
 load: ## Run the k6 load test against the running service
 	docker run --rm -v $(CURDIR)/load:/load -v $(CURDIR)/evals/dataset:/dataset:ro \
-		-e K6_TARGET=http://host.docker.internal:$(SERVICE_HOST_PORT) grafana/k6:0.54.0 run /load/query.js
+		-e SCENARIO -e K6_TARGET=http://host.docker.internal:$(SERVICE_HOST_PORT) grafana/k6:0.54.0 run /load/query.js

@@ -280,7 +280,7 @@ Test vectors (must pass in Python and Kotlin):
 | HikariCP | reader pool 10 (min idle 2), router pool 3; connectionTimeout 1 000 ms; maxLifetime 30 min | service |
 | SQL guard | single SELECT/WITH, table allowlist, wrapper `LIMIT 101` (return ≤ 100, `truncated` flag), statement timeout 2 s, max 4 000 chars | service |
 | LLM options | temperature 0, seed 42, num_ctx 8192 | all LLM callers |
-| Reranker | max_length 512, batch 16, max passages 100, max concurrency 1 | reranker |
+| Reranker | max_length 512, batch 16, max passages 100, max concurrency 1; device `auto` (host, MPS) by default, `cpu` in the container | reranker |
 | arXiv politeness | ≥ 3 s between requests; retries on 429/5xx at 5 s, 15 s, 45 s | indexer |
 | Corpus | manifest of 220 papers (cs.IR, cs.CL, cs.DB, 2023–2026); `make index` ingests the first 200 | indexer |
 | Dataset | 150 = 60 factoid / 37 multi_chunk / 30 filter / 15 aggregate / 8 unanswerable; CI subset 50 = 20/12/10/5/3 | evals |
