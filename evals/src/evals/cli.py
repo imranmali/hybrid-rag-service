@@ -357,7 +357,12 @@ def dataset_generate(
 def dataset_precheck() -> None:
     """LLM answerability check for every candidate -> work/precheck.jsonl."""
     candidates = work.read_jsonl(work.CANDIDATES)
-    done = {p["candidate_id"] for p in work.read_jsonl(work.PRECHECK)}
+    # entries that errored (e.g. Ollama restarted mid-run) are retried; the later entry supersedes
+    done = {
+        c
+        for c, p in review_mod.latest_by_candidate(work.read_jsonl(work.PRECHECK)).items()
+        if not p.get("error")
+    }
     client = _service()
     entries = precheck_mod.run_precheck(
         default_generator_llm(), _corpus(), candidates, lambda q: probe.top_chunks(client, q), done
@@ -391,6 +396,7 @@ def dataset_review(
         int | None, typer.Option("--next", help="Show the next N unverified candidates")
     ] = None,
     candidate_id: Annotated[str | None, typer.Option("--id")] = None,
+    max_chars: Annotated[int | None, typer.Option("--max-chars", help="Clip each passage")] = None,
 ) -> None:
     """Print candidates with the evidence a verifier needs."""
     candidates = work.read_jsonl(work.CANDIDATES)
@@ -412,6 +418,7 @@ def dataset_review(
                 fchecks.get(c["candidate_id"]),
                 corpus,
                 lambda q: probe.top_chunks(client, q),
+                max_chars,
             )
         )
     remaining = len(review_mod.pending_candidates(candidates, prechecks, verdicts))
