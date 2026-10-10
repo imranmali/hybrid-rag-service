@@ -143,6 +143,10 @@ queries on a slow LLM and asserts the reader pool has 0 active connections meanw
 - Manual spans per stage (`route`, `sql.generate`, `sql.execute`, `filter.estimate`, `embed`, `retrieve.vector`,
   `retrieve.bm25`, `fuse`, `rerank`, `generate`) under the request's server span; failures set ERROR status. The
   OpenTelemetry Java agent in the image adds the server, JDBC and HTTP-client spans and exports over OTLP.
+- The agent must support the JVM that runs the service: agent 2.10.0 bundles a Byte Buddy that only reads class files up
+  to Java 24, so on JDK 25 every instrumentation (servlet, JDBC, and the OpenTelemetry API bridge that carries the
+  manual stage spans) was skipped and no span was exported. The image pins agent 2.31.1; a `--debug` check is
+  `OTEL_JAVAAGENT_DEBUG=true` and `grep -c "Java 25 (69) is not supported\|Instrumentation skipped"` must print 0.
 - JSON logs (LogstashEncoder) on stdout with `trace_id` and `request_id` on every line, worker threads included.
   Events: `query_completed` (INFO), `dependency_degraded` (WARN), `breaker_transition` (WARN),
   `embedding_digest_mismatch` (ERROR; checked at startup and on each `/v1/info`, never fatal).
@@ -197,7 +201,7 @@ cd service
 ./gradlew ktlintFormat                     # fix formatting
 ```
 
-The container image (`Dockerfile`: multi-stage Temurin 25 build, OpenTelemetry Java agent 2.10.0, non-root user)
+The container image (`Dockerfile`: multi-stage Temurin 25 build, OpenTelemetry Java agent 2.31.1, non-root user)
 is built by `make up` through compose.
 
 ## Known limitations
