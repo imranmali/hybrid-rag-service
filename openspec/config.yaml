@@ -17,8 +17,10 @@ context: |
     * Embeddings: bge-m3 via Ollama running on the HOST (http://localhost:11434, from containers
       http://host.docker.internal:11434), 1024 dims. Pin the Ollama model digest in config and record it
       with every eval run. Both indexer (documents) and service (queries) use the same endpoint.
-    * Reranker: BAAI/bge-reranker-v2-m3 via sentence-transformers CrossEncoder in a FastAPI container
-      (reranker/), CPU; model name configurable (bge-reranker-base as a faster fallback).
+    * Reranker: BAAI/bge-reranker-v2-m3 via sentence-transformers CrossEncoder in a FastAPI app
+      (reranker/), run on the host with MPS by default (`make reranker`; the CPU container measured ~40 s
+      per 20 passages, over the 10 s budget) and as an opt-in CPU container; model name configurable
+      (bge-reranker-base as a faster fallback).
     * LLM (generation, contextual headers, LLM judge, SQL generation): llama3.1:8b via host Ollama,
       temperature 0, fixed seed. Provider abstraction with an optional Anthropic provider used only if
       ANTHROPIC_API_KEY is set (model id configurable). Never require a key.

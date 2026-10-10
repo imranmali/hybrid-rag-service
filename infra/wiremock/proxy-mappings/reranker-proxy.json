@@ -4,6 +4,6 @@
     "urlPathPattern": "/(rerank|healthz)"
   },
   "response": {
-    "proxyBaseUrl": "http://reranker:8080"
+    "proxyBaseUrl": "http://host.docker.internal:8081"
   }
 }
