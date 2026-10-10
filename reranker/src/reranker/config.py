@@ -1,6 +1,7 @@
 """Configuration sourced exclusively from the reranker environment."""
 
 from functools import lru_cache
+from typing import Literal
 
 from pydantic import Field, PositiveInt
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -16,6 +17,7 @@ class Settings(BaseSettings):
     max_length: PositiveInt = 512
     batch_size: PositiveInt = 16
     max_passages: PositiveInt = 100
+    device: Literal["auto", "mps", "cuda", "cpu"] = "auto"
     torch_threads: int = Field(default=0, ge=0)
     max_concurrency: PositiveInt = 1
     port: PositiveInt = Field(default=8080, validation_alias="PORT")

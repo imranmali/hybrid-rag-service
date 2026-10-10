@@ -47,6 +47,6 @@ class HealthResponse(BaseModel):
     status: str
     model: str
     revision: str
-    device: str = "cpu"
+    device: str
     max_length: int
     ready: bool

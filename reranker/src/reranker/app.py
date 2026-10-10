@@ -26,6 +26,7 @@ def _make_scorer(settings: Settings) -> Scorer:
         max_length=settings.max_length,
         batch_size=settings.batch_size,
         torch_threads=settings.torch_threads,
+        device=settings.device,
     )
 
 
@@ -77,6 +78,7 @@ def create_app(settings: Settings | None = None, scorer: Scorer | None = None) -
             status="ok" if app.state.ready else "unavailable",
             model=active_scorer.model,
             revision=active_settings.model_revision,
+            device=active_scorer.device,
             max_length=active_settings.max_length,
             ready=app.state.ready,
         )

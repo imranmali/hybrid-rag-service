@@ -24,3 +24,9 @@ Scope: this change owns `reranker/**` only. The compose service definition in `i
 
 - [x] 4.1 Write `reranker/README.md` (API summary pointing to the contract, env vars, fake model, measured latency table, model-switch instructions); verify the curl examples in it run as written against the compose container.
 - [x] 4.2 Final verification from `reranker/`: `uv run ruff check . && uv run ruff format --check . && uv run pytest` pass (model-marked test skipped by default); from the repo root `make lint` and `make test` include the reranker and pass; `curl -s -X POST localhost:8081/rerank -H 'content-type: application/json' -d '{"query":"capital of France","passages":[{"id":"a","text":"Paris is the capital of France."},{"id":"b","text":"Bananas are yellow."}],"top_k":2}'` returns `a` first.
+
+## 5. Follow-up: host reranker with device selection (platform-foundation 79cfa11)
+
+- [x] 5.1 Add `RERANKER_DEVICE` (`auto|mps|cuda|cpu`, default `auto`; `auto` resolves mps, then cuda, then cpu), pass the resolved device to the `CrossEncoder`, report it in `/healthz`; verify `uv run pytest tests/test_scorer.py tests/test_config.py` (torch availability monkeypatched).
+- [x] 5.2 Run `make reranker` on the host and verify `curl -s localhost:8081/healthz` reports `"device":"mps"`, `ready: true`.
+- [x] 5.3 Re-measure with `scripts/latency_probe.py` (default ~380-token passages, `--words 880` worst case) and record in the README. Result: host MPS p50 8.1–9.9 s, p95 11.2–15.7 s over three runs, so the 10 s p95 target is NOT met under this host's load (a separate idle-ish measurement gave 6.0 s / 6.7 s).
