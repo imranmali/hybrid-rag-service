@@ -1,0 +1,66 @@
+{
+  "run_id": "20261010T222139Z-5cf572b",
+  "flags": {
+    "subset": null,
+    "limit": null,
+    "no_generation": true,
+    "no_judge": true,
+    "replay": false,
+    "allow_model_drift": false,
+    "allow_drift": false
+  },
+  "git": {
+    "sha": "5cf572b",
+    "dirty": false
+  },
+  "configs": [
+    {
+      "name": "01-vector",
+      "file": "01-vector.json",
+      "ndcg_at_10": 0.6653664653713923,
+      "recall_at_20": 0.8884514435695537,
+      "degraded": 0,
+      "errors": 0
+    },
+    {
+      "name": "02-hybrid",
+      "file": "02-hybrid.json",
+      "ndcg_at_10": 0.5815103937580878,
+      "recall_at_20": 0.8858267716535433,
+      "degraded": 0,
+      "errors": 0
+    },
+    {
+      "name": "03-filters",
+      "file": "03-filters.json",
+      "ndcg_at_10": 0.5886793530354979,
+      "recall_at_20": 0.905511811023622,
+      "degraded": 0,
+      "errors": 0
+    },
+    {
+      "name": "04-contextual",
+      "file": "04-contextual.json",
+      "ndcg_at_10": 0.6050770591290144,
+      "recall_at_20": 0.8871391076115486,
+      "degraded": 0,
+      "errors": 1
+    },
+    {
+      "name": "05-rerank",
+      "file": "05-rerank.json",
+      "ndcg_at_10": 0.8464878991694802,
+      "recall_at_20": 0.89501312335958,
+      "degraded": 0,
+      "errors": 0
+    },
+    {
+      "name": "06-routing",
+      "file": "06-routing.json",
+      "ndcg_at_10": 0.7913697889332598,
+      "recall_at_20": 0.8398950131233596,
+      "degraded": 6,
+      "errors": 0
+    }
+  ]
+}

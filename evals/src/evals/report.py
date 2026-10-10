@@ -189,7 +189,10 @@ def render_results(evals_dir: Path, rows: list[tuple[Run | None, Run | None]]) -
         "the judge on. **Mode `retrieval-only`** rows ran the whole dataset with generation "
         "disabled (`--no-generation`), so latency excludes generation and token/cost cells are "
         f"not reported. Generation/judge columns marked `(ci50)` come from the separate "
-        f"`Gen/judge run`, which used only the 50-question CI subset. `{DASH}` = not measured.\n"
+        f"`Gen/judge run`, which used only the 50-question CI subset. `{DASH}` = not measured. "
+        "Route and SQL accuracy of rows with routing disabled are mechanical (every question "
+        "goes to the vector route, so SQL accuracy is 0 and route accuracy is the vector share "
+        "of the dataset); they only measure the router in the rows where it is enabled.\n"
     )
     out.append("## Ablation grid\n")
     out.append(_table(COLUMNS, [_row(evals_dir, m, g) for m, g in rows]))
