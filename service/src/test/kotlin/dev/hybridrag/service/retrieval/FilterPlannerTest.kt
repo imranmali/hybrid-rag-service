@@ -116,6 +116,15 @@ class FilterPlannerTest : IntegrationTest() {
         val result = query("What did Jimmy Lin publish on rerankers in 2024?", """{$MODELS_OFF}""")
         assertEquals(200, result.status)
         val extracted = result.json["filters"]["extracted"]
+        // Only the set filter fields appear (contract C6 example), nothing else.
+        assertEquals(setOf("authors", "published_from", "published_to"), extracted.fieldNames().asSequence().toSet())
+        assertEquals(
+            setOf("applied", "extracted", "strategy", "estimated_selectivity", "matching_chunks", "underfilled"),
+            result.json["filters"]
+                .fieldNames()
+                .asSequence()
+                .toSet(),
+        )
         assertEquals("jimmy lin", extracted["authors"][0].asText())
         assertEquals("2024-01-01", extracted["published_from"].asText())
         assertEquals("2024-12-31", extracted["published_to"].asText())

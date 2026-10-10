@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
 import com.github.tomakehurst.wiremock.http.Fault
 import dev.hybridrag.service.api.PipelineDefaults
+import dev.hybridrag.service.retrieval.FilterPlannerTest.Companion.MODELS_OFF
 import dev.hybridrag.service.testsupport.Fixture
 import dev.hybridrag.service.testsupport.IntegrationTest
 import dev.hybridrag.service.testsupport.WireMockFixture
@@ -26,6 +27,9 @@ class QueryPipelineTest : IntegrationTest() {
 
     private val target = Fixture.chunkId(0, 4)
     private val question = "How is reranking evaluated?"
+    private val mapper =
+        com.fasterxml.jackson.module.kotlin
+            .jacksonObjectMapper()
 
     private fun stubHappyPath() {
         WireMockFixture.stubEmbed(Fixture.vector(target, true))
@@ -96,6 +100,24 @@ class QueryPipelineTest : IntegrationTest() {
                 )
         assertEquals(expected, echoed)
         assertTrue(echoed["filters"].has("explicit") && echoed["filters"]["explicit"].isNull)
+    }
+
+    @Test
+    fun `explicit filters are echoed in the contract shape`() {
+        stubHappyPath()
+        val explicit =
+            """{"categories": ["cs.IR"], "authors": ["Jimmy Lin"], "published_from": "2024-01-01", "published_to": "2024-12-31"}"""
+        val result =
+            query(question, """{"filters": {"explicit": $explicit}, $MODELS_OFF}""")
+        assertEquals(mapper.readTree(explicit), result.json["pipeline"]["filters"]["explicit"])
+        assertEquals(
+            setOf("categories", "authors", "published_from", "published_to"),
+            result.json["filters"]["applied"]
+                .fieldNames()
+                .asSequence()
+                .toSet(),
+        )
+        assertEquals("jimmy lin", result.json["filters"]["applied"]["authors"][0].asText())
     }
 
     @Test

@@ -51,7 +51,8 @@ data class FilterValues(
     val publishedFrom: LocalDate? = null,
     val publishedTo: LocalDate? = null,
 ) {
-    fun isEmpty(): Boolean = categories.isNullOrEmpty() && authors.isNullOrEmpty() && publishedFrom == null && publishedTo == null
+    /** Not named `isEmpty`: Jackson would serialize that as an `is_empty` property. */
+    fun noneSet(): Boolean = categories.isNullOrEmpty() && authors.isNullOrEmpty() && publishedFrom == null && publishedTo == null
 }
 
 data class RerankSettings(

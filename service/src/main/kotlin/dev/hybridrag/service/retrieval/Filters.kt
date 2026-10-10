@@ -164,7 +164,7 @@ class FilterPlanner(
                 publishedFrom = explicit.publishedFrom ?: extracted.publishedFrom,
                 publishedTo = explicit.publishedTo ?: extracted.publishedTo,
             )
-        if (applied.isEmpty() || !vectorLeg) return FilterPlan(applied, extracted, "none", null, null)
+        if (applied.noneSet() || !vectorLeg) return FilterPlan(applied, extracted, "none", null, null)
         val matching = estimate(applied)
         val all = totalChunks()
         val selectivity = if (all == 0L) 0.0 else matching.toDouble() / all
