@@ -1,0 +1,11 @@
+<configuration>
+  <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+  </appender>
+  <logger name="org.testcontainers" level="WARN"/>
+  <logger name="tc" level="WARN"/>
+  <logger name="com.github.dockerjava" level="WARN"/>
+  <root level="INFO">
+    <appender-ref ref="JSON"/>
+  </root>
+</configuration>
