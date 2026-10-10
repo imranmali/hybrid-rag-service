@@ -4,7 +4,7 @@ Scope: this change owns `service/**` only. Read-only inputs: `infra/migrations/*
 
 ## 1. Project setup
 
-- [ ] 1.1 Create the Gradle project in `service/` per design D1 (`settings.gradle.kts`, `build.gradle.kts`, wrapper ≥ 9.1 via `gradle wrapper`, `.gitignore` entries not needed — root covers them), package `dev.hybridrag.service`, `Application.kt`, `application.yml` per design D12; verify `cd service && ./gradlew build -x test` succeeds on the local JDK 25 and `javap -v` on a compiled class shows `major version: 65` (Java 21).
+- [x] 1.1 Create the Gradle project in `service/` per design D1 (`settings.gradle.kts`, `build.gradle.kts`, wrapper ≥ 9.1 via `gradle wrapper`, `.gitignore` entries not needed — root covers them), package `dev.hybridrag.service`, `Application.kt`, `application.yml` per design D12; verify `cd service && ./gradlew build -x test` succeeds on the local JDK 25 and `javap -v` on a compiled class shows `major version: 65` (Java 21).
 - [ ] 1.2 Configure ktlint (`./gradlew ktlintCheck`) and a smoke test that the context loads with Testcontainers (task 3.1 base class); verify `./gradlew ktlintCheck` passes.
 
 ## 2. API contract (query-api spec)
@@ -44,7 +44,7 @@ Scope: this change owns `service/**` only. Read-only inputs: `infra/migrations/*
 
 ## 8. Container and end-to-end
 
-- [ ] 8.1 Write `service/Dockerfile` per design D14 and `service/.dockerignore`; verify `docker build --build-arg GIT_SHA=test -t hybrid-rag-service service/` succeeds and the image contains `/otel/opentelemetry-javaagent.jar`.
+- [x] 8.1 Write `service/Dockerfile` per design D14 and `service/.dockerignore`; verify `docker build --build-arg GIT_SHA=test -t hybrid-rag-service service/` succeeds and the image contains `/otel/opentelemetry-javaagent.jar`.
 - [ ] 8.2 With add-indexer and add-reranker-service done, run `make up`; verify `docker compose … ps` shows `service` healthy and `curl -s localhost:8080/v1/info | jq .index.chunk_count` matches `select count(*) from chunks`.
 - [ ] 8.3 Run `make query Q="Which reranking models are evaluated in the indexed cs.IR papers?"`; verify HTTP 200, non-empty `chunks`, `answer.status` `ok`, all eight vector-route timing keys present; then open Grafana (`localhost:3000` → Explore → Tempo) and verify the trace with that `trace_id` shows the stage spans. Then `docker compose … stop reranker`, repeat the query, and verify `degraded` contains `rerank_unavailable` with HTTP 200; restart the reranker.
 - [ ] 8.4 Run an aggregate question, e.g. `make query Q="How many cs.CL papers were published in 2025?"`; verify `route` is `sql` (or, if mis-routed, record the observed behaviour in `service/README.md` under "Known routing behaviour") and `sql.rows` is non-empty.
