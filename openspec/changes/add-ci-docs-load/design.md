@@ -101,7 +101,7 @@ Root `Makefile` (owned by add-platform-foundation). `COMPOSE = docker compose --
 | `make snapshot` / `make snapshot-restore SNAPSHOT=…` | see C9 | foundation |
 | `make test` | for each of `indexer reranker evals` with a `pyproject.toml`: `uv run pytest`; if `service/gradlew` exists: `cd service && ./gradlew test` | each package |
 | `make lint` | for each Python package: `uv run ruff check . && uv run ruff format --check .`; `cd service && ./gradlew ktlintCheck` | each package |
-| `make load` | `docker run --rm -v $(CURDIR)/load:/load -v $(CURDIR)/evals/dataset:/dataset:ro -e K6_TARGET=http://host.docker.internal:$(SERVICE_HOST_PORT) grafana/k6:0.54.0 run /load/query.js` | add-ci-docs-load |
+| `make load` | `docker run --rm -v $(CURDIR)/load:/load -v $(CURDIR)/evals/dataset:/dataset:ro -e SCENARIO -e K6_TARGET=http://host.docker.internal:$(SERVICE_HOST_PORT) grafana/k6:0.54.0 run /load/query.js` (`-e SCENARIO` forwards the caller's `SCENARIO`, so `SCENARIO=retrieval make load` runs one scenario) | add-ci-docs-load |
 
 `make test` and `make lint` skip packages that do not exist yet, so the Makefile works at every stage of the build.
 <!-- /CONTRACT:make -->

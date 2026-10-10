@@ -106,17 +106,9 @@ snapshot: _require-env ## Dump the indexed corpus (data only) to data/snapshots/
 	echo "wrote $$out"; \
 	$(SHA256) "$$out"
 
-snapshot-restore: _require-env ## Restore a snapshot into the migrated DB: make snapshot-restore SNAPSHOT=<path> [FORCE=1]
+snapshot-restore: _require-env ## Restore a snapshot into the migrated DB (replaces the corpus): make snapshot-restore SNAPSHOT=<path>
 	@test -n "$(SNAPSHOT)" -a -f "$(SNAPSHOT)" || { echo "error: snapshot file not found; pass SNAPSHOT=<path>" >&2; exit 1; }
-	@n="$$($(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -tA -c 'select count(*) from documents' | tr -d '[:space:]')"; \
-	if [ "$$n" != "0" ]; then \
-		if [ -n "$(FORCE)" ]; then \
-			echo "FORCE set: truncating existing corpus tables ($$n documents)"; \
-			$(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -v ON_ERROR_STOP=1 -c 'truncate documents, authors, index_metadata cascade'; \
-		else \
-			echo "error: database already holds $$n documents; re-run with FORCE=1 to replace them" >&2; exit 1; \
-		fi; \
-	fi
+	$(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -v ON_ERROR_STOP=1 -c 'truncate documents, authors, paper_authors, paper_categories, chunks, index_metadata restart identity cascade'
 	$(PG_EXEC) pg_restore -U $(POSTGRES_USER) -d $(POSTGRES_DB) --data-only --disable-triggers --single-transaction < "$(SNAPSHOT)"
 	$(PG_EXEC) psql -U $(POSTGRES_USER) -d $(POSTGRES_DB) -v ON_ERROR_STOP=1 -c 'ANALYZE'
 
@@ -146,4 +138,4 @@ lint: ## Lint every package that exists (ruff for Python, ktlint for the service
 
 load: ## Run the k6 load test against the running service
 	docker run --rm -v $(CURDIR)/load:/load -v $(CURDIR)/evals/dataset:/dataset:ro \
-		-e K6_TARGET=http://host.docker.internal:$(SERVICE_HOST_PORT) grafana/k6:0.54.0 run /load/query.js
+		-e SCENARIO -e K6_TARGET=http://host.docker.internal:$(SERVICE_HOST_PORT) grafana/k6:0.54.0 run /load/query.js
