@@ -52,4 +52,4 @@ Scope: this change owns `service/**` only. Read-only inputs: `infra/migrations/*
 ## 9. Documentation and verification
 
 - [x] 9.1 Write `service/README.md`: endpoints (pointing to contract C6), pipeline switches, filter extraction rules, SQL guard rules, timeouts/retries/breakers table, degraded behaviour table, Hikari rationale, how to run locally outside Docker, test commands. Verify each command in it runs as written.
-- [ ] 9.2 Final verification from `service/`: `./gradlew ktlintCheck test` passes (Docker running); from the repo root `make lint` and `make test` include the service and pass; `curl -s -X POST localhost:8080/v1/query -H 'content-type: application/json' -d '{"question":"x","pipeline":{"rerank":{"enable":true}}}'` returns 400.
+- [x] 9.2 Final verification from `service/`: `./gradlew ktlintCheck test` passes (Docker running); from the repo root `make lint` and `make test` include the service and pass; `curl -s -X POST localhost:8080/v1/query -H 'content-type: application/json' -d '{"question":"x","pipeline":{"rerank":{"enable":true}}}'` returns 400.
