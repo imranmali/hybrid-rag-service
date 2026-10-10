@@ -307,6 +307,8 @@ dependencies = [
 anthropic = [
     { name = "anthropic" },
 ]
+
+[package.dev-dependencies]
 dev = [
     { name = "pytest" },
     { name = "respx" },
@@ -325,15 +327,19 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.2" },
     { name = "pydantic", specifier = ">=2.8" },
     { name = "pydantic-settings", specifier = ">=2.4" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.3" },
     { name = "python-dotenv", specifier = ">=1.0" },
-    { name = "respx", marker = "extra == 'dev'", specifier = ">=0.21" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
-    { name = "testcontainers", extras = ["postgres"], marker = "extra == 'dev'", specifier = ">=4.8" },
     { name = "tokenizers", specifier = ">=0.20" },
     { name = "typer", specifier = ">=0.12" },
 ]
-provides-extras = ["anthropic", "dev"]
+provides-extras = ["anthropic"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8.3" },
+    { name = "respx", specifier = ">=0.21" },
+    { name = "ruff", specifier = ">=0.6" },
+    { name = "testcontainers", extras = ["postgres"], specifier = ">=4.8" },
+]
 
 [[package]]
 name = "idna"
