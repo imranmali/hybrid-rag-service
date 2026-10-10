@@ -1,0 +1,9 @@
+{
+  "priority": 10,
+  "request": {
+    "urlPathPattern": "/api/.*"
+  },
+  "response": {
+    "proxyBaseUrl": "http://host.docker.internal:11434"
+  }
+}
