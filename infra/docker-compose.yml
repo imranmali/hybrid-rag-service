@@ -42,9 +42,13 @@ services:
         condition: service_healthy
 
   reranker:
+    # Opt-in CPU container (Linux/CI). On Apple Silicon run `make reranker` on the host (MPS);
+    # Docker Desktop cannot reach the GPU and CPU latency is ~40 s per 20-passage request.
+    profiles: ["reranker-container"]
     build:
       context: ../reranker
     environment:
+      RERANKER_DEVICE: cpu
       RERANKER_MODEL: ${RERANKER_MODEL}
       RERANKER_MODEL_REVISION: ${RERANKER_MODEL_REVISION}
       RERANKER_MAX_LENGTH: ${RERANKER_MAX_LENGTH}
@@ -91,7 +95,7 @@ services:
       RAG_OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-}
-      RAG_RERANKER_URL: http://reranker:8080
+      RAG_RERANKER_URL: ${RERANKER_CONTAINER_URL:-http://host.docker.internal:8081}
       RAG_RETRIEVAL_EXACT_VECTOR_SEARCH: ${RAG_RETRIEVAL_EXACT_VECTOR_SEARCH}
       OTEL_SERVICE_NAME: rag-query-service
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318

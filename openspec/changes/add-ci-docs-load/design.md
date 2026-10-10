@@ -77,7 +77,7 @@ Purpose: run the 50-question eval gate on GitHub runners (no Ollama, no GPU) det
   ```
 - **Exact search.** With `RAG_RETRIEVAL_EXACT_VECTOR_SEARCH=true` the service disables index scans for vector queries (`SET LOCAL enable_indexscan = off`, `SET LOCAL enable_bitmapscan = off` in the vector-query transaction), so dense retrieval is an exact, deterministic sort (ties by `chunk_id`). HNSW graphs are rebuilt non-deterministically on restore, so ANN would not be replayable.
 - **Overlay.** `infra/docker-compose.replay.yml` adds `wiremock` and overrides `service` env: `RAG_OLLAMA_URL=http://wiremock:8080`, `RAG_RERANKER_URL=http://wiremock:8080`, `RAG_RETRIEVAL_EXACT_VECTOR_SEARCH=true`, `OTEL_TRACES_EXPORTER=none`.
-  - `WIREMOCK_MODE=record` (default for `make eval-record-ci`): wiremock loads proxy stubs from `infra/wiremock/proxy-mappings/` (`/api/.*` → `http://host.docker.internal:11434`, `/rerank` and `/healthz` → `http://reranker:8080`) and journals traffic; the reranker container runs.
+  - `WIREMOCK_MODE=record` (default for `make eval-record-ci`): wiremock loads proxy stubs from `infra/wiremock/proxy-mappings/` (`/api/.*` → `http://host.docker.internal:11434`, `/rerank` and `/healthz` → `http://host.docker.internal:8081`) and journals traffic; a reranker must be running on the host port (`make eval-record-ci` checks `/healthz` first).
   - `WIREMOCK_MODE=replay` (`make eval-ci`): wiremock loads only `evals/cassettes/ci/mappings/` (mounted read-only); unmatched requests return 404, which the service treats as a dependency failure (→ a `degraded` code), which the gate counts as a failure.
 - **Recording.** `make eval-record-ci` = up with overlay in record mode → `uv run evals grid --subset ci --no-generation --no-judge` → `uv run evals cassettes snapshot` (calls `POST /__admin/recordings/snapshot` with `requestBodyPattern` `equalToJson`, `ignoreArrayOrder: false`, `ignoreExtraElements: false`, dedup identical requests, `persist: false`, writes stub files to `evals/cassettes/ci/mappings/` and `evals/cassettes/ci/meta.json` with recording time, git sha, model digests from `/api/tags`, reranker model/revision, snapshot sha256).
 - **Gate.** `make eval-ci` = restore snapshot → up with overlay in replay mode → `uv run evals grid --subset ci --no-generation --no-judge --replay --gate thresholds/ci.yaml`. `--replay` makes the runner take model digests from `evals/cassettes/ci/meta.json` instead of live Ollama. Exit code 0 = pass, 1 = threshold breach, 2 = any degraded response (cassette miss), 3 = setup error.
@@ -91,7 +91,9 @@ Root `Makefile` (owned by add-platform-foundation). `COMPOSE = docker compose --
 | `make doctor` | `infra/scripts/doctor.sh` — checks docker daemon, `.env` present, Ollama reachable at `OLLAMA_HOST_URL`, both models pulled, `uv`, JDK ≥ 21 | foundation |
 | `make models` | `ollama pull bge-m3 && ollama pull llama3.1:8b` | foundation |
 | `make models-lock` | `python3 infra/scripts/models_lock.py > infra/models.lock.json` | foundation |
-| `make up` | `$(COMPOSE) up -d --build --wait` | foundation |
+| `make up` | `$(COMPOSE) up -d --build --wait` (no reranker; see next rows) | foundation |
+| `make reranker` | `cd reranker && (load ../.env) RERANKER_DEVICE=$(RERANKER_DEVICE) uv run uvicorn reranker.app:app --host 0.0.0.0 --port $(RERANKER_HOST_PORT) --workers 1 --no-access-log` (foreground) | foundation (command), add-reranker-service (app) |
+| `make up-reranker-container` | `$(COMPOSE) --profile reranker-container up -d --build --wait reranker` | foundation |
 | `make down` | `$(COMPOSE) down` (`make clean` adds `-v`) | foundation |
 | `make index` | `cd indexer && uv run indexer ingest --limit $(LIMIT)` (`LIMIT ?= 200`) | add-indexer |
 | `make query Q="…"` | `curl -sS -X POST $(RAG_SERVICE_URL)/v1/query -H 'content-type: application/json' -d "$$(jq -n --arg q "$(Q)" '{question:$$q}')" \| jq` | add-query-service |
@@ -169,7 +171,7 @@ Auxiliary configs (not grid rows; `question_types: [filter]`): `filter-pre`, `fi
 | HikariCP | reader pool 10 (min idle 2), router pool 3; connectionTimeout 1 000 ms; maxLifetime 30 min | service |
 | SQL guard | single SELECT/WITH, table allowlist, wrapper `LIMIT 101` (return ≤ 100, `truncated` flag), statement timeout 2 s, max 4 000 chars | service |
 | LLM options | temperature 0, seed 42, num_ctx 8192 | all LLM callers |
-| Reranker | max_length 512, batch 16, max passages 100, max concurrency 1 | reranker |
+| Reranker | max_length 512, batch 16, max passages 100, max concurrency 1; device `auto` (host, MPS) by default, `cpu` in the container | reranker |
 | arXiv politeness | ≥ 3 s between requests; retries on 429/5xx at 5 s, 15 s, 45 s | indexer |
 | Corpus | manifest of 220 papers (cs.IR, cs.CL, cs.DB, 2023–2026); `make index` ingests the first 200 | indexer |
 | Dataset | 150 = 60 factoid / 37 multi_chunk / 30 filter / 15 aggregate / 8 unanswerable; CI subset 50 = 20/12/10/5/3 | evals |
