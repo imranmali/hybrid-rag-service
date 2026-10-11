@@ -204,6 +204,18 @@ are identical between recording and replay.
   tag, asset name, sha256, pipeline fingerprint, counts); generate it with
   `uv run evals ci-lock --snapshot data/snapshots/rag-index-<12hex>.dump`.
 
+`make eval-ci` truncates the corpus tables and restores the snapshot into the live database, then
+replaces the `service` container with the replay overlay; run `make up` afterwards to bring the
+normal service back. `make` reports any failed recipe as exit 2; call
+`cd evals && uv run evals grid --subset ci --no-generation --no-judge --replay --gate thresholds/ci.yaml`
+directly to see the gate's own exit code (0/1/2/3).
+
+**Tolerated degradation.** The baseline `06-routing` run has a few `sql_fallback` responses (the
+generated SQL was rejected by the SQL guard and the query fell back to the vector route). That is
+deterministic in replay, so `thresholds/ci.yaml` carries `allowed_degraded_codes: [sql_fallback]`
+(written by `evals thresholds` only for that code). Every dependency code (`rerank_unavailable`,
+`embedding_unavailable`, `llm_unavailable`, `router_unavailable`) still fails the gate with exit 2.
+
 ### Re-recording the cassettes
 
 Needed whenever an intentional change alters the model or reranker requests (prompts, retrieval
@@ -221,14 +233,38 @@ matching, replaces `cassettes/ci/mappings/`, and writes `cassettes/ci/meta.json`
 git sha, model digests, reranker model and revision, snapshot sha256). A request with no recorded
 response in replay mode makes the gate exit 2 and print the re-record hint.
 
-## Runtime expectations
+## Scope of the committed results (time-boxed)
 
-Estimates from the example timings in the API contract (rerank about 4 s on CPU, generation
-about 9 s, routing about 0.6 s), not measurements: roughly 15 to 25 s per question end to end, so
-one config over 150 questions takes about 40 to 60 minutes of querying plus judging, and the full
-grid takes several hours. Run it in the background (`make eval`); use `--limit` for smoke runs and
-`--no-generation --no-judge` for fast retrieval-only iterations. The CI subset without generation
-runs in minutes.
+The committed `results.md` is **not** the full plan; what was and was not measured:
+
+- **Measured:** all six grid configs on all 150 questions with generation off (`retrieval-only`:
+  nDCG@10, recall@k, MRR, route and SQL accuracy, retrieval/rerank/routing latency); row 06 with
+  generation and the judge on the 50-question CI subset only (`(ci50)` cells: faithfulness, answer
+  relevance, abstention, tokens, cost); the pre/post/auto filter benchmark on the 30 filter
+  questions. Rows 1-5 have no generation/judge numbers; the cells show `—`.
+- **Not measured:** generation and judge for rows 1-5, and for row 06 on the full 150 questions;
+  judge agreement against human labels (pending).
+- **Corpus and dataset size:** 92 papers (the build was cut for time); the dataset card lists the
+  construction notes and deviations.
+- **Reruns:** `04-contextual` was run twice; the first run had one HTTP 503 (a lexical query hit
+  the database's 5 s statement timeout). Both run files are kept; `results.md` uses the latest.
+  The six `sql_fallback` degraded responses in `06-routing` (the LLM's generated SQL was rejected
+  by the guard) are a router/SQL-generator behaviour, not an infrastructure fault, so that row
+  was not rerun; its degraded rate is shown with a warning mark.
+- **Provenance note:** the `06-routing` gen/judge run is stamped `5cf572b (dirty)`: its working
+  tree had uncommitted changes to the results writer (`report.py` legend wording), committed
+  later in `613a095`. The query and judge code paths were unchanged.
+- **Shared-Ollama caveat:** all measurements were taken with nothing else using Ollama, after an
+  incident where dataset-generation load made the service's `embedding` circuit breaker open
+  (the two live-check files from that moment are kept in `runs/live-checks/`).
+
+## Runtime (measured on the build machine, Apple Silicon, llama3.1:8b, host reranker on MPS)
+
+See the latency columns of `results.md` for numbers. Orders of magnitude: rows 1-4 answer in a few
+hundred ms without generation; reranking adds about 6-8 s; with generation and routing a query
+takes about 30-45 s end to end, so a full-dataset generation+judge run of one config is on the
+order of 1.5-2 hours. The retrieval-only grid took about 40 minutes in total. Use `--limit` for
+smoke runs and run long grids in the background.
 
 ## Tests
 
