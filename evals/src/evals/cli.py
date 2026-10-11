@@ -23,6 +23,7 @@ from evals.dataset import generate as generate_mod
 from evals.dataset import precheck as precheck_mod
 from evals.dataset import review as review_mod
 from evals.dataset import sample as sample_mod
+from evals.dataset.scope import record_scope
 from evals.grid import run_grid
 from evals.metrics.cost import Pricing  # noqa: F401  (re-exported for convenience)
 from evals.ollama import LLMError, default_generator_llm, fetch_digests
@@ -290,9 +291,14 @@ def _extractor() -> check_filters.Extractor:
 
 @dataset_app.command("sample")
 @guarded
-def dataset_sample(seed: Annotated[int, typer.Option("--seed")] = 42) -> None:
-    """Seeded chunk samples per type (2x oversampling) -> work/samples.jsonl."""
-    rows = sample_mod.sample_all(_corpus(), seed=seed)
+def dataset_sample(
+    seed: Annotated[int, typer.Option("--seed")] = 42,
+    oversample: Annotated[float, typer.Option("--oversample", help="Samples per quota slot")] = 2.0,
+) -> None:
+    """Seeded chunk samples per type (default 2x oversampling) -> work/samples.jsonl."""
+    corpus = _corpus()
+    record_scope(corpus, "sample", seed=seed, oversample=oversample)
+    rows = sample_mod.sample_all(corpus, seed=seed, oversample=oversample)
     sample_mod.write_samples(work.SAMPLES, rows)
     counts = {t: sum(1 for r in rows if r.type == t) for t in sample_mod.SAMPLERS}
     typer.echo(f"wrote {len(rows)} samples to {work.SAMPLES}: {counts}")
@@ -304,11 +310,15 @@ def dataset_generate(
     qtype: Annotated[str | None, typer.Option("--type", help="Only this question type")] = None,
     n: Annotated[int | None, typer.Option("--n", help="New candidates to add")] = None,
     seed: Annotated[int, typer.Option("--seed")] = 42,
+    oversample: Annotated[
+        float, typer.Option("--oversample", help="Candidates per quota slot")
+    ] = 2.0,
 ) -> None:
     """LLM candidates (+ SQL-template aggregates) -> work/candidates.jsonl."""
     if qtype is not None and qtype not in schema.QUOTA:
         _fail(f"--type must be one of {list(schema.QUOTA)}")
     corpus = _corpus()
+    record_scope(corpus, "generate", type=qtype, oversample=oversample)
     candidates = work.read_jsonl(work.CANDIDATES)
     samples = sample_mod.read_samples(work.SAMPLES)
     llm = default_generator_llm()
@@ -318,7 +328,7 @@ def dataset_generate(
             n
             if n is not None
             else max(
-                schema.QUOTA[t] * sample_mod.OVERSAMPLE - have,
+                round(schema.QUOTA[t] * oversample) - have,
                 0 if qtype is None else schema.QUOTA[t] // 2,
             )
         )
@@ -334,9 +344,11 @@ def dataset_generate(
             existing_samples=samples,
             seed=seed,
         )
-        candidates += new
+        # Re-read before writing so a concurrent `generate --type X` is not overwritten.
+        candidates = work.read_jsonl(work.CANDIDATES) + new
         work.write_jsonl(work.CANDIDATES, candidates)
-        sample_mod.write_samples(work.SAMPLES, samples)
+        fresh = [s for s in sample_mod.read_samples(work.SAMPLES) if s.type != t]
+        sample_mod.write_samples(work.SAMPLES, fresh + [s for s in samples if s.type == t])
         typer.echo(
             f"{t}: +{len(new)} candidates (total {have + len(new)}), dropped {stats.dropped or 0}"
         )
@@ -347,7 +359,12 @@ def dataset_generate(
 def dataset_precheck() -> None:
     """LLM answerability check for every candidate -> work/precheck.jsonl."""
     candidates = work.read_jsonl(work.CANDIDATES)
-    done = {p["candidate_id"] for p in work.read_jsonl(work.PRECHECK)}
+    # entries that errored (e.g. Ollama restarted mid-run) are retried; the later entry supersedes
+    done = {
+        c
+        for c, p in review_mod.latest_by_candidate(work.read_jsonl(work.PRECHECK)).items()
+        if not p.get("error")
+    }
     client = _service()
     entries = precheck_mod.run_precheck(
         default_generator_llm(), _corpus(), candidates, lambda q: probe.top_chunks(client, q), done
@@ -381,6 +398,7 @@ def dataset_review(
         int | None, typer.Option("--next", help="Show the next N unverified candidates")
     ] = None,
     candidate_id: Annotated[str | None, typer.Option("--id")] = None,
+    max_chars: Annotated[int | None, typer.Option("--max-chars", help="Clip each passage")] = None,
 ) -> None:
     """Print candidates with the evidence a verifier needs."""
     candidates = work.read_jsonl(work.CANDIDATES)
@@ -402,6 +420,7 @@ def dataset_review(
                 fchecks.get(c["candidate_id"]),
                 corpus,
                 lambda q: probe.top_chunks(client, q),
+                max_chars,
             )
         )
     remaining = len(review_mod.pending_candidates(candidates, prechecks, verdicts))
@@ -454,6 +473,8 @@ def dataset_freeze(
         pipeline_fingerprint=ci_lock_mod.PostgresCorpusStats(
             settings.evals_database_url
         ).pipeline_fingerprint(),
+        scope=work.read_jsonl(work.SCOPE),
+        corpus=_corpus(),
     )
     manifest = freeze_mod.freeze(
         inp, drift.PostgresGoldStore(settings.evals_database_url), version=version, seed=seed

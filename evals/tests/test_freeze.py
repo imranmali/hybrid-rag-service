@@ -260,3 +260,44 @@ def test_cli_lists_every_documented_command():
     ):
         assert command in sub
     assert "snapshot" in CliRunner().invoke(cli.app, ["cassettes", "--help"]).output
+
+
+def test_aggregate_answers_are_rechecked_against_the_corpus_at_freeze(tmp_path):
+    from corpus_fixture import FixtureCorpus
+
+    corpus = FixtureCorpus()
+    inp = inputs()
+    for c in inp.candidates:
+        if c["type"] == "aggregate":
+            c["sql"] = {"query": aggregate_t1_sql(), "params": {"author": "jimmy lin"}}
+            c["expected_sql_answer"] = "4"  # true for the fixture
+            c["source"]["generator"] = "sql-template:T1"
+    inp.corpus = corpus
+    do_freeze(tmp_path, inp)
+
+    stale = inputs()
+    for c in stale.candidates:
+        if c["type"] == "aggregate":
+            c["sql"] = {"query": aggregate_t1_sql(), "params": {"author": "jimmy lin"}}
+            c["expected_sql_answer"] = "3"  # corpus "grew" since generation
+            c["source"]["generator"] = "sql-template:T1"
+    stale.corpus = corpus
+    with pytest.raises(freeze.FreezeError, match="SQL answer changed"):
+        do_freeze(tmp_path / "other", stale)
+
+
+def aggregate_t1_sql():
+    from evals.dataset.aggregate import T1_SQL
+
+    return T1_SQL
+
+
+def test_card_states_the_sampling_scope(tmp_path):
+    inp = inputs()
+    inp.scope = [
+        {"at": "2026-10-10T20:04:07+00:00", "step": "sample", "documents": 86, "chunks": 4829}
+    ]
+    do_freeze(tmp_path, inp)
+    card = (tmp_path / "DATASET_CARD.md").read_text()
+    assert "Sampling scope" in card and "86 documents / 4829 chunks" in card
+    assert json.loads((tmp_path / "MANIFEST.json").read_text())["sampling_scope"] == inp.scope

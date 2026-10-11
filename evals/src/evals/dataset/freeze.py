@@ -6,12 +6,14 @@ import json
 import random
 from collections import Counter
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from evals.dataset import work
+from evals.dataset.aggregate import recompute_answer
+from evals.dataset.corpus import Corpus
 from evals.dataset.review import latest_by_candidate
 from evals.dataset.schema import CI_QUOTA, QUOTA, sha256_file
 from evals.drift import GoldStore
@@ -31,6 +33,8 @@ class FreezeInputs:
     verdicts: list[dict[str, Any]]
     generator_digest: str | None
     pipeline_fingerprint: str
+    scope: list[dict[str, Any]] = field(default_factory=list)
+    corpus: Corpus | None = None  # re-runs aggregate SQL at freeze time when given
 
 
 def eligible_candidates(inp: FreezeInputs) -> dict[str, list[dict[str, Any]]]:
@@ -78,6 +82,17 @@ def select_and_build(
         random.Random(f"{seed}:freeze:{t}").shuffle(pool)
         chosen[t] = pool[: quota[t]]
 
+    if inp.corpus is not None:
+        for cand in chosen["aggregate"]:
+            sql = cand.get("sql") or {}
+            template = cand["source"]["generator"].rsplit(":", 1)[-1]
+            now = recompute_answer(inp.corpus, template, sql["query"], sql["params"])
+            if now != cand["expected_sql_answer"]:
+                raise FreezeError(
+                    f"{cand['candidate_id']}: the SQL answer changed since generation "
+                    f"({cand['expected_sql_answer']!r} -> {now!r}); the corpus grew. "
+                    "Regenerate the aggregate candidates against the final index."
+                )
     keys = sorted(
         {
             (g["external_id"], g["ordinal"])
@@ -145,6 +160,20 @@ def select_and_build(
     return records
 
 
+def scope_paragraph(scope: list[dict[str, Any]]) -> str:
+    if not scope:
+        return "Not recorded."
+    steps = "; ".join(
+        f"`{s['step']}` at {s['at'][:16]}Z saw {s['documents']} documents / {s['chunks']} chunks"
+        for s in scope
+    )
+    return (
+        "Candidates were drawn only from documents present in the database at the time of each "
+        f"step ({steps}). Indexing may have continued afterwards, so papers added later are not "
+        "sampled; aggregate (SQL) answers were re-verified against the final index at freeze."
+    )
+
+
 def render_card(
     manifest: dict[str, Any], generator: str, verifiers: list[str], precheck_model: str | None
 ) -> str:
@@ -188,6 +217,10 @@ reviewed them yet; every record has `human_reviewed: false`. Treat the numbers i
    against what the service extracts. Only accepted or edited candidates were frozen.
 5. **Freeze.** Seeded selection to the quota, ids `q0001`... in type order, `content_sha256`
    copied from the database. Index pipeline fingerprint: `{manifest["index_pipeline_fingerprint"]}`.
+
+## Sampling scope
+
+{scope_paragraph(manifest.get("sampling_scope", []))}
 
 ## Known biases and limitations
 
@@ -253,6 +286,7 @@ def freeze(
         "generator_digest": inp.generator_digest,
         "verifier": verifiers[0] if len(verifiers) == 1 else verifiers,
         "index_pipeline_fingerprint": inp.pipeline_fingerprint,
+        "sampling_scope": inp.scope,
     }
     (dataset_dir / "MANIFEST.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"

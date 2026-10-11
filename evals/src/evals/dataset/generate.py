@@ -52,6 +52,17 @@ PROMPTS = {
         "answer field must be exactly: I cannot answer this from the indexed papers.",
     ),
 }
+SINGLE_FACT_PROMPT = (
+    "qgen-single-v1",
+    "You write evaluation questions for a retrieval-augmented QA system over arXiv papers. "
+    'Reply with JSON: {"question": "...", "answer": "..."}. Write ONE short factual question '
+    "answered by the passage. The question will be shown together with the paper's title, so it "
+    "may be specific to that paper, but never say 'this paper', 'the paper', 'the authors' or "
+    "'the passage'. Name the method, dataset or quantity explicitly. The answer must be short and "
+    "stated in the passage.",
+)
+MULTI_PROMPT_VERSION = "qgen-multi-v2"
+MAX_MULTI_PARTS = 2  # pairs: each extra part lowers the chance the whole question is correct
 _NOT_SELF_CONTAINED = re.compile(
     r"\b(this|the|that) (paper|study|work|article|passage|text|chunk|section|excerpt)\b"
     r"|\bthe authors\b",
@@ -253,5 +264,133 @@ def generate_type(
             unused += extra
         batch = unused[:need]
         used |= {s.sample_id for s in batch}
-        out += generate_from_samples(llm, corpus, batch, first_index=next_i + len(out), stats=stats)
+        generator = {
+            "multi_chunk": generate_multi_composed,
+            "filter": generate_filter_composed,
+        }.get(qtype, generate_from_samples)
+        out += generator(llm, corpus, batch, first_index=next_i + len(out), stats=stats)
     return out, samples, stats
+
+
+def generate_multi_composed(
+    llm: LLM,
+    corpus: Corpus,
+    samples: list[SampleRow],
+    *,
+    first_index: int = 1,
+    stats: GenerationStats | None = None,
+) -> list[dict[str, Any]]:
+    """Multi-chunk questions built by composition (`qgen-multi-v2`).
+
+    A single prompt over several passages produced questions answerable from one passage (the 8B
+    model does not reliably write questions that need every chunk). So each sampled chunk (up to
+    three, from different sections of one paper) gets its own single-fact question, and the final
+    question asks for all of them for a named paper: every part needs a different gold chunk by
+    construction."""
+    stats = stats or GenerationStats()
+    titles = {p.external_id: p.title for p in corpus.papers()}
+    out: list[dict[str, Any]] = []
+    lookup = chunk_lookup(corpus, [k for s in samples for k in s.chunk_keys()])
+    system = SINGLE_FACT_PROMPT[1]
+    for sample in samples:
+        chunks = [lookup[k] for k in sample.chunk_keys() if k in lookup][:MAX_MULTI_PARTS]
+        if len(chunks) < 2:
+            stats.drop("chunk_missing")
+            continue
+        parts: list[tuple[str, str]] = []
+        for chunk in chunks:
+            title = titles.get(chunk.external_id, "")
+            user = f"PAPER TITLE: {title}\n\n[Passage]\n{chunk.content[:MAX_CHUNK_CHARS]}"
+            try:
+                data = llm.chat(system, user, num_predict=GEN_NUM_PREDICT, seed=SEED).json()
+            except (LLMError, ValueError):
+                stats.drop("llm_error_or_bad_json")
+                break
+            q, a = str(data.get("question", "")).strip(), str(data.get("answer", "")).strip()
+            if not q or not a:
+                stats.drop("empty_field")
+                break
+            if not is_self_contained(q):
+                stats.drop("not_self_contained")
+                break
+            parts.append((q, a))
+        if len(parts) != len(chunks):
+            continue
+        title = titles.get(chunks[0].external_id, "")
+        question = f'In the paper "{title}": ' + " ".join(
+            f"({i}) {q}" for i, (q, _) in enumerate(parts, 1)
+        )
+        answer = "; ".join(f"({i}) {a}" for i, (_, a) in enumerate(parts, 1))
+        cid = f"cand-multi_chunk-{first_index + len(out):04d}"
+        cand = _candidate(
+            cid, sample, chunks, question, answer, generator_name(llm), MULTI_PROMPT_VERSION
+        )
+        out.append(cand)
+        stats.generated += 1
+    return out
+
+
+FILTER_PROMPT_VERSION = "qgen-filter-v2"
+_PREFIX = {
+    "year": "Among papers published {phrase}: {q}",
+    "author": "In a paper {phrase}: {q}",
+    "category_year": "Among {category} papers published in {year}: {q}",
+}
+
+
+def filter_question(phrase: dict[str, Any], question: str) -> str:
+    """Deterministically embed the metadata phrase in front of a single-fact question. The service
+    reads "papers from 2024" as "since 2024", so category + year is phrased "published in 2024"."""
+    ef = phrase["expected_filters"]
+    category = (ef.get("categories") or [""])[0]
+    year = (ef.get("published_from") or "")[:4]
+    return _PREFIX[phrase["kind"]].format(
+        phrase=phrase["text"], category=category, year=year, q=question.strip()
+    )
+
+
+def generate_filter_composed(
+    llm: LLM,
+    corpus: Corpus,
+    samples: list[SampleRow],
+    *,
+    first_index: int = 1,
+    stats: GenerationStats | None = None,
+) -> list[dict[str, Any]]:
+    """Filter questions (`qgen-filter-v2`): a single-fact question about one chunk, with the
+    sampled metadata phrase (year / author / category + year) placed in front verbatim. The 8B model
+    rarely kept the phrase when asked to (86 of 150 attempts dropped), so the phrase is not left to
+    the LLM; the service must still extract it for the candidate to pass `check-filters`."""
+    stats = stats or GenerationStats()
+    titles = {p.external_id: p.title for p in corpus.papers()}
+    lookup = chunk_lookup(corpus, [k for s in samples for k in s.chunk_keys()])
+    system = SINGLE_FACT_PROMPT[1]
+    out: list[dict[str, Any]] = []
+    for sample in samples:
+        chunk = lookup.get(sample.chunk_keys()[0]) if sample.chunks else None
+        if chunk is None or sample.phrase is None:
+            stats.drop("chunk_missing")
+            continue
+        title = titles.get(chunk.external_id, "")
+        user = f"PAPER TITLE: {title}\n\n[Passage]\n{chunk.content[:MAX_CHUNK_CHARS]}"
+        try:
+            data = llm.chat(system, user, num_predict=GEN_NUM_PREDICT, seed=SEED).json()
+        except (LLMError, ValueError):
+            stats.drop("llm_error_or_bad_json")
+            continue
+        q, a = str(data.get("question", "")).strip(), str(data.get("answer", "")).strip()
+        if not q or not a:
+            stats.drop("empty_field")
+            continue
+        if not is_self_contained(q):
+            stats.drop("not_self_contained")
+            continue
+        cid = f"cand-filter-{first_index + len(out):04d}"
+        question = filter_question(sample.phrase, q)
+        out.append(
+            _candidate(
+                cid, sample, [chunk], question, a, generator_name(llm), FILTER_PROMPT_VERSION
+            )
+        )
+        stats.generated += 1
+    return out

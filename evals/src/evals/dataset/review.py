@@ -4,6 +4,7 @@ appends one auditable decision per candidate to `work/verification.jsonl`."""
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
@@ -32,11 +33,30 @@ def pending_candidates(
     verdicts: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     """Prechecked candidates that do not have a verdict yet, in candidate order."""
-    prechecked = {p["candidate_id"] for p in prechecks}
+    prechecked = {c for c, p in latest_by_candidate(prechecks).items() if not p.get("error")}
     judged = {v["candidate_id"] for v in verdicts}
     return [
         c for c in candidates if c["candidate_id"] in prechecked and c["candidate_id"] not in judged
     ]
+
+
+def _clip(text: str, max_chars: int | None, focus: str = "") -> str:
+    """Clip to `max_chars`, choosing the window that overlaps most with the `focus` words (the
+    question and reference answer), so the evidence for the answer stays visible."""
+    if max_chars is None or len(text) <= max_chars:
+        return text
+    words = {w for w in re.findall(r"[a-z0-9]{3,}", focus.lower())}
+    step = max(max_chars // 4, 1)
+    best, best_score = 0, -1
+    for start in range(0, len(text) - max_chars + step, step):
+        window = text[start : start + max_chars].lower()
+        score = sum(1 for w in words if w in window)
+        if score > best_score:
+            best, best_score = start, score
+    start = min(best, len(text) - max_chars)
+    head = "[...] " if start > 0 else ""
+    tail = " [...]" if start + max_chars < len(text) else ""
+    return head + text[start : start + max_chars] + tail
 
 
 def render_review(
@@ -45,7 +65,9 @@ def render_review(
     filter_check: dict[str, Any] | None,
     corpus: Corpus,
     retriever: Retriever | None = None,
+    max_chars: int | None = None,
 ) -> str:
+    focus = f"{cand['question']} {cand['reference_answer']}"
     lines = [
         "=" * 78,
         f"{cand['candidate_id']}  type={cand['type']}  generator={cand['source']['generator']}",
@@ -78,11 +100,11 @@ def render_review(
             lines.append(
                 f"--- gold {k[0]}#{k[1]}" + (f" [{c.section_path}]" if c else " (MISSING)")
             )
-            lines.append(c.content if c else "")
+            lines.append(_clip(c.content, max_chars, focus) if c else "")
     if cand["type"] == "unanswerable" and retriever is not None:
         for i, chunk in enumerate(retriever(cand["question"]), start=1):
             lines.append(f"--- service top-{i}: {chunk.get('external_id')}#{chunk.get('ordinal')}")
-            lines.append(chunk.get("content", ""))
+            lines.append(_clip(chunk.get("content", ""), max_chars, focus))
     return "\n".join(lines)
 
 

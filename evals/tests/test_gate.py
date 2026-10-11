@@ -285,3 +285,52 @@ def test_cli_thresholds_command(env, tmp_path):
     )
     assert res.exit_code == 0, res.output
     assert yaml.safe_load(out.read_text())["baseline_run"] == grid.run_id
+
+
+# --- tolerated degradation codes -------------------------------------------------------------------
+
+
+def with_questions(rec, codes_per_question):
+    rec = dict(rec)
+    rec["degraded"] = {
+        "count": sum(1 for c in codes_per_question if c),
+        "by_code": {c: 1 for codes in codes_per_question for c in codes},
+    }
+    rec["questions"] = [{"response": {"degraded": c}} for c in codes_per_question]
+    return rec
+
+
+def test_baseline_records_tolerable_sql_fallback_only(tmp_path):
+    recs = baseline()
+    recs["06-routing"] = with_questions(
+        recs["06-routing"], [["sql_fallback"], [], ["sql_fallback"]]
+    )
+    data = thresholds.write_thresholds(write_run_dir(tmp_path, recs), tmp_path / "ci.yaml")
+    assert data["allowed_degraded_codes"] == ["sql_fallback"]
+    assert data["max_degraded"] == 0
+    recs["05-rerank"] = with_questions(recs["05-rerank"], [["rerank_unavailable"]])
+    data = thresholds.build_thresholds(recs)
+    assert data["allowed_degraded_codes"] == [
+        "sql_fallback"
+    ]  # dependency codes are never tolerated
+    assert thresholds.build_thresholds(baseline())["allowed_degraded_codes"] == []
+
+
+def test_gate_tolerates_sql_fallback_but_not_dependency_degradation(tmp_path):
+    recs = baseline()
+    recs["06-routing"] = with_questions(recs["06-routing"], [["sql_fallback"], []])
+    th = thresholds.build_thresholds(recs)
+    assert gate.evaluate(th, recs).exit_code == 0
+    bad = baseline()
+    bad["06-routing"] = with_questions(
+        bad["06-routing"], [["sql_fallback"], ["router_unavailable"]]
+    )
+    res = gate.evaluate(th, bad, replay=True)
+    assert res.exit_code == 2 and "1 degraded" in gate.format_table(res)
+    mixed = baseline()
+    mixed["06-routing"] = with_questions(
+        mixed["06-routing"], [["sql_fallback", "rerank_unavailable"]]
+    )
+    assert gate.evaluate(th, mixed).exit_code == 2
+    strict = dict(th, allowed_degraded_codes=[])
+    assert gate.evaluate(strict, recs).exit_code == 2
