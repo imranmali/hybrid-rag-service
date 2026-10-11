@@ -64,8 +64,24 @@ if [ "$ACTUAL" != "$SHA" ]; then
 fi
 echo "sha256 verified: ${ACTUAL}"
 
+# `make` exits 2 for any failed recipe and hides the recipe's own exit status, so the gate's
+# code (0 pass, 1 threshold breach, 2 degraded/cassette miss, 3 setup error) is read from the
+# "gate exit code: N" line that `evals grid --gate` prints. No such line means the gate never
+# ran (migration, restore or stack startup failed), which is a setup error.
+COMPOSE=(docker compose --env-file .env -f infra/docker-compose.yml)
+# Apply the migrations synchronously: `up --wait flyway` can return before the one-shot
+# migration finishes on a fresh database, and the restore then fails with "relation does not exist".
+"${COMPOSE[@]}" up -d --wait postgres
+"${COMPOSE[@]}" run --rm flyway
+
+LOG="$(mktemp)"
+trap 'rm -f "$LOG"' EXIT
 rc=0
-make eval-ci SNAPSHOT="$SNAPSHOT" || rc=$?
+make eval-ci SNAPSHOT="$SNAPSHOT" 2>&1 | tee "$LOG" || rc=${PIPESTATUS[0]}
+if [ "$rc" -ne 0 ]; then
+  gate_rc="$(sed -n 's/^gate exit code: \([0-9]\).*/\1/p' "$LOG" | tail -n1)"
+  rc="${gate_rc:-3}"
+fi
 
 case "$rc" in
   0) echo "eval gate passed" ;;
