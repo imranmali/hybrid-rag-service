@@ -1,6 +1,6 @@
 # Hybrid RAG Service
 
-Hybrid RAG service over ~200 arXiv full-text papers (cs.IR, cs.CL, cs.DB): metadata-filtered BM25 + vector retrieval on Postgres/pgvector, cross-encoder reranking and SQL/vector routing — Kotlin serving layer, Python eval harness.
+Hybrid RAG service over 92 arXiv full-text papers (cs.IR, cs.CL, cs.DB, 2023–2026; the ingest was cut short of the planned 200): metadata-filtered BM25 + vector retrieval on Postgres/pgvector, cross-encoder reranking and SQL/vector routing — Kotlin serving layer, Python eval harness.
 
 ## Results
 
@@ -34,8 +34,8 @@ cp .env.example .env
 make models        # pulls bge-m3 and llama3.1:8b into host Ollama
 make reranker      # separate terminal: cross-encoder on the host (Apple GPU via MPS); first start downloads ~2.2 GB
 make up            # docker compose up: Postgres, migrations, service, tracing
-make index         # ingests 200 papers: fetch, parse, chunk, embed
-make query Q="What is late interaction in ColBERT?"
+make index         # ingests up to 200 papers (the published results use the 92 that were indexed): fetch, parse, chunk, embed
+make query Q="How can symbolic knowledge be integrated into neural networks?"
 ```
 
 The reranker runs on the host because Docker Desktop cannot reach the Apple GPU, and on CPU it took about 40 s per 20 passages. On Linux, `make up-reranker-container` runs it as a CPU container on the same port. Step-by-step setup, troubleshooting and the branch layout are in [docs/GUIDE.md](docs/GUIDE.md).
