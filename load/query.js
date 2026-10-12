@@ -17,6 +17,8 @@ import { textSummary } from 'https://jslib.k6.io/k6-summary/0.1.0/index.js';
 
 const TARGET = (__ENV.K6_TARGET || 'http://localhost:8080').replace(/\/+$/, '');
 const ONLY = __ENV.SCENARIO || '';
+// RETRIEVAL_PEAK_RPS lowers the retrieval scenario's peak rate (default 20) to find what the stack sustains.
+const PEAK_RPS = Number(__ENV.RETRIEVAL_PEAK_RPS || 20);
 const QUESTION_OFFSET = 42; // fixed offset into the dataset so the question order is deterministic
 
 // ---------------------------------------------------------------------------------------------
@@ -91,8 +93,8 @@ const ALL_SCENARIOS = {
     startRate: 1,
     timeUnit: '1s',
     stages: [
-      { target: 20, duration: '30s' },
-      { target: 20, duration: '60s' },
+      { target: PEAK_RPS, duration: '30s' },
+      { target: PEAK_RPS, duration: '60s' },
     ],
     preAllocatedVUs: 40,
     maxVUs: 80,
