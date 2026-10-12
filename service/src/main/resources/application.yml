@@ -1,0 +1,66 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: rag-query-service
+  threads:
+    virtual:
+      enabled: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    deserialization:
+      fail-on-unknown-properties: true
+      fail-on-null-for-primitives: true
+  # The two Hikari pools are built explicitly from rag.db.* (see DataConfig); no spring.datasource.
+management:
+  health:
+    circuitbreakers:
+      enabled: false
+rag:
+  version: 0.1.0
+  git-sha: ${GIT_SHA:unknown}
+  db:
+    url: jdbc:postgresql://localhost:5433/rag
+    reader:
+      user: rag_reader
+      password: rag_reader_dev
+      pool-size: 10
+    router:
+      user: rag_router
+      password: rag_router_dev
+      pool-size: 3
+  ollama:
+    url: http://localhost:11434
+    keep-alive: 30m
+  embed:
+    model: bge-m3
+  llm:
+    provider: ollama
+    model: llama3.1:8b
+    seed: 42
+  anthropic:
+    url: https://api.anthropic.com
+    api-key: ${ANTHROPIC_API_KEY:}
+    model: ${ANTHROPIC_MODEL:}
+  reranker:
+    url: http://localhost:8081
+  retrieval:
+    exact-vector-search: false
+  timeouts:
+    connect-ms: 500
+    route-ms: 5000
+    embed-ms: 2000
+    rerank-ms: 10000
+    generate-ms: 45000
+    sql-generate-ms: 15000
+    info-ms: 1000
+  resilience:
+    sliding-window-size: 20
+    minimum-number-of-calls: 10
+    failure-rate-threshold: 50
+    wait-duration-in-open-state-ms: 30000
+    permitted-number-of-calls-in-half-open-state: 3
+    max-attempts: 2
+    embedding-retry-wait-ms: 100
+    reranker-retry-wait-ms: 200
+    llm-retry-wait-ms: 250

@@ -108,7 +108,7 @@ limit :bm25_k
 - `management.health.circuitbreakers.enabled=false`; breaker state transitions logged at WARN.
 
 ### D10. Observability
-- OTel Java agent 2.10.0 in the runtime image (`JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar`) provides the server span, JDK HttpClient and JDBC client spans, OTLP export and logback MDC (`trace_id`, `span_id`).
+- OTel Java agent 2.31.1 (2.10.0 cannot instrument a Java 25 runtime: its Byte Buddy reads class files only up to Java 24, so every instrumentation and the API bridge are skipped) in the runtime image (`JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar`) provides the server span, JDK HttpClient and JDBC client spans, OTLP export and logback MDC (`trace_id`, `span_id`).
 - Manual stage spans via a `Tracer` bean (`GlobalOpenTelemetry.getTracer("dev.hybridrag.service")`); tests replace it with an SDK tracer + `InMemorySpanExporter`. Attributes: `rag.route`, `rag.route_source`, `rag.contextual`, `rag.filter.strategy`, `rag.filter.selectivity`, `rag.candidates`, `rag.rerank.pairs`, `rag.degraded`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`.
 - `TraceIdFilter`: `trace_id` = current span's trace id, or a random 32-hex id when no agent is active (tests, IDE runs); put `trace_id` and `request_id` into MDC, set `X-Trace-Id`. Worker tasks copy the MDC map and OTel context.
 - `logback-spring.xml`: `LogstashEncoder` to stdout, MDC included. Events: `query_completed` (INFO), `dependency_degraded` (WARN: dependency, reason, breaker state), `breaker_transition` (WARN), `embedding_digest_mismatch` (ERROR).
@@ -127,7 +127,7 @@ limit :bm25_k
 - Observability: span names and parent/child via `InMemorySpanExporter`; `OutputCaptureExtension` asserts `query_completed` JSON with matching `trace_id`.
 
 ### D14. Dockerfile
-Multi-stage: `eclipse-temurin:25-jdk` → `./gradlew bootJar --no-daemon -x test`; runtime `eclipse-temurin:25-jre` + `curl`, agent jar downloaded from the pinned GitHub release `opentelemetry-java-instrumentation v2.10.0`, non-root user, `ARG GIT_SHA=unknown` → `ENV GIT_SHA`, `EXPOSE 8080`, `ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]`.
+Multi-stage: `eclipse-temurin:25-jdk` → `./gradlew bootJar --no-daemon -x test`; runtime `eclipse-temurin:25-jre` + `curl`, agent jar downloaded from the pinned GitHub release `opentelemetry-java-instrumentation v2.31.1`, non-root user, `ARG GIT_SHA=unknown` → `ENV GIT_SHA`, `EXPOSE 8080`, `ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]`.
 
 ### Contracts used (copied verbatim from add-platform-foundation)
 
