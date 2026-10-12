@@ -1,0 +1,20 @@
+name: 05-rerank
+description: "+ cross-encoder rerank (top 20 of fused 50)"
+grid_row: 5
+question_types: [factoid, multi_chunk, filter, aggregate, unanswerable]
+pipeline:
+  retrieval: {vector: true, bm25: true, vector_k: 50, bm25_k: 50, fusion: {method: rrf, k: 60}, return_k: 50}
+  contextual: true
+  filters: {enabled: true, extract_from_question: true, strategy: auto, selectivity_threshold: 0.25, overfetch_factor: 5, explicit: null}
+  rerank: {enabled: true, candidates: 20}
+  routing: {enabled: false}
+  generation: {enabled: true, context_k: 6}
+judge:
+  enabled: true                      # faithfulness + answer relevance
+  provider: ollama                   # ollama | anthropic
+  model: llama3.1:8b
+run:
+  seed: 42
+  concurrency: 1
+  warmup_queries: 3                  # untimed queries before measurement
+  timeout_s: 120                     # client-side per-request timeout

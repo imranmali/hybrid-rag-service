@@ -1,0 +1,1086 @@
+{
+  "request_id": "72221b1a-de39-4136-a1cc-ca58a7c4cf6b",
+  "trace_id": "963fb6bd1fc14ca2bbff3009bf59bd2a",
+  "route": "vector",
+  "route_source": "fallback",
+  "pipeline": {
+    "retrieval": {
+      "vector": true,
+      "bm25": true,
+      "vector_k": 50,
+      "bm25_k": 50,
+      "fusion": {
+        "method": "rrf",
+        "k": 60
+      },
+      "return_k": 50
+    },
+    "contextual": true,
+    "filters": {
+      "enabled": true,
+      "extract_from_question": true,
+      "strategy": "auto",
+      "selectivity_threshold": 0.25,
+      "overfetch_factor": 5,
+      "explicit": null
+    },
+    "rerank": {
+      "enabled": true,
+      "candidates": 20
+    },
+    "routing": {
+      "enabled": true
+    },
+    "generation": {
+      "enabled": true,
+      "context_k": 6
+    }
+  },
+  "filters": {
+    "applied": {
+      "categories": [
+        "cs.IR"
+      ]
+    },
+    "extracted": {
+      "categories": [
+        "cs.IR"
+      ]
+    },
+    "strategy": "post",
+    "estimated_selectivity": 0.34706525701786367,
+    "matching_chunks": 1904,
+    "underfilled": false
+  },
+  "chunks": [
+    {
+      "rank": 1,
+      "chunk_id": 582,
+      "external_id": "2301.00993",
+      "ordinal": 6,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "3 Next-item prediction in RL-based recommendation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "We propose an (informal) definition of next-item prediction that encompasses the offline evaluation protocols of many sequential recommendation studies, and that we consider to be problematic when used to evaluate RL-based recommender systems: Next-item prediction (NIP) is an offline evaluation protocol for sequential item recommendation from real user feedback. The task is to ensure that the next interacted item is among the top items ranked by the model, given the sequence of past interactions. Model performance is measured according to ranking metrics (e.g., hit rate, recall, NDCG, etc). We propose this definition because it is representative of the evaluation setup adopted in many sequential recommendation studies, e.g., GRU4REC [ Hidasi et al., 2016 ] , and also encompasses several variants. In particular, the choice of “next interacted item” can vary depending on the dataset and task at hand: the next clicked item in content recommendation (e.g., Last.fm [ Last.fm, ] ), the next purchased product in product recommendation (e.g., RecSys Challenge 2015 [ Ben-Shimon et al., 2015 ] or RetailRocket [ RetailRocket, 2016 ] ), the next highly rated movie in movie recommendation (e.g., MovieLens [ GroupLens, ] ), the next basket in grocery shopping [ Instacart, 2017 ] , etc. How prevalent is it in RL-based recommendation?",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 3 Next-item prediction in RL-based recommendation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6296296,
+        "bm25_rank": 8,
+        "fused": null,
+        "rerank": 0.2626412616214753
+      }
+    },
+    {
+      "rank": 2,
+      "chunk_id": 598,
+      "external_id": "2301.00993",
+      "ordinal": 22,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.4 Intermediate evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "By intermediate evaluation, we refer to the offline evaluation of models, simulators or propensities that are used as building blocks in the final recommendation model [ Huang et al., 2020 ; Deffayet et al., 2022 ] . In certain cases, it may be easier to evaluate these intermediate models than the final model, for example when they can be evaluated thanks to the availability of human annotations, e.g., of item relevance. By breaking down the evaluation protocol into several components, we can isolate and reduce the sources of bias. For instance, in top- $k$ recommendation for cumulative click maximization, if the click model is correctly estimated, i.e., the relevance and propensity scores are correct, then only state dynamics (i.e., how a user changes in response to a recommendation) are left as a source of uncertainty. Doing so mitigates the risks associated with deploying RL agents, but does not suppress them. Moreover, we want to stress that offline RL agents will likely use the intermediate models outside of their training distribution in order to perform policy evaluation, and therefore may exploit inaccuracies in these high uncertainty regions if no proper countermeasure is applied [ Deffayet et al., 2022 ] .",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.4 Intermediate evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.7058824,
+        "bm25_rank": 2,
+        "fused": null,
+        "rerank": 0.137159898682106
+      }
+    },
+    {
+      "rank": 3,
+      "chunk_id": 3612,
+      "external_id": "2607.03886",
+      "ordinal": 29,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "5 Applications of the Relevance Model",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "Manual data labeling is not only time-consuming but also costly, often requiring the hiring of third-party evaluators to ensure quality and unbiased data. Automated systems streamline this process, significantly decreasing the operational costs associated with data preparation. Decreased Reliance on Third-Party Evaluators: Auto-labeling and enhanced model accuracy diminish the dependency on external evaluators. While third-party expertise is invaluable, particularly for validating model predictions and annotating complex datasets, reducing reliance on these services cuts down expenses and accelerates the data preparation phase. Faster Iteration of Model Development: Automated and refined processes enable more rapid model iterations. With reduced delays in data preparation and evaluation, models can be updated and refined more quickly. This faster iteration cycle not only saves time but also allows for agile responses to market changes and user feedback, ensuring the system remains at the forefront of relevancy and effectiveness. Overall, the strategic application of relevance models and automation in the sponsored ads system represents a smart investment. These technologies not only improve the operational aspects of ad placement but also drive substantial economic benefits by optimizing resource allocation and reducing the time to market for system enhancements. This financial and temporal efficiency is crucial for maintaining a competitive edge in the dynamic landscape of digital advertising.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 5 Applications of the Relevance Model. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 17,
+        "fused": null,
+        "rerank": 0.1275187686858922
+      }
+    },
+    {
+      "rank": 4,
+      "chunk_id": 578,
+      "external_id": "2301.00993",
+      "ordinal": 2,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "1 Introduction",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "RL is a natural fit for this problem because the underlying MDP is able to model the long-term influence of recommendations on the user. Note that in recommendation scenarios, online exploration is often impossible, so the policy must be trained from a fixed dataset of interactions, i.e., by offline RL. While sequence optimization with offline RL is not expected to entirely fulfill all the desired beyond-accuracy criteria highlighted in the literature, it holds the promise of making some of the desired properties naturally emerge as a result of whole-sequence optimization. Indeed, one can expect that, given an appropriate reward function, policies that are effective over the entire span of the user’s experience require some of these desired properties: diversity, novelty, etc. Because these auxiliary metrics are embedded into the sequence’s cumulative reward, whole-sequence optimization with RL can be seen as a way to bridge the gap between offline and online performance. In this paper, we argue that the progress supposedly achieved in sequential recommendation, thanks to RL, lacks ecological validity [ Andrade, 2018 ] : the trained agents are likely not to generalize to real-world scenarios, because of certain shortcomings in the current evaluation practices. Namely, RL-based recommender systems are often evaluated in an offline fashion, following a traditional one-shot accuracy-oriented protocol that cannot capture the potential benefits introduced by the use of RL algorithms. We refer to this evaluation protocol as next-item prediction (NIP).",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 1 Introduction. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 11,
+        "fused": null,
+        "rerank": 0.12307387715004504
+      }
+    },
+    {
+      "rank": 5,
+      "chunk_id": 3606,
+      "external_id": "2607.03886",
+      "ordinal": 23,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "4 Experimental Results > 4.4 Comparative Evaluation",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "In this section, we conduct a comparative evaluation of our fine-tuned LLAMA2 7B model against both traditional and state-of-the-art models previously utilized for semantic retrieval and relevance in sponsored product searches at Walmart. Specifically, we compare our model to a BERT-based Bi-Encoder, a BERT-based Cross-Encoder, and GPT-4 using a few-shot learning approach. Evaluation Setup: We evaluate the models in two key areas: Offline Performance: Accuracy, precision, recall, and F1-score metrics are calculated using the same test dataset to ensure a fair comparison. Relevance Analysis: We assess model relevance using Walmart Sponsored Search data. For this analysis, we prepare a dataset of 1,000 queries where the top 20 items are retrieved based on the models’ scores. These items are then evaluated for their relevancy by third-party human annotators, creating a human-labeled dataset of 30,000 query-item pairs. Offline Metrics: The table below presents a side-by-side comparison of the models based on their performance metrics. Our fine-tuned LLAMA2 7B model demonstrates a superior balance between precision and recall, indicating a more nuanced understanding of query-item relevance, which is essential for reducing both false positives and false negatives in e-commerce settings.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 4 Experimental Results > 4.4 Comparative Evaluation. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.64285713,
+        "bm25_rank": 6,
+        "fused": null,
+        "rerank": 0.08676308257340513
+      }
+    },
+    {
+      "rank": 6,
+      "chunk_id": 583,
+      "external_id": "2301.00993",
+      "ordinal": 7,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "3 Next-item prediction in RL-based recommendation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "How prevalent is it in RL-based recommendation? RL-based recommendation (RL4REC) has become increasingly popular in recent years: we counted $55$ papers about RL4REC in the proceedings of major information retrieval and recommender systems (or related) conferences between January 2017 and October 2022. To obtain this result, we queried ‘‘reinforcement learning recommendation’’ and ‘‘reinforcement learning recommender’’ on DBLP and included papers published at AAAI, CIKM, ICDM, IJCAI, KDD, RecSys, SIGIR, WSDM or WWW. Figure 1 shows the increasing trend in published RL4REC papers. Out of the 55 papers retrieved from DBLP, we identified 39 papers that address sequential item recommendation using RL-based approaches. Other tasks irrelevant to our argument included conversational recommendation or explainable recommendations, so we ignore papers related to these topics in this study. Among the 39 relevant articles, we found 24 papers performing a form of offline evaluation, including 22 papers that followed the NIP protocol from Definition 1 . The 15 other papers exclusively rely on online evaluation, either in production using an industrial recommendation platform or based on a simulator. The NIP protocol is therefore by far the most commonly adopted type of offline evaluation. Figure: Figure 1: Evolution of the number of RL-based recommendation papers published in major RecSys and IR conferences between 2017 and 2022.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 3 Next-item prediction in RL-based recommendation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.7058824,
+        "bm25_rank": 1,
+        "fused": null,
+        "rerank": 0.08527946108805659
+      }
+    },
+    {
+      "rank": 7,
+      "chunk_id": 580,
+      "external_id": "2301.00993",
+      "ordinal": 4,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "2 Related studies",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Deficiencies in recommender systems evaluation have been a long-standing problem in the recommendation literature. In this section we review previous studies that discuss this topic. Firstly, as we recalled in the introduction, McNee et al. [2006] ; Jannach et al. [2016] have highlighted the need for recommender systems that go beyond accuracy of the proposed item, i.e., which do not only consider recommendation as a matrix completion problem. This is motivated by an observed gap between offline and online performance, sometimes rendering any conclusions drawn from offline evaluation obsolete [ Garcin et al., 2014 ; Gomez-Uribe and Hunt, 2016 ; Jeunen, 2019 ] . Secondly, pitfalls of recommender system evaluation – including the next-item prediction protocol for offline evaluation that we focus on in this study – have been extensively discussed in the past: Chen et al. [2017] ; Jeunen [2019] ; Ji et al. [2020] ; Cremonesi and Jannach [2021] ; Sun [2022] ; Zhao et al. [2022] highlighted multiple issues resulting from data leakage and other dataset construction fallacies, which can lead to counter-intuitive statements. The presence of selection bias in the data used for evaluating recommender systems from implicit feedback has also been identified as a major source of inaccuracies [ Gomez-Uribe and Hunt, 2016 ; Jannach et al., 2016 ; Chen et al., 2017 ; Jeunen, 2019 ] .",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 2 Related studies. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 12,
+        "fused": null,
+        "rerank": 0.07544682232615357
+      }
+    },
+    {
+      "rank": 8,
+      "chunk_id": 3605,
+      "external_id": "2607.03886",
+      "ordinal": 22,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "4 Experimental Results > 4.3 Evaluation on Test Set",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "The model’s generalization capabilities were rigorously assessed on an independent test set, the results of which are consolidated in Table 2 . The favorable metrics underscore the model’s adeptness at maintaining high performance on unseen data, a testament to its robustness. Particularly, the F1-Score—a balanced measure of precision and recall—suggests that the model is well-tuned across all categories of search relevance, an essential attribute for real-world application where diverse query intents are prevalent. Confusion Matrix Analysis: The confusion matrix provided insights into the model’s performance across different relevance classes. Figure: Figure 4: Test Data Confusion Matrix: Percentage view of the model’s classification performance across different relevance categories on the test dataset, highlighting its ability to distinguish between irrelevant, partially relevant, and relevant queries. In Figure 4 , the confusion matrix offers insights into the model’s predictive capabilities across the three categories of search query relevance. Notably, the model demonstrates high precision in identifying ‘Relevant’ query item pairs, with a 94.71% correct classification rate, which is critical for user satisfaction in e-commerce search scenarios. The ‘Partially Relevant’ category also shows strong model performance with 90.07% accuracy. However, the model appears to struggle more with ‘Irrelevant’ query item pairs, as indicated by the off-diagonal percentages in this row, suggesting a potential area for model refinement.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 4 Experimental Results > 4.3 Evaluation on Test Set. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 16,
+        "fused": null,
+        "rerank": 0.07383544989096821
+      }
+    },
+    {
+      "rank": 9,
+      "chunk_id": 2770,
+      "external_id": "2401.04408",
+      "ordinal": 29,
+      "title": "Fine-Grained Embedding Dimension Optimization During Training for Recommender Systems",
+      "section_path": "IV Experimental Results > IV-A Methodology",
+      "published_on": "2024-01-09",
+      "primary_category": "cs.IR",
+      "content": "Models and datasets. We evaluate FIITED on public models and datasets as well as private industry ones. A summary of the models and datasets can be found in Table I . (1) Public models and datasets: We adopt an open-source DLRM framework to train a DLRM [ 17 ] on Criteo Kaggle Display Advertising Challenge Dataset , Avazu Click-Through Rate Prediction Dataset and Criteo Terabyte Dataset . We also modified this framework to train another open-source DLRM used by ESAPN [ 14 ] on the MovieLens-20M dataset . On the MovieLens-20M dataset, following ESAPN, we converted the multi-classification problem to a binary classification problem by viewing 4-star and 5-star reviews as positive, and others as negative. (2) Industry models and datasets: Two production models are used in the evaluation. For ease of experimentation, both models are shrunk to 1/4 size by reducing the hash size of all sparse features by 75%. The reduced models, named Model A and Model B, have around 180GB and 430GB sparse feature embeddings, respectively, and both contain hundreds of sparse features. They are evaluated on data generated by real-world applications. Ten consecutive days of data are used as the training set, and the following one day’s data are used as the evaluation set. Implementation. For evaluation using the public models and datasets, we implement FIITED as well as AdaEmbed [ 11 ] on top of an open-source DLRM framework [ 17 ] based on PyTorch.",
+      "context_header": "Paper: Fine-Grained Embedding Dimension Optimization During Training for Recommender Systems (cs.IR, 2024). Section: IV Experimental Results > IV-A Methodology. This paper addresses the memory efficiency issue in deep learning recommender systems by proposing FIITED, a system that adaptively optimizes embedding dimensions during training to reduce memory footprint while preserving model quality, targeting large-scale industrial applications with massive user-item interaction data.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6666667,
+        "bm25_rank": 3,
+        "fused": null,
+        "rerank": 0.06937590197834131
+      }
+    },
+    {
+      "rank": 10,
+      "chunk_id": 3620,
+      "external_id": "2607.03886",
+      "ordinal": 37,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "7 Conclusions",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "In this paper, we presented a novel approach to enhancing e-commerce search relevance by integrating Low-Rank Adaptation (LoRA) with the LLAMA2 7B model. Our methodology focused on fine-tuning a large language model specifically for the nuanced requirements of sponsored product search in an e-commerce environment, particularly Walmart.com. The results of our experiments indicate a significant improvement in search relevance accuracy. With an accuracy of 89.43% on our test set, the adapted LLAMA2 7B model outperformed traditional models and established a new standard for e-commerce search relevance. This performance demonstrates the model’s enhanced capability to accurately classify and understand complex consumer queries, thereby significantly improving the online shopping experience. While our evaluation primarily focused on sponsored search, the approach we developed is equally effective for broader e-commerce search contexts. This adaptability highlights the practical utility and versatility of our method across various e-commerce search scenarios. Despite these advancements, there remain areas for further exploration. Future work could involve extending the model’s applicability to more diverse datasets, exploring other domains where such a model could be beneficial, and continuously refining the model to adapt to the evolving nature of consumer language and preferences. In conclusion, this study offers a significant contribution to the fields of natural language processing and e-commerce search engines. By leveraging the power of advanced language models like LLAMA2 7B and the efficiency of techniques like LoRA, we have opened new pathways for enhancing user interaction and satisfaction in online retail platforms. This work not only enriches the academic domain but also provides practical, impactful solutions for the e-commerce industry.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 7 Conclusions. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 18,
+        "fused": null,
+        "rerank": 0.0693388448171174
+      }
+    },
+    {
+      "rank": 11,
+      "chunk_id": 594,
+      "external_id": "2301.00993",
+      "ordinal": 18,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.1 Online evaluation in recommendation platforms",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "The most obvious counter-measure to the issues raised above is to evaluate recommender systems online when possible, directly on the metrics we care about. This is usually done by deploying the policies on an actual recommendation platform. However, it is obvious that not all researchers and practitioners have access to an operational industrial platform, and online evaluation itself may include other forms of biases, e.g., through the inclusion of business rules in recommendations. Online evaluation clearly circumvents the three issues we highlighted in the previous section, but since the focus of this paper is on offline evaluation, we will not further detail it.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.1 Online evaluation in recommendation platforms. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6296296,
+        "bm25_rank": 9,
+        "fused": null,
+        "rerank": 0.0648610419370549
+      }
+    },
+    {
+      "rank": 12,
+      "chunk_id": 585,
+      "external_id": "2301.00993",
+      "ordinal": 9,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "4 Three shortcomings of NIP > 4.1 A myopic evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Evaluating an offline RL-based recommender system using Definition 1 only accounts for short-term rewards and ignores the causal effect of the recommendations on the user. Indeed, an important motivation to design RL algorithms is to maximize the return (i.e., sum of rewards) along full trajectories, as opposed to bandit algorithms that aim to maximize the average reward at each timestep. When the actions (i.e., recommendations) cause the environment (i.e., user) to change its state, RL algorithms still have convergence guarantees, while the environment appears as non-stationary to bandit algorithms that fail to find the optimal policy both in theory and in practice. But the next-item prediction evaluation protocol only requires short-term thinking as it rewards one-shot prediction of the next interacted item – this is due to the offline, static nature of the evaluation that overlooks the causal impact of the recommendation policy of interest over subsequent interactions. This argument has been formulated by Lee et al. [2022] , who also empirically verified that greedy, myopic agents achieve similar or better performance on the NIP protocol than long-term-aware RL agents on standard recommendation datasets. Quadrana et al. [2018] also warned about the limits of the NIP evaluation protocol in sequential recommendation when not only immediate satisfaction but also diversity or user guidance in content discovery is desired.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 4 Three shortcomings of NIP > 4.1 A myopic evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 13,
+        "fused": null,
+        "rerank": 0.06410558682276275
+      }
+    },
+    {
+      "rank": 13,
+      "chunk_id": 772,
+      "external_id": "2404.01012",
+      "ordinal": 43,
+      "title": "Query Performance Prediction using Relevance Judgments Generated by Large Language Models",
+      "section_path": "5. Experimental setup > 5.6. Implementation details",
+      "published_on": "2024-04-01",
+      "primary_category": "cs.IR",
+      "content": "First, model distillation requires an existing oracle model, such as GPT-4, for relevance prediction. However, this work focuses on exclusively using open-source LLMs, avoiding using powerful commercial models like GPT-4 to ensure reproducibility and deterministic outputs. Second, one might wonder why we did not distill larger open-source LLMs into smaller models. As demonstrated in Figure 5 , a 1-billion-parameter Llama model fine-tuned using QLoRA on human-labeled relevance judgments outperforms a 70-billion-parameter Llama model using few-shot prompting. Therefore, if we choose to distill the 70-billion-parameter model into a smaller model, the performance of the distilled model would be inferior to that achieved by the 1-billion-parameter model fine-tuned via QLoRA, because the performance of distilled model is inherently limited by the larger model’s capabilities. Third, we have a large amount of human-labeled relevance judgments available. Directly using these labels to fine-tune LLMs via QLoRA allows us to make the most efficient use of this data. Figure: Table 1 .",
+      "context_header": "Paper: Query Performance Prediction using Relevance Judgments Generated by Large Language Models (cs.IR, 2024). Section: 5. Experimental setup > 5.6. Implementation details. This research proposes a query performance prediction framework using large language models to generate relevance judgments, addressing limitations in existing methods by providing interpretable results and approximating various information retrieval evaluation measures for search systems.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6296296,
+        "bm25_rank": 10,
+        "fused": null,
+        "rerank": 0.06145222355018415
+      }
+    },
+    {
+      "rank": 14,
+      "chunk_id": 576,
+      "external_id": "2301.00993",
+      "ordinal": 0,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "Abstract",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Abstract In this paper, we argue that the paradigm commonly adopted for offline evaluation of sequential recommender systems is unsuitable for evaluating reinforcement learning-based recommenders. We find that most of the existing offline evaluation practices for reinforcement learning-based recommendation are based on a next-item prediction protocol, and detail three shortcomings of such an evaluation protocol. Notably, it cannot reflect the potential benefits that reinforcement learning (RL) is expected to bring while it hides critical deficiencies of certain offline RL agents. Our suggestions for alternative ways to evaluate RL-based recommender systems aim to shed light on the existing possibilities and inspire future research on reliable evaluation protocols.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: Abstract. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.64285713,
+        "bm25_rank": 4,
+        "fused": null,
+        "rerank": 0.06042876112348148
+      }
+    },
+    {
+      "rank": 15,
+      "chunk_id": 579,
+      "external_id": "2301.00993",
+      "ordinal": 3,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "1 Introduction",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "We refer to this evaluation protocol as next-item prediction (NIP). More critically, we highlight that the specifics of this protocol are likely to hide the deficiencies of recommender systems trained by offline RL. Briefly, we argue that with the most commonly employed evaluation practices, we cannot verify that the RL algorithm correctly optimizes the very metric it is designed to optimize , i.e., expected cumulative reward. We worry that instead of bridging the gap between offline and online performance, it only widens it. We then provide suggestions towards a sound evaluation methodology for RL-based recommendation in order to help practitioners and researchers avoid common pitfalls and to inspire future research on this important topic. After contrasting our criticism with that formulated by previous studies in Section 2 , we provide in Section 3 a definition of the next-item prediction evaluation protocol along with an overview of its use in sequential recommendation with RL. Section 4 dives into the three major issues of the NIP protocol, and their implications for the evaluation of RL-based recommender systems. Finally, we formulate our suggestions towards a sound evaluation methodology in RL-based recommendation in Section 5 .",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 1 Introduction. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6296296,
+        "bm25_rank": 7,
+        "fused": null,
+        "rerank": 0.05910032697620684
+      }
+    },
+    {
+      "rank": 16,
+      "chunk_id": 3597,
+      "external_id": "2607.03886",
+      "ordinal": 14,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "3 Our Approach > 3.2 Training",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "We fine-tune the model using a large dataset specific to the e-commerce domain, enhancing the model’s capability to discern nuanced e-commerce search queries without incurring significant computational costs. Model Adaptation with LoRA: We adapt the LLAMA2 7B model using the Low-Rank Adaptation (LoRA) technique, as described earlier. This adaptation method is crucial because it effectively reduces the number of trainable parameters, thereby enhancing parameter efficiency during model tuning. The primary reason for applying LoRA is its ability to allow significant modifications to the model’s behavior with minimal updates to its parameters. This is particularly valuable in scenarios like ours, where computational resources are limited and retraining large models from scratch is computationally expensive and time-consuming. By applying LoRA, we ensure that the model remains lightweight and agile, capable of adapting to the nuances of e-commerce search queries without the need for extensive computational power. This approach not only conserves resources but also accelerates the deployment cycle, making it highly suitable for dynamic e-commerce environments where prompt model updates are often required. Training Setup: Our training involves a dataset where each example comprises a text query paired with a relevance label. The model is configured to classify these examples into three relevance categories: Irrelevant, Partially Relevant, and Relevant. Training is conducted over several epochs with a batch size of 8. For detailed information about the training dataset, please refer to Section 4.1 . Optimization and Loss Function: The optimization of the model is a critical step in the training process.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 3 Our Approach > 3.2 Training. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 15,
+        "fused": null,
+        "rerank": 0.04827252244525127
+      }
+    },
+    {
+      "rank": 17,
+      "chunk_id": 174,
+      "external_id": "2304.03947",
+      "ordinal": 4,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "1. Introduction",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "Furthermore, all users are assigned the same model and there are no update mechanisms to account for the dynamics of spatial activities and diversity of user interests, leading to suboptimal performance. Consequently, recent research is more inclined towards collaborative learning (CL) frameworks, which allow models/gradients sharing. Thus, CL is less demanding on complex model designs and more suited to the dynamic nature of POI recommendation tasks. In CL, federated learning-based POI recommenders (e.g. ( Guo et al., 2021 ) ) are a highly representative solution, where users train their models locally while retaining all private data on-device. To avoid sparsity of local data, a central server is to iteratively collect and aggregate these trained local models, and then redistribute the aggregated model to all users. However, aggregating all local models into a single global model helps the recommender to generalize, but amplifies bias towards active users’ preference ( Wang et al., 2021a ) . So, further remedies are proposed in federated POI recommenders ( Xw et al., 2020 ; Rao et al., 2021 ; Imran et al., 2023 ) , which group similar users and perform group-wise aggregation to allow for more personalization of learned on-device models. Despite the improved performance and flexibility over model compression approaches, CL-based methods still bear deficiencies for on-device POI recommendations in the real world. Firstly, a central server is always involved throughout the learning process of federated POI recommenders.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 1. Introduction. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 20,
+        "fused": null,
+        "rerank": 0.04537181526510139
+      }
+    },
+    {
+      "rank": 18,
+      "chunk_id": 3594,
+      "external_id": "2607.03886",
+      "ordinal": 11,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "3 Our Approach > 3.1 System Architecture",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "This adaptation is performed while keeping $W$ frozen during training, and only $A$ and $B$ are updated, leading to a more parameter-efficient model adaptation. The effectiveness of LoRA can be quantified through performance improvements in model-specific tasks. In operation, the model processes input text through its embedding layers, followed by sequential passage through the decoder layers of the LLAMA model, each applying self-attention and feed-forward mechanisms now fine-tuned with LoRA, to effectively understand and categorize the textual input relevant to e-commerce search queries. The final classification is made by the linear score module at the end of the network. This section details the structure of our model, emphasizing the key components that contribute to its performance in sponsored product search relevance. Figure: Figure 2: Overview of our model fine-tuning using LoRA Model Overview: The base of our model is the LLAMA2 7B, a large language model known for its robust text understanding and generation capabilities. It is structured around a decoder layer of the LLaMa model, which is responsible for processing the input sequences. The core components of the model include: • Embedding Layers : Responsible for converting input tokens into dense vectors. It includes an embedding matrix of size 32000x4096. Embedding Layers : Responsible for converting input tokens into dense vectors. It includes an embedding matrix of size 32000x4096. • Decoder Layers : A total of 32 layers, each containing components for attention mechanisms and feed-forward networks.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 3 Our Approach > 3.1 System Architecture. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.61538464,
+        "bm25_rank": 14,
+        "fused": null,
+        "rerank": 0.036413999604814534
+      }
+    },
+    {
+      "rank": 19,
+      "chunk_id": 173,
+      "external_id": "2304.03947",
+      "ordinal": 3,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "1. Introduction",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "As a result, could-based POI recommendation is overly reliant on the server’s capacity and internet connectivity ( Wang et al., 2020 ; Yin et al., 2016 ) , weakening its resilience. As such, recent research resorts to on-device POI recommendations ( Long et al., 2022 ; Wang et al., 2020 ; Guo et al., 2021 ) to counter the shortfalls of centralized paradigms. The core objective of this new paradigm is to deploy an accurate yet relatively lightweight recommendation model on the user side, such that recommendations can be generated in a fully on-device fashion with locally acquired user data. To fulfill this goal, a straightforward solution in the literature is based on model compression ( Bengio et al., 2013 ; Chen et al., 2015 ; Hinton et al., 2015 ) . In the context of on-device POI recommendation, model compression methods aim to condense a sophisticated POI recommender into a compact model to support on-device inference. For instance, a teacher-student distillation framework is utilized in ( Wang et al., 2020 ) to transfer knowledge from the powerful teacher model to the compact student model. The well-trained student model is then deployed on mobile devices for all users. However, the framework is still resource-intensive due to the server’s full engagement in training both the teacher and student models. Furthermore, all users are assigned the same model and there are no update mechanisms to account for the dynamics of spatial activities and diversity of user interests, leading to suboptimal performance.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 1. Introduction. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 19,
+        "fused": null,
+        "rerank": 0.03198381167729526
+      }
+    },
+    {
+      "rank": 20,
+      "chunk_id": 2776,
+      "external_id": "2401.04408",
+      "ordinal": 35,
+      "title": "Fine-Grained Embedding Dimension Optimization During Training for Recommender Systems",
+      "section_path": "IV Experimental Results > IV-B Memory Saving Results",
+      "published_on": "2024-01-09",
+      "primary_category": "cs.IR",
+      "content": "Overall, FIITED-2D can achieve $1.3\\times$ to $6.6\\times$ improvements in embedding savings compared to FIITED (Manual), and $2\\times$ to $9.9\\times$ improvements compared to AdaEmbed and ESAPN. Production models. The criterion for model quality is Normalized Entropy (NE) [ 8 , 19 ] on the evaluation set; a lower NE indicates a better model. The effect of pruning is evaluated by NE loss, i.e., the percentage change in NE after model pruning compared to an unpruned model. A positive NE loss indicates worsened model quality, and an NE loss bigger than 0.02% is generally considered significant. The results are shown in Figure 9 . For both Model A and Model B, FIITED can achieve better NE than AdaEmbed given the same average pruning ratio. For Model A, without incurring significant NE loss ( $>$ 0.02%), FIITED can prune 65%-75% of the embeddings, while AdaEmbed can only prune 50%-65%. For Model B, FIITED can prune up to 50% of the embeddings, while AdaEmbed can prune 30%-40% of the embeddings without significant NE loss. For Model A, we also compare two different per-chunk pruning ratio settings with the same average ratio (75%). The “steeper” setting achieved a better NE (+0.02% VS. +0.03%) than the “flatter” setting. This shows that per-chunk pruning ratios do affect model quality noticeably.",
+      "context_header": "Paper: Fine-Grained Embedding Dimension Optimization During Training for Recommender Systems (cs.IR, 2024). Section: IV Experimental Results > IV-B Memory Saving Results. This paper addresses the memory efficiency issue in deep learning recommender systems by proposing FIITED, a system that adaptively optimizes embedding dimensions during training to reduce memory footprint while preserving model quality, targeting large-scale industrial applications with massive user-item interaction data.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.64285713,
+        "bm25_rank": 5,
+        "fused": null,
+        "rerank": 0.025849168390130794
+      }
+    },
+    {
+      "rank": 21,
+      "chunk_id": 176,
+      "external_id": "2304.03947",
+      "ordinal": 6,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "1. Introduction",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "However, the model homophily assumption significantly harms the practicality of such decentralized POI recommendation paradigms, as in practice, each on-device model should have a customized structure to meet the specific device capacity ( Chen et al., 2021 ) . With an exponentially increasing diversity of user devices capable of delivering POI recommendations, this assumption has to be relaxed to allow a host of structurally heterogeneous on-device models to be jointly optimized. As such, there still lacks a capable CL-based POI recommendation paradigm that can accommodate heterogeneous on-device recommenders, minimize dependency on the central server, and ensure all on-device recommenders’ expressiveness without incurring privacy breaches or a heavy communication overhead. • We propose a novel on-device POI recommendation framework, namely Model-Agnostic Collaborative learning for on-device POI recommendation (MAC), where users are allowed to tailor the model configurations and store embeddings only for POIs with high relevance to the current context. The core solution to model-agnostic collaborative learning (CL) is a novel knowledge distillation (KD) scheme that facilitates knowledge exchange between heterogeneous recommendation models. We propose a novel on-device POI recommendation framework, namely Model-Agnostic Collaborative learning for on-device POI recommendation (MAC), where users are allowed to tailor the model configurations and store embeddings only for POIs with high relevance to the current context.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 1. Introduction. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 21,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 22,
+      "chunk_id": 591,
+      "external_id": "2301.00993",
+      "ordinal": 15,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "4 Three shortcomings of NIP > 4.3 Risky deployment",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Unfortunately, this harmful phenomenon cannot be detected in the standard next-item prediction evaluation of Definition 1 : while the interacted item may rightfully be ranked high by the model, it is likely that at least one out-of-distribution item is drastically overestimated and preferred by the model. Since this item will be the one selected by the model, we may observe an unpredicted catastrophic failure at deployment time. Even worse, this probability of failure tends to increase with the size of the action-space [ Gu et al., 2022 ] , which can be enormous in certain recommendation scenarios.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 4 Three shortcomings of NIP > 4.3 Risky deployment. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 22,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 23,
+      "chunk_id": 595,
+      "external_id": "2301.00993",
+      "ordinal": 19,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.2 Counterfactual off-policy evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "There is a large body of work on off-policy evaluation (OPE) in information retrieval, often based on techniques such as inverse propensity scoring [ Swaminathan and Joachims, 2015 ; Joachims et al., 2017 ] , where a propensity weight is applied to rescale the observed rewards and returns. Although OPE has mostly been tackled for the one-shot bandit problem, some studies address OPE of RL policies both in the RL community [ Fu et al., 2021 ] and in the IR community [ Chen et al., 2019 ] , and more recently a library for off-policy evaluation of RL algorithms in IR has been proposed in [ Kiyohara and Kawakami, 2022 ] . Counterfactual methods for off-policy evaluation are attractive in that they can provide unbiasedness guarantees under mild assumptions.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.2 Counterfactual off-policy evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 23,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 24,
+      "chunk_id": 596,
+      "external_id": "2301.00993",
+      "ordinal": 20,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.2 Counterfactual off-policy evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Counterfactual methods for off-policy evaluation are attractive in that they can provide unbiasedness guarantees under mild assumptions. However, we want to stress three (known) deficiencies of these methods: (i) IPS suffers from a notoriously high variance which becomes exponentially higher when applied on sequences, because of the product of inverse propensity weights [ Precup et al., 2000 ] ; (ii) in non-tabular settings (i.e., when one can generalize the predictions from a state-action pair to another, for example with continuous spaces), generalization capabilities must implicitly or explicitly be assumed when the logging policy is not known, in order to compute the propensity [ Hanna et al., 2019 ] ; and (iii) when we train RL algorithms in an offline manner, the error of the off-policy training and of the off-policy evaluation are likely correlated, which means that counterfactual OPE may still be biased and wrongly choose certain methods above others. An extreme example of the latter occurs if we train and evaluate a policy-gradient recommender with the same propensity weights, which makes the agent appear as optimal regardless of its true performance. While using an ensemble of estimators might mitigate this issue, it remains unclear how to fully alleviate this issue. Counterfactual OPE circumvents all three shortcomings highlighted in the previous section in theory, but as we have seen it comes with its own shortcomings which may make it unreliable in certain practical settings.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.2 Counterfactual off-policy evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 24,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 25,
+      "chunk_id": 1785,
+      "external_id": "2307.00856",
+      "ordinal": 32,
+      "title": "OpenSiteRec: An Open Dataset for Site Recommendation",
+      "section_path": "4. Benchmark Experiments > 4.1. Experimental Settings > 4.1.2. Baselines",
+      "published_on": "2023-07-03",
+      "primary_category": "cs.IR",
+      "content": "In order to explore the effectiveness of our proposed OpenSiteRec in practical application, we conduct experiments of site recommendation with several representative recommendation models as the benchmarks. Since the existing site recommendation approaches have their own experimental settings and do not release their codes, they are not capable of directly being employed in our settings and we exclude them for comparison. Specifically, the chosen models include machine learning models, collaborative filtering ( Sarwar et al., 2001 ) models, click-through rate (CTR) prediction ( Richardson et al., 2007 ) models and graph-based models. • LR ( Hosmer and Lemeshow, 1991 ) , namely logistic regression, is a simple yet effective model in classification. LR ( Hosmer and Lemeshow, 1991 ) , namely logistic regression, is a simple yet effective model in classification. • GBDT ( Friedman, 2001 ) , namely gradient boosting decision tree, is an ensemble model with decision tree model as the backbone. GBDT ( Friedman, 2001 ) , namely gradient boosting decision tree, is an ensemble model with decision tree model as the backbone. • SVC ( Bredensteiner and Bennett, 1999 ) employs support vector machine (SVM) to tackle the classification problem. SVC ( Bredensteiner and Bennett, 1999 ) employs support vector machine (SVM) to tackle the classification problem. • RankNet ( Burges et al., 2005 ) is a famous learning to rank architecture in recommendation. Specifically, we utilize a two-layer neural network as the backbone here.",
+      "context_header": "Paper: OpenSiteRec: An Open Dataset for Site Recommendation (cs.IR, 2023). Section: 4. Benchmark Experiments > 4.1. Experimental Settings > 4.1.2. Baselines. This research addresses the lack of publicly available datasets for site recommendation by introducing OpenSiteRec, a comprehensive dataset leveraging heterogeneous graph schema to facilitate automatic data-driven brand development in four international metropolises through benchmarking experiments with representative recommendation models.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 25,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 26,
+      "chunk_id": 1817,
+      "external_id": "2307.02046",
+      "ordinal": 13,
+      "title": "Recommender Systems in the Era of Large Language Models (LLMs)",
+      "section_path": "II RELATED WORK > II-B From Pre-trained Language Models (PLMs) to Large Language Models (LLMs)",
+      "published_on": "2023-07-05",
+      "primary_category": "cs.IR",
+      "content": "As a type of advanced Artificial Intelligence (AI) techniques, LLMs are trained on a large amount of textural data with billions of parameters to understand the patterns and structures of natural language. There are several classical types of pre-trained language models (PLMs) available, such as BERT (Bidirectional Encoder Representations from Transformers) [ 49 ] , GPT (Generative Pre-trained Transformer) [ 50 ] , and T5 (Text-To-Text Transfer Transformer) [ 51 ] . Typically, these language models fall into three main categories: encoder-only models, decoder-only models, and encoder-decoder models. BERT, GPT, and T5 are distinct models based on the Transformer architecture [ 52 ] . More specifically, BERT, an encoder-only model, uses bi-directional attention to process token sequences, considering both the left and right context of each token. It is pre-trained based on massive amounts of text data using tasks like masked language modeling and next-sentence prediction, thereby capturing the nuances of language and meaning in context. This process translates text into a vector space, facilitating nuanced and context-aware analyses. On the other hand, GPT, based on the transformer decoder architecture, uses a self-attention mechanism for one-directional word sequence processing from left to right. GPT is mainly adopted in language generation tasks, mapping embedding vectors back to text space, and generating contextually relevant responses.",
+      "context_header": "Paper: Recommender Systems in the Era of Large Language Models (LLMs) (cs.IR, 2023). Section: II RELATED WORK > II-B From Pre-trained Language Models (PLMs) to Large Language Models (LLMs). This paper reviews the application of Large Language Models (LLMs) in Recommender Systems, highlighting their potential to enhance user-item interactions and textual side information, while also discussing challenges such as hallucination mitigation, trustworthiness, and fine-tuning efficiency in this emerging field.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 26,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 27,
+      "chunk_id": 2747,
+      "external_id": "2401.04408",
+      "ordinal": 6,
+      "title": "Fine-Grained Embedding Dimension Optimization During Training for Recommender Systems",
+      "section_path": "I Introduction",
+      "published_on": "2024-01-09",
+      "primary_category": "cs.IR",
+      "content": "Thus, FIITED is more flexible, faster, and easier to use than most of the existing EDS methods, while achieving a higher reduction in the model size without hurting model quality. The proposed method performs fine-grained EDS, adapts to changing data characteristics over time, and does not require pre-training, re-training, or prior knowledge of training data traits. Thus, FIITED is more flexible, faster, and easier to use than most of the existing EDS methods, while achieving a higher reduction in the model size without hurting model quality. • Experiments on two industry models show that FIITED can reduce a significant amount of embedding size during training ( $>$ 65% and up to 50% for the two models, respectively) while maintaining the quality of the trained model. Compared to a state-of-the-art in-training embedding pruning method, AdaEmbed [ 11 ] , FIITED is able to achieve higher pruning ratios without affecting model quality. On public datasets, FIITED is able to reduce the embedding table by 100 $\\times$ to 800 $\\times$ on three click-through-rate datasets and $2.2\\times$ to $17.8\\times$ on one classification dataset, with little accuracy drop. Experiments on two industry models show that FIITED can reduce a significant amount of embedding size during training ( $>$ 65% and up to 50% for the two models, respectively) while maintaining the quality of the trained model.",
+      "context_header": "Paper: Fine-Grained Embedding Dimension Optimization During Training for Recommender Systems (cs.IR, 2024). Section: I Introduction. This paper addresses the memory efficiency issue in deep learning recommender systems by proposing FIITED, a system that adaptively optimizes embedding dimensions during training to reduce memory footprint while preserving model quality, targeting large-scale industrial applications with massive user-item interaction data.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 27,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 28,
+      "chunk_id": 2793,
+      "external_id": "2501.02838",
+      "ordinal": 5,
+      "title": "Improving GenIR Systems Based on User Feedback",
+      "section_path": "1 Introduction > 1.3 Strategies for GenIR System Improvement with User Feedback",
+      "published_on": "2025-01-06",
+      "primary_category": "cs.IR",
+      "content": "Introducing user feedback information into the GenIR system can be facilitated through prompt engineering or instruction construction, which is perhaps the most straightforward approach Liu et al. (2024) ; Dai et al. (2023) ; Liu et al. (2023) ; Wang and Lim (2023) . Historical user interactions can be encoded using various types of index, such as title-based indexing, random indexing, independent indexing, sequential indexing, semantic indexing, or collaborative indexing Geng et al. (2022) . These indexing inputs can then serve as prompts for the system, as illustrated in the following Figure 1 . The prompt strategy is commonly employed in zero-shot or in-context learning scenarios, where LLMs are directly utilized as the information system. By leveraging this approach, the GenIR system can efficiently integrate user feedback to enhance its performance. Figure: Figure 1: Different types of indexing as prompt input to GenIR systems proposed by Geng et al. (2022) . The second strategy involves leveraging historical interaction information for fine-tuning the parameters of the LLM. This approach aligns the user or item representations within the pre-trained language model. Typically, this information is utilized as either an ID index or a text index with item content, reviews, etc Hou et al. (2024) ; Rajput et al. (2024) ; Zhai et al. (2023) . In certain instances, the user-item collaborative information is initially encoded by a traditional IR system to generate embeddings for users or items Liao et al. (2023) ; Luo et al. (2024) ; Petrov and Macdonald (2023) .",
+      "context_header": "Paper: Improving GenIR Systems Based on User Feedback (cs.IR, 2025). Section: 1 Introduction > 1.3 Strategies for GenIR System Improvement with User Feedback. This research paper explores methods to improve Generative Information Retrieval (GenIR) systems by leveraging user feedback, proposing innovative techniques for alignment and learning from feedback in conversational contexts, with applications in natural language processing and information access.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 28,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 29,
+      "chunk_id": 3583,
+      "external_id": "2607.03886",
+      "ordinal": 0,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "Abstract",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "Abstract Sponsored search plays a crucial role as a revenue stream for search engines, wherein advertisers competitively bid on keywords that align with the users’ search queries. The task of matching relevant keywords to these queries is complicated by the vast and ever-evolving space of keywords, the ambiguity of user and advertiser intentions, and the wide range of topics and languages involved. Consequently, ensuring that ads are pertinent to user queries presents significant challenges. In the fast-paced world of e-commerce, the accuracy of sponsored search results is vital for boosting user satisfaction and optimizing business operations. This paper presents the development of an advanced Ad Relevance Model within a sponsored search framework, utilizing the power of a pretrained large language model. We detail a pioneering adaptation of the LLAMA2 7B model through Low-Rank Adaptation (LoRA), which markedly enhances search precision and operational efficiency, thus opening new avenues for improving user interactions in extensive online marketplaces such as Walmart.com. We introduce a novel $<$ query, ad title $>$ classifier, which discerns the relevance of search interactions across three categories: Relevant, Partially Relevant, and Irrelevant. Our approach involved adapting the pretrained model specifically for the e-commerce sponsored search context, training it on a large dataset. The fine-tuned model demonstrated a marked improvement in ad relevance accuracy, achieving 89.43% accuracy on a comprehensive test dataset—outperforming both the baseline model and other advanced language models like GPT-4. The integration of LoRA with the based model represents a significant stride in customizing language models for e-commerce applications, resulting in enhanced search accuracy, cost efficiency, and operational privacy—a triad essential for the modern digital marketplace.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: Abstract. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 29,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 30,
+      "chunk_id": 3610,
+      "external_id": "2607.03886",
+      "ordinal": 27,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "5 Applications of the Relevance Model",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "The relevance model plays a critical role in enhancing the performance and efficiency of sponsored ads systems. In the context of search pages, profitability arises from both the payments received from sellers for clicks on their ads and from improved purchase conversion rates when the relevance of ads is high. By accurately determining the relevance of ads to user queries, the model not only improves user experience but also maximizes the profitability of ad placements. This section outlines key applications of the relevance model in both current and future sponsored ads systems. Improving Relevancy in Current Systems: Current applications of the relevance model focus on enhancing the precision and accuracy of ad targeting. Immediate steps include: 1. Quick Evaluation of Current System Relevance: Regular assessments of the model’s performance are crucial. By analyzing current system outputs, particularly the relevance of ads served to user queries, we identify immediate areas for improvement. 2. Identification of Relevance Issues and Gaps: This involves a thorough examination of the training data and serving logs to pinpoint discrepancies that may lead to suboptimal model performance. Identifying these gaps allows for targeted data corrections and system adjustments. 3. Iterative Improvement Based on Feedback: Utilizing a feedback loop from system outputs and user interactions, the model undergoes continual refinements. This iterative process ensures that the model adapts to changing user behaviors and market trends, maintaining its relevance and effectiveness.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 5 Applications of the Relevance Model. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.6,
+        "bm25_rank": 30,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 31,
+      "chunk_id": 175,
+      "external_id": "2304.03947",
+      "ordinal": 5,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "1. Introduction",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "Despite the improved performance and flexibility over model compression approaches, CL-based methods still bear deficiencies for on-device POI recommendations in the real world. Firstly, a central server is always involved throughout the learning process of federated POI recommenders. This entanglement only gets stronger with the need for repetitively identifying user groups via model parameter comparison or clustering on the server. Given that, the semi-decentralized learning paradigm proposed by ( Long et al., 2022 ) can be viewed as one step above federated recommenders that can significantly lower the dependency on a central server. In short, the server only needs to provide pretrained model parameters and assign similar users to the same group, which is a one-off engagement in the early stage of training. Afterward, users’ on-device models are optimized by alternating local training and inter-device communication within the same user group. Unfortunately, as the intra-group collaborations require exchanging raw model parameters between users ( Long et al., 2022 ) , it breaks the purposes of privacy and communication efficiency in a decentralized POI recommender. Secondly, there has been a strong assumption that user-specific knowledge can be aggregated via model parameters or gradients. However, the model homophily assumption significantly harms the practicality of such decentralized POI recommendation paradigms, as in practice, each on-device model should have a customized structure to meet the specific device capacity ( Chen et al., 2021 ) .",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 1. Introduction. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 31,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 32,
+      "chunk_id": 214,
+      "external_id": "2304.03947",
+      "ordinal": 44,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "4. Experiments > 4.2. Baselines and Experimental Setting",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "PREFER ( Guo et al., 2021 ) : This federated POI recommendation paradigm allows the server to collect and aggregate locally trained models, as well as redistribute the federated model. • DCLR ( Long et al., 2022 ) : This decentralized collaborative learning framework allows locally trained models to share knowledge between homogeneous neighbors by model aggregation. DCLR ( Long et al., 2022 ) : This decentralized collaborative learning framework allows locally trained models to share knowledge between homogeneous neighbors by model aggregation. • D-Dist ( Bistritz et al., 2020 ) : It aims at letting locally trained models with random heterogeneous neighbors via comparing their soft decisions on a public reference dataset. D-Dist ( Bistritz et al., 2020 ) : It aims at letting locally trained models with random heterogeneous neighbors via comparing their soft decisions on a public reference dataset. • SQMD ( Ye et al., 2022 ) : It is also a decentralized distillation framework where neighbors are defined by comparing their responses on the shared reference dataset. SQMD ( Ye et al., 2022 ) : It is also a decentralized distillation framework where neighbors are defined by comparing their responses on the shared reference dataset.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 4. Experiments > 4.2. Baselines and Experimental Setting. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 32,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 33,
+      "chunk_id": 225,
+      "external_id": "2304.03947",
+      "ordinal": 55,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "5. Related Work > 5.2. On-device POI Recommendation",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "On-device frameworks have been proven effective in addressing most shortcomings of cloud-based learning for POI recommendations. Intuitively, Wang et al. ( Wang et al., 2020 ) deployed compressed models on mobile devices for secure and stable POI recommendations. To maintain the robustness of the whole on-device framework, local compressed models inherit the knowledge from the teacher model which is trained with public data. Then, Guo et al. ( Guo et al., 2021 ) proposed a federated learning framework for POI recommendations, allowing edge servers to collect and aggregate locally trained models, and send the aggregated model back to all users. Apparently, the above models are still highly dependent on the cloud server. On this basis, Jing et al. ( Long et al., 2022 ) proposed a semi-decentralized learning paradigm with device collaboration that allows user devices to learn and combine knowledge from two types of neighbors. However, all aforementioned collaborative learning-based POI recommenders hold a strong assumption that all on-device models must share an identical design, allowing user-specific knowledge sharing via parameters/gradients aggregation. In contrast, MAC supports heterogeneity in model structures.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 5. Related Work > 5.2. On-device POI Recommendation. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 33,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 34,
+      "chunk_id": 226,
+      "external_id": "2304.03947",
+      "ordinal": 56,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "5. Related Work > 5.3. Distributed Knowledge Distillation",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "Knowledge distillation was initially proposed in model compression ( Phuong and Lampert, 2019 ) , aimed at extracting knowledge from a powerful teacher model trained with mass data, to improve the performance of the light student model. The information is transferred by minimizing the disagreement between teacher and student models on an unlabeled reference dataset. However, such a way of knowledge transmission is not restricted to the teacher-student pattern, where ( Guo et al., 2020 ) and ( Zhang et al., 2021 ) have proven the effectiveness of exploiting knowledge distillation to jointly train student models without any teacher model. This is also applicable in knowledge sharing between heterogeneous device networks where user devices are allowed to have different model architectures ( Bistritz et al., 2020 ; Ye et al., 2022 ) . Our work is the first one to exploit knowledge distillation for knowledge sharing between heterogeneous POI recommendation models.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 5. Related Work > 5.3. Distributed Knowledge Distillation. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 34,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 35,
+      "chunk_id": 264,
+      "external_id": "2401.01527",
+      "ordinal": 36,
+      "title": "Poisoning Attacks against Recommender Systems: A Survey",
+      "section_path": "7 ARLib: A Library for Attacks against Recommendation",
+      "published_on": "2024-01-03",
+      "primary_category": "cs.IR",
+      "content": "This simplifies the incorporation of new recommendation methods and PAR models, endorsing a plug-and-play fashion for expansion. Highly Scalability : Each module in ARLib is designed with user-friendly interfaces, allowing for simple to advanced customizations. This simplifies the incorporation of new recommendation methods and PAR models, endorsing a plug-and-play fashion for expansion. • Comprehensive Assessment : ARLib integrates a large number of current PAR models and provides a comprehensive suite of evaluation metrics to assess the threat of PAR models and the robustness of recommendation models against diverse poisoning attacks. Comprehensive Assessment : ARLib integrates a large number of current PAR models and provides a comprehensive suite of evaluation metrics to assess the threat of PAR models and the robustness of recommendation models against diverse poisoning attacks. • Poisonous Data Simulation : ARLib supports the customized augmentation of training datasets with artificially generated poisonous data. These enriched datasets are indispensable and the bedrock for research into PAR and robust RS. Poisonous Data Simulation : ARLib supports the customized augmentation of training datasets with artificially generated poisonous data. These enriched datasets are indispensable and the bedrock for research into PAR and robust RS. We have compared 15 PAR models and presented some significant findings discovered through using ARLib at https://github.com/CoderWZW/ARLib/blob/main/findings.md . These insights are believed to calibrate and guide existing and future studies on PAR, benefiting both researchers and practitioners.",
+      "context_header": "Paper: Poisoning Attacks against Recommender Systems: A Survey (cs.IR, 2024). Section: 7 ARLib: A Library for Attacks against Recommendation. This research paper surveys poisoning attacks against recommender systems, proposing a novel taxonomy to categorize existing methodologies and introducing an open-source library (ARLib) for benchmarking and comparing these attacks in the field of artificial intelligence and machine learning.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 35,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 36,
+      "chunk_id": 586,
+      "external_id": "2301.00993",
+      "ordinal": 10,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "4 Three shortcomings of NIP > 4.1 A myopic evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Quadrana et al. [2018] also warned about the limits of the NIP evaluation protocol in sequential recommendation when not only immediate satisfaction but also diversity or user guidance in content discovery is desired. However, in contrast to Lee et al. [2022] , we additionally argue that the inclusion of delayed rewards such as dwell-time in content recommendation or lifetime value in product recommendation would not be sufficient to solve this issue. Indeed, the long-term outcomes encoded in the delayed reward (e.g., was the product satisfactory over its whole lifetime?) can be orthogonal to the long-term outcomes encoded in the sum of rewards along the trajectory (e.g., was the trajectory diverse enough to avoid boring out the user?). While the former clearly seem to be important in order to obtain useful and enjoyable recommender systems, the latter are the ones that are modeled by the Markov decision process underlying the RL agent. Consequently, if we include delayed rewards but ignore the long-term outcomes induced by the sequential decision-making process, we still cannot observe the benefits brought by RL training from the NIP protocol. Note that these two types of long-term outcomes are not incompatible and we recommend using a reward function that is as close as possible to the user’s needs and satisfaction, including delayed outcomes.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 4 Three shortcomings of NIP > 4.1 A myopic evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 36,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 37,
+      "chunk_id": 589,
+      "external_id": "2301.00993",
+      "ordinal": 13,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "4 Three shortcomings of NIP > 4.3 Risky deployment",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "The two previous points that we have formulated indicate that the next-item prediction evaluation cannot reflect the potential benefits brought by offline RL-based recommender systems. The third problematic aspect that we discuss shows that next-item prediction may also hide critical deficiencies of offline RL agents. Even though in the evaluation protocol of Definition 1 we account for the position of the next interacted item in the model predictions, through the use of ranking metrics, the recommender system will only select its most preferred item (or top- $k$ most preferred items in slate recommendation) when used in production, while none of the other items will be shown to the user. It therefore seems crucial to ensure that the top item is satisfactory, regardless of the full ranking. This is unfortunately not possible with a fixed dataset where only one or a few items have been shown to the considered user. A tacit assumption of NIP is that higher ranking metrics correlate with a top item causing high return. However, a gap between offline and online results has been identified in previous studies [ Garcin et al., 2014 ; Gomez-Uribe and Hunt, 2016 ] . More importantly, it has been shown that even under the strong assumption that the $Q$ -value associated to every action (i.e., item recommendation) can be correctly estimated in expectation (i.e, no bias), there can be an overestimation of the predicted offline reward with respect to the actual online reward, because the selected item is more likely to be one of those with an overestimated $Q$ -value [ Jeunen and Goethals, 2021 ] .",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 4 Three shortcomings of NIP > 4.3 Risky deployment. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 37,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 38,
+      "chunk_id": 599,
+      "external_id": "2301.00993",
+      "ordinal": 23,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.5 Uncertainty-aware evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "While it may not be feasible to accurately evaluate the final performance of an RL policy in a purely offline fashion, we argue that quantifying its performance at different levels of uncertainty can help assess the risks of deployment. Indeed, the value overestimation issue highlighted in the previous section results from the high uncertainty on out-of-distribution state-action pairs. We can constrain the RL algorithm to recover safe policies, that stay within the distribution of the logging policy, or allow exploration in order to find potentially high-return policies, at the cost of increasing uncertainty [ Brandfonbrener et al., 2021 ] . By quantifying the match between the support of the logging policy and that of the target policy, we can assess the risk induced by the deployment of the target policy. In particular, if we restrict the set of available actions to those considered “in-support”, we can get an accurate estimate of the performance of the policy on those actions. Indeed, uncertainty is low inside the support of the logging policy, and it is anyway possible to evaluate the quality of the $Q$ -value prediction on a held-out test set of the offline dataset as in, e.g., [ Ji et al., 2021 ] . A safe policy achieving high in-support expected return would constitute a reliable improvement, while an unsafe policy not even achieving good in-support expected return can probably be discarded.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.5 Uncertainty-aware evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 38,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 39,
+      "chunk_id": 600,
+      "external_id": "2301.00993",
+      "ordinal": 24,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.5 Uncertainty-aware evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "A safe policy achieving high in-support expected return would constitute a reliable improvement, while an unsafe policy not even achieving good in-support expected return can probably be discarded. This type of evaluation needs a proper definition of in-support and out-of-support, e.g., as in [ Fujimoto et al., 2019 ; Gu et al., 2022 ] , which is not trivial in the non-tabular setting and requires assuming a certain degree of tolerance to uncertainty, but Kumar et al. [2021] show that it is possible to adjust this tolerance based on the training curves of certain offline RL algorithms. This type of evaluation focuses on characterizing and mitigating the risks induced by the third issue we raise in Section 4.3 , while potentially allowing us to detect the benefits brought by RL training. The main open question lies in the ability to properly define distance measures between the support of the logging and target policy.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.5 Uncertainty-aware evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 39,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 40,
+      "chunk_id": 601,
+      "external_id": "2301.00993",
+      "ordinal": 25,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "6 Conclusion",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "In this study, we highlighted that the most commonly employed protocol for the offline evaluation of RL-based recommender systems is in fact unsuitable, because it cannot reflect the benefits that RL supposedly brings compared to more traditional approaches and because it may hide critical deficiencies of offline RL agents that can lead to catastrophic deployment. These shortcomings can be summarized as follows: (i) a myopic protocol aimed only at measuring shortterm accuracy, (ii) a close-ended, suboptimal recommendation target, and (iii) sensitivity to the optimizer’s curse. As of now, there exists no truly satisfactory solution to the problem of evaluating RL policies in an entirely offline fashion. Yet, several proxies for online performance can be used to bridge the gap between offline metrics and online performance. Finding appropriate offline evaluation protocols is still an active research area in the offline RL literature, and we urge the sequential recommendation community to join the effort and develop protocols suitable for the recommendation scenario. Additionally, acknowledging the presence of uncertainty in the deployment of RL-based recommender systems paves the way towards solutions that are robust or resilient to such uncertainty.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 6 Conclusion. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 40,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 41,
+      "chunk_id": 887,
+      "external_id": "2404.01574",
+      "ordinal": 61,
+      "title": "Multi-granular Adversarial Attacks against Black-box Neural Ranking Models",
+      "section_path": "6. Experimental Results > 6.2. Capability of surrogate models",
+      "published_on": "2024-04-02",
+      "primary_category": "cs.IR",
+      "content": "Black-box vs. white-box attack. We further focus on the white-box scenario, which is valuable for enhancing understanding of our method. In white-box attacks, we directly substitute the surrogate ranking model as the target NRM and keep other components the same in RL-MARA . We consider the most defensive RankLLM, which has a 4.4% higher ranking performance than its surrogate model, as shown in Table 2 . The result on the Mixture target documents of MS MARCO is shown in Figure 5 (Left), with similar findings on other target documents. Compared with the white-box setting, RL-MARA still obtains competitive performance in black-box scenarios. The results demonstrate that the training method of the surrogate model is sufficient to simulate the vulnerability performance of the target NRM at different levels of granularity, thus making our multi-granular attack effects transferable. Training a surrogate model in the out-of-distribution (OOD) setting. In our experiments, the training data of the surrogate model is directly adopted from the Eval queries of the target model, i.e., the same distribution as the query used to train the target NRM . However, in realistic search scenarios, obtaining an identically distributed query set is difficult. Following ( Chen et al., 2023 ) , we show the results for the IID and OOD scenarios in Figure 5 (Right). Specifically, we take the Mixture target documents as an example and evaluate the attack performance against RankLLM on MS MARCO. For our IID scenarios, we use Eval queries of MS MARCO for surrogate model training.",
+      "context_header": "Paper: Multi-granular Adversarial Attacks against Black-box Neural Ranking Models (cs.IR, 2024). Section: 6. Experimental Results > 6.2. Capability of surrogate models. This research paper addresses the vulnerability of black-box neural ranking models to adversarial attacks by developing a multi-granular attack method that incorporates perturbations across various levels of granularity using reinforcement learning in the information retrieval (IR) and computer security (CR) domains.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 41,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 42,
+      "chunk_id": 3587,
+      "external_id": "2607.03886",
+      "ordinal": 4,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "1 Introduction",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "Enhancement of search relevance accuracy through a specialized classification system, improving user experience and business metrics. • We develop an advanced system for auto-labeling query and product relevance, facilitating continuous model training. We develop an advanced system for auto-labeling query and product relevance, facilitating continuous model training. • Comparative analysis showcasing the advancement of our model over traditional NLP models in the e-commerce domain. Comparative analysis showcasing the advancement of our model over traditional NLP models in the e-commerce domain. This paper provides a detailed account of our methods, the challenges overcome, and the implications of our findings for the future of e-commerce search relevance. By sharing our approach and results, we aim to offer a valuable reference point for future research and development in the field of NLP as applied to e-commerce search engines. While we evaluate this model specifically for sponsored search, the approach is equally applicable to broader e-commerce search contexts. This extension underscores the versatility and practical utility of our method across various e-commerce search scenarios.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 1 Introduction. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 42,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 43,
+      "chunk_id": 3611,
+      "external_id": "2607.03886",
+      "ordinal": 28,
+      "title": "Enhancement of E-commerce Sponsored Search Relevancy with LLM",
+      "section_path": "5 Applications of the Relevance Model",
+      "published_on": "2026-07-04",
+      "primary_category": "cs.IR",
+      "content": "This iterative process ensures that the model adapts to changing user behaviors and market trends, maintaining its relevance and effectiveness. Enhancing Relevancy for Future Systems: Looking forward, the relevance model will incorporate advanced technologies and methodologies to further refine ad targeting mechanisms: 1. Evaluation System Enhancements: Future systems will focus on increasing modeling productivity through innovations such as query rewriting and the integration of multimodal models. These advancements aim to understand and process user intents more comprehensively. 2. Automated Labeling Systems: Implementing auto-labeling technologies promises significant reductions in both time and cost associated with manual data labeling. This automation will facilitate the rapid scaling of training datasets, enhancing the model’s learning capabilities and accuracy over time. However, given the issue with irrelevant recall, some “partially relevant” items should be manually labeled to double-check accuracy. Cost and Time Efficiency: The integration of advanced relevance models and automated systems in sponsored ads not only enhances accuracy and user experience but also brings substantial cost and time savings. These efficiencies manifest in several key areas: Reduction in Manual Labeling Costs: By implementing auto-labeling technologies, the need for extensive manual labeling is greatly reduced. Manual data labeling is not only time-consuming but also costly, often requiring the hiring of third-party evaluators to ensure quality and unbiased data. Automated systems streamline this process, significantly decreasing the operational costs associated with data preparation.",
+      "context_header": "Paper: Enhancement of E-commerce Sponsored Search Relevancy with LLM (cs.IR, 2026). Section: 5 Applications of the Relevance Model. This research paper addresses the challenge of improving sponsored search relevance in e-commerce by developing an advanced Ad Relevance Model using a pretrained large language model adapted through Low-Rank Adaptation (LoRA) for enhanced precision and operational efficiency.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 43,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 44,
+      "chunk_id": 3671,
+      "external_id": "2501.03228",
+      "ordinal": 50,
+      "title": "LightGNN: Simple Graph Neural Network for Recommendation",
+      "section_path": "4. Evaluation > 4.2. Performance Comparison (RQ1)",
+      "published_on": "2025-01-06",
+      "primary_category": "cs.IR",
+      "content": "This discrepancy can be attributed to the debiasing and anti-over-smoothing effects embedded in the knowledge distillation process of UnKD and SimRec. This suggests that model compression techniques, such as knowledge distillation, can go beyond improving model efficiency. They can also address adverse factors present in observed data and modeling frameworks, such as data bias, noise, and over-smoothing effects. Drawbacks of CF without model compression : When comparing the best-performing CF methods, such as self-supervised CF techniques like SGL, HCCF, and SimGCL, to compression methods like UnKD and SimRec, it is evident that CF methods without model compression fall short in terms of recommendation accuracy. This discrepancy can be attributed to the debiasing and anti-over-smoothing effects embedded in the knowledge distillation process of UnKD and SimRec. This suggests that model compression techniques, such as knowledge distillation, can go beyond improving model efficiency. They can also address adverse factors present in observed data and modeling frameworks, such as data bias, noise, and over-smoothing effects. • Importance of explicit noise elimination : While UnKD and SimRec refine the distilled model by addressing bias and over-smoothing effects in GNN-based CF, they rely solely on high-level supervision methods. In contrast, our LightGNN explicitly identifies and eliminates fine-grained noisy and redundant elements within the model, such as edges and embedding entries.",
+      "context_header": "Paper: LightGNN: Simple Graph Neural Network for Recommendation (cs.IR, 2025). Section: 4. Evaluation > 4.2. Performance Comparison (RQ1). This research addresses scalability and robustness challenges in graph neural networks for collaborative recommendation by introducing LightGNN, a lightweight pruning framework that reduces model complexity while preserving performance through hierarchical knowledge distillation and adaptive edge removal.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5833333,
+        "bm25_rank": 44,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 45,
+      "chunk_id": 218,
+      "external_id": "2304.03947",
+      "ordinal": 48,
+      "title": "Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation",
+      "section_path": "4. Experiments > 4.5. Efficiency Analysis",
+      "published_on": "2023-04-08",
+      "primary_category": "cs.IR",
+      "content": "Amid all homogeneous on-device recommenders, DCLR achieves the best performance due to its effective collaborative learning strategies. However, it suffers from the constraint that all participants must hold homogeneous models for model aggregation. In contrast, MAC can not only support users having varied dimensions like D-Dist and SQMD, but also allows user devices effectively utilize limited storage resources by storing partial POI embeddings. To prove the above view, with respect to all heterogeneous on-device recommenders, we record the averaged model size (kb) and recommendation accuracy (HR@10 on Weeplace) for the latent dimensions $d\\in\\{8,16,32,64,128\\}$ . The results are shown in Table 4 , where we can observe that the average model size of MAC is far less than that of the other three on-device recommenders among all dimensions. Additionally, MAC still outperforms DCLR and other heterogeneous models in terms of recommendation accuracy at all dimensions, showing that MAC can make more efficient use of on-device resources to provide more performant recommendations. Besides, our proposed strategies for neighbor identification and neighbor sampling can speed up the training process. We record the training time till model convergence, where the results are shown in Table 4 . We can observe that D-Dist has the least training time since each device in the network will communicate with a static group of peers at each iteration. In exchange, D-Dist has the worst recommendation accuracy. Beyond that, MAC converges faster than all other models while providing more accurate recommendations.",
+      "context_header": "Paper: Model-Agnostic Decentralized Collaborative Learning for On-Device POI Recommendation (cs.IR, 2023). Section: 4. Experiments > 4.5. Efficiency Analysis. This paper addresses the challenge of personalized Point-of-Interest (POI) recommendation on mobile devices with heterogeneous hardware configurations by proposing a model-agnostic decentralized collaborative learning framework that enables users to customize their own models while preserving privacy and efficiency in Location-based Social Networks.",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5652174,
+        "bm25_rank": 45,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 46,
+      "chunk_id": 577,
+      "external_id": "2301.00993",
+      "ordinal": 1,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "1 Introduction",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Recommender systems play a major role in defining internet users’ experience due to their ubiquitous presence on, e.g., content providing and e-commerce platforms. Correct and careful evaluation of recommender systems is therefore critical as it directly impacts business metrics as well as user satisfaction – and sometimes even society as a whole. While recommendation accuracy (i.e., recommending relevant items) is often taken to be the main indicator of performance, the literature on recommender systems highlights the importance of additional criteria. Beyond-accuracy goals include, e.g., diversity, novelty or serendipity, fairness, and user experience in general [ McNee et al., 2006 ] . Such criteria sometimes cannot be enforced in one-shot recommendation (i.e., in a single interaction between the user and the recommender system) but they may require that we consider the longer-term experience. These concerns have motivated researchers and practitioners alike to acknowledge the sequential nature of many recommendation engines, and to seek to optimize over whole sequences instead of one-shot predictions [ Quadrana et al., 2018 ] . Reinforcement learning (RL) formulates this problem as a Markov decision process (MDP), in which we wish to select appropriate actions (i.e., item recommendations) in order to maximize the sum of rewards (e.g., clicks, purchases, etc.) along the full sequence of user interactions with the recommender system. RL is a natural fit for this problem because the underlying MDP is able to model the long-term influence of recommendations on the user.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 1 Introduction. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5652174,
+        "bm25_rank": 46,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 47,
+      "chunk_id": 581,
+      "external_id": "2301.00993",
+      "ordinal": 5,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "2 Related studies",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "In addition, and more specifically to the next-item prediction protocol, Krichene and Rendle [2020] ; Zhao et al. [2022] have shown that sampling negative items at inference time in order to ease the computation of ranking metrics leads to drawing incorrect conclusions on the recommendation performance. Finally, many studies reaffirm the importance of appropriate baseline selection in order to ensure that progress has been made, and have shown that certain claims do not hold against properly tuned baselines [ Ludewig et al., 2019 ; Ferrari Dacrema et al., 2019 ; Rendle et al., 2019 ; Sun et al., 2020 ; Zhao et al., 2022 ] . The argument we formulate in this paper is specific to RL-based recommendation and while it has, to the best of our knowledge, never been expressed, it is not incompatible with the issues listed in this section. It is rather to be considered as an additional caveat when evaluating RL-based recommender systems.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 2 Related studies. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5652174,
+        "bm25_rank": 47,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 48,
+      "chunk_id": 584,
+      "external_id": "2301.00993",
+      "ordinal": 8,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "4 Three shortcomings of NIP",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "• RL aims to optimize long-term outcomes resulting from a sequence of decisions. This requires accounting for the effect of the recommender on the user. RL-based methods are able to optimize whole-sequences by assigning the credit for observed rewards to individual actions, thereby preventing costly search throughout the combinatorial space of action sequences. RL aims to optimize long-term outcomes resulting from a sequence of decisions. This requires accounting for the effect of the recommender on the user. RL-based methods are able to optimize whole-sequences by assigning the credit for observed rewards to individual actions, thereby preventing costly search throughout the combinatorial space of action sequences. • RL algorithms learn in a self-supervised manner, by maximizing scalar rewards. Doing so allows them to recover open-ended solutions and generate novel policies. However, training the agent in an offline fashion also comes with the risk of deriving policies with inaccurate estimation of their expected return. RL algorithms learn in a self-supervised manner, by maximizing scalar rewards. Doing so allows them to recover open-ended solutions and generate novel policies. However, training the agent in an offline fashion also comes with the risk of deriving policies with inaccurate estimation of their expected return. In the following, we list three major shortcomings of the NIP protocol for evaluating offline RL agents, and explain how they harm the ecological validity of the claims derived from this evaluation protocol.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 4 Three shortcomings of NIP. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5652174,
+        "bm25_rank": 48,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 49,
+      "chunk_id": 587,
+      "external_id": "2301.00993",
+      "ordinal": 11,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "4 Three shortcomings of NIP > 4.2 A suboptimal target",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "As explained in Section 3 , in datasets commonly employed for next-item prediction, we observe the rewards (e.g., clicks, purchases) only on the items that the user interacted with. This incurs a selection bias in the evaluation protocol, caused by the application of a particular treatment to the user. This treatment can take the form of a logging policy or a mixture of logging policies when data is gathered from organic interactions on recommendation platforms, or the implicit effect of exogenous factors when the observed data is the result of active user feedback, e.g., voluntary movie reviews or product search. We refer to the latter kind of bias as an implicit logging policy for simplicity. Note that another source of sub-optimality of the interacted items is that user choice may also be shortsighted or reluctant to novelty, even though acting so may lead to a less enjoyable experience overall. By considering the fact that selecting the interacted item is a binary target, instead of a scalar reward to be maximized, the NIP evaluation incentivizes researchers and practitioners to build policies that are close to the (implicit) logging policy, at the expense of choosing optimal actions. It is a close-ended task of policy matching while RL allows for open-ended outcomes, i.e., generating novel policies achieving high return.",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 4 Three shortcomings of NIP > 4.2 A suboptimal target. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5652174,
+        "bm25_rank": 49,
+        "fused": null,
+        "rerank": null
+      }
+    },
+    {
+      "rank": 50,
+      "chunk_id": 597,
+      "external_id": "2301.00993",
+      "ordinal": 21,
+      "title": "Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives",
+      "section_path": "5 Some alternatives to NIP > 5.3 Simulator-based evaluation",
+      "published_on": "2023-01-03",
+      "primary_category": "cs.IR",
+      "content": "Simulators have proved useful to assess progress in other domains, such as robotics, games or industrial applications [ Fu et al., 2020 ; Gulcehre et al., 2020 ; Qin et al., 2021 ] . While the interaction with a recommender system is arguably one of the hardest problems to simulate because of the complexity and apparent stochasticity of human behavior, the true value of simulators lies in their ability to observe how recommenders react under a chosen set of assumptions on user behavior. Additionally, by allowing the researcher to access otherwise unobservable metrics, they can enlighten us on the inner workings of the systems we build. Many studies proposed to build semi-synthetic simulators, where the synthetic part is as limited as possible in order to adhere to real-world scenarios. This can for instance be done by using real item embeddings [ Shi et al., 2019 ] or by extending the implicit feedback to unseen data, with debiasing in the missing-not-at-random case [ Huang et al., 2020 ] . Moreover, it is possible to assess the generalizability of a method by benchmarking it against a wide range of simulated configurations, so as to mitigate the influence of simulator design on the results. Regardless of the chosen setup, one should ensure that the simulator exhibits the characteristics we wish to model, most notably long-term influence of the recommender system on the user. Simulators are not sensitive to the three issues of the NIP protocol, but their ecological validity may clearly be limited. On top of building simulators from real data, some approaches aim to bridge the gap between simulation and reality, for example with domain randomization [ Tobin et al., 2017 ; OpenAI et al., 2020 ] .",
+      "context_header": "Paper: Offline Evaluation for Reinforcement Learning-based Recommendation: A Critical Issue and Some Alternatives (cs.IR, 2023). Section: 5 Some alternatives to NIP > 5.3 Simulator-based evaluation. This research paper critiques the current offline evaluation methods for reinforcement learning-based recommendation systems, proposing alternative approaches such as online evaluation, counterfactual off-policy evaluation, simulator-based evaluation, intermediate evaluation, and uncertainty-aware evaluation in the field of computer science (cs.IR).",
+      "scores": {
+        "vector": null,
+        "vector_rank": null,
+        "bm25": 0.5652174,
+        "bm25_rank": 50,
+        "fused": null,
+        "rerank": null
+      }
+    }
+  ],
+  "sql": null,
+  "answer": {
+    "status": "ok",
+    "http_status": 200,
+    "text": "I cannot determine which reranking models are evaluated from the provided passages.",
+    "abstained": false,
+    "citations": [],
+    "error": null
+  },
+  "degraded": [
+    "router_unavailable",
+    "embedding_unavailable"
+  ],
+  "timings_ms": {
+    "embed": 0.068791,
+    "filter.estimate": 1.102375,
+    "generate": 26810.664096,
+    "rerank": 7140.059212,
+    "retrieve.bm25": 19.887708,
+    "route": 0.449209,
+    "total": 34045.125433
+  },
+  "usage": {
+    "embed_prompt_tokens": 0,
+    "rerank_pairs": 20,
+    "llm_prompt_tokens": 1880,
+    "llm_completion_tokens": 15,
+    "llm_calls": 1
+  }
+}

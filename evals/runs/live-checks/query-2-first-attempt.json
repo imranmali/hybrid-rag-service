@@ -1,0 +1,78 @@
+{
+  "request_id": "1d8b6c5f-f949-47e0-b34d-52b27b2c320c",
+  "trace_id": "65c57c1abb0e8a6bb9bc0aeee572562b",
+  "route": "sql",
+  "route_source": "llm",
+  "pipeline": {
+    "retrieval": {
+      "vector": true,
+      "bm25": true,
+      "vector_k": 50,
+      "bm25_k": 50,
+      "fusion": {
+        "method": "rrf",
+        "k": 60
+      },
+      "return_k": 50
+    },
+    "contextual": true,
+    "filters": {
+      "enabled": true,
+      "extract_from_question": true,
+      "strategy": "auto",
+      "selectivity_threshold": 0.25,
+      "overfetch_factor": 5,
+      "explicit": null
+    },
+    "rerank": {
+      "enabled": true,
+      "candidates": 20
+    },
+    "routing": {
+      "enabled": true
+    },
+    "generation": {
+      "enabled": true,
+      "context_k": 6
+    }
+  },
+  "filters": null,
+  "chunks": [],
+  "sql": {
+    "query": "SELECT COUNT(DISTINCT d.id) FROM documents d JOIN paper_categories pc ON pc.document_id = d.id WHERE pc.category = 'cs.CL' AND EXTRACT(YEAR FROM d.published_on) = 2025",
+    "columns": [
+      "count"
+    ],
+    "rows": [
+      [
+        5
+      ]
+    ],
+    "row_count": 1,
+    "truncated": false,
+    "error": null
+  },
+  "answer": {
+    "status": "ok",
+    "http_status": 200,
+    "text": "5",
+    "abstained": false,
+    "citations": [],
+    "error": null
+  },
+  "degraded": [],
+  "timings_ms": {
+    "generate": 2079.040209,
+    "route": 1289.007334,
+    "sql.execute": 61.623166,
+    "sql.generate": 12489.119756,
+    "total": 16531.605758
+  },
+  "usage": {
+    "embed_prompt_tokens": 0,
+    "rerank_pairs": 0,
+    "llm_prompt_tokens": 890,
+    "llm_completion_tokens": 59,
+    "llm_calls": 3
+  }
+}

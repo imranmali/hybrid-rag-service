@@ -1,0 +1,385 @@
+{"candidate_id": "cand-factoid-0001", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0002", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0003", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0004", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0005", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0006", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0007", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0008", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0009", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0010", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-factoid-0011", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0012", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0013", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0014", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0015", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0016", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0017", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0018", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0019", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0020", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-factoid-0021", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0022", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0023", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-factoid-0024", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0025", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0026", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0027", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0028", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0029", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0030", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0031", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0032", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0033", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0034", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0035", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0036", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0037", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0038", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0039", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: Server disconnected without sending a response."}
+{"candidate_id": "cand-factoid-0040", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0041", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0042", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0043", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0044", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0045", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0046", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0047", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0048", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0049", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0050", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0051", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0052", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0053", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0054", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0055", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0056", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0057", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0058", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0059", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0060", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0061", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0062", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0063", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0064", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0065", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0066", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0067", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0068", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0069", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0070", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0071", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0072", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0073", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0074", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0075", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0076", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0077", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0078", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0079", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0080", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0081", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0082", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0083", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-factoid-0084", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": null, "passed": false, "method": "llm", "error": "ollama chat failed: [Errno 61] Connection refused"}
+{"candidate_id": "cand-aggregate-0001", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0002", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0003", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0004", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0005", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0006", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0007", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0008", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0009", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0010", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0011", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0012", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0013", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0014", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0015", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0016", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0017", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0018", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0019", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0020", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-aggregate-0021", "prompt_version": "sql-computed", "model": null, "verdict": "yes", "passed": true, "method": "sql"}
+{"candidate_id": "cand-factoid-0039", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0040", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0041", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0042", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0043", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0044", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0045", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0046", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-factoid-0047", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0048", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0049", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0050", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0051", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0052", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0053", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0054", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0055", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0056", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0057", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0058", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0059", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0060", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0061", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0062", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0063", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0064", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0065", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0066", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0067", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0068", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0069", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0070", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0071", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0072", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-factoid-0073", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0074", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0075", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0076", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-factoid-0077", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0078", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0079", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0080", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0081", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0082", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0083", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-factoid-0084", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0001", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0002", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0003", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0004", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0005", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0006", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0007", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0008", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0009", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0010", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0011", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0012", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0013", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0014", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0015", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0016", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0017", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0018", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0019", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0020", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0021", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0022", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0023", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0024", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0025", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0026", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0027", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0028", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0029", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0030", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0031", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0032", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0033", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0034", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0035", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0036", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0037", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0038", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0039", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0040", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0041", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0042", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0043", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0044", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0045", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0046", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0047", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0048", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0049", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0050", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0051", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0052", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0001", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0002", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0003", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0004", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0005", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0006", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0007", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0008", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0009", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0010", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0011", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0012", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0013", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0014", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0015", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0016", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0017", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0018", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0001", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0002", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0003", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0004", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0005", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0006", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0007", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0008", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0009", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0010", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-unanswerable-0011", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0019", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0020", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0021", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0022", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0023", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0024", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0025", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0026", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0027", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0028", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0029", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0030", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0031", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0032", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0033", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0034", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0035", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0036", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0037", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0038", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0039", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0040", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0041", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0042", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-filter-0043", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0044", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0045", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0046", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0047", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0048", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0053", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0054", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0055", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0056", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0057", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0058", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0059", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0060", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0061", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0062", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0063", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0064", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0065", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0066", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0067", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0068", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0069", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0070", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0071", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0072", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0073", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0074", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0075", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0076", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0077", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0078", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0079", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0080", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0081", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0082", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0083", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0084", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0085", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0086", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0087", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0088", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0089", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0090", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0091", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0092", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0093", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0094", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0095", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0096", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0097", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0098", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0099", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0100", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0101", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0102", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0103", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0104", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0105", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0106", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0107", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0108", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0109", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0110", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0111", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0112", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0113", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0114", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0115", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0116", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0117", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0118", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0119", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0120", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "no", "passed": false, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0121", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0122", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0123", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0124", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0125", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0126", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0127", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0128", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0129", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0130", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0131", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0132", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0133", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0134", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0135", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0136", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0137", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0138", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0139", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0140", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0141", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0142", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0143", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0144", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0145", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0146", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0147", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0148", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-multi_chunk-0149", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0049", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0050", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0051", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0052", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0053", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0054", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0055", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0056", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0057", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0058", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0059", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0060", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0061", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0062", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0063", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0064", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0065", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0066", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0067", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0068", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0069", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0070", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0071", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0072", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0073", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}
+{"candidate_id": "cand-filter-0074", "prompt_version": "precheck-v1", "model": "ollama:llama3.1:8b", "verdict": "yes", "passed": true, "method": "llm"}

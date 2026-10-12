@@ -1,0 +1,155 @@
+# CI for the Hybrid RAG Service.
+#
+# python     ruff + pytest for indexer, reranker, evals (tests marked model/live/network are skipped).
+# kotlin     ktlint + ./gradlew build for service/ (Testcontainers runs pgvector/pgvector:pg17).
+# docker     builds the reranker and service images without pushing them.
+# eval-gate  the regression gate. It is a DETERMINISTIC REPLAY, not a live-model run (design D1):
+#            hosted runners have no GPU and no Ollama, and llama3.1:8b on 4 vCPUs would take hours.
+#            The job restores the real index from a data-only pg_dump (a GitHub Release asset named by
+#            evals/ci/snapshot.lock.json), runs the service with exact vector search, and serves recorded
+#            Ollama/reranker responses from WireMock cassettes (evals/cassettes/ci/). It then runs the six
+#            grid configs on the 50-question subset and compares against evals/thresholds/ci.yaml.
+#            So it catches regressions in OUR code: retrieval SQL, fusion, filter extraction and pushdown,
+#            routing parse, SQL guard, rerank merge. It does not catch model drift (infra/models.lock.json
+#            guards that locally) and it does not measure generation quality (local `make eval` only).
+#            Cost: when a change alters what the service sends to a model, a request has no recording, the
+#            gate exits 2, and the fix is `make eval-record-ci` locally plus committing cassettes and thresholds.
+# load-lint  k6 script syntax and pipeline-vs-eval-config drift check. Load tests themselves are local-only.
+# docs       README section order, SVG well-formedness, a warning per unfilled {{RESULT:}} placeholder.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    name: python (${{ matrix.package }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [indexer, reranker, evals]
+    defaults:
+      run:
+        working-directory: ${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: ${{ matrix.package }}/uv.lock
+      - name: Cache Hugging Face (bge-m3 tokenizer)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ runner.os }}-bge-m3-tokenizer-v1
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      # `network` tests hit arxiv.org; `model` and `live` tests need local models.
+      - run: uv run pytest -m "not model and not live and not network"
+
+  kotlin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: ktlint and build (includes Testcontainers integration tests)
+        working-directory: service
+        run: ./gradlew ktlintCheck build --no-daemon
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kotlin-test-reports
+          path: service/build/reports/tests/
+          if-no-files-found: ignore
+
+  docker:
+    name: docker (${{ matrix.image }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image: [reranker, service]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.image }}
+          push: false
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+
+  eval-gate:
+    needs: [python, kotlin]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: evals/uv.lock
+      - run: cp .env.example .env
+      - run: uv sync --frozen
+        working-directory: evals
+      - name: Download and verify the snapshot, then run the replay gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/eval_gate.sh
+      - name: Collect compose logs
+        if: failure()
+        run: docker compose --env-file .env -f infra/docker-compose.yml -f infra/docker-compose.replay.yml logs --no-color > compose.log 2>&1 || true
+      - name: Upload diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-gate-diagnostics
+          path: |
+            evals/runs/ci/
+            compose.log
+          if-no-files-found: warn
+      - name: Stop the stack
+        if: always()
+        run: make down
+
+  load-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: k6 inspect (parses the script and runs its init code)
+        run: >
+          docker run --rm -v "$PWD/load:/load" -v "$PWD/evals/dataset:/dataset:ro"
+          grafana/k6:0.54.0 inspect /load/query.js | tee k6-inspect.json
+      - uses: astral-sh/setup-uv@v6
+      - name: Pipelines in query.js equal the eval configs
+        run: uv run --no-project --with pyyaml python load/check_pipelines.py k6-inspect.json
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install xmllint
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
+      - run: xmllint --noout docs/architecture.svg
+      - name: README section order and unfilled placeholders
+        run: bash .github/scripts/check_readme.sh
