@@ -21,3 +21,9 @@ build/
 data/raw/
 data/cache/
 *.log
+# Platform foundation
+data/snapshots/
+data/bench/
+service/.gradle/
+**/node_modules/
+load/results/

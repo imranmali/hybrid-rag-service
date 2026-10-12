@@ -1,0 +1,37 @@
+# CI replay overlay (design.md contract C9). Always layered on the base file:
+#   docker compose --env-file .env -f infra/docker-compose.yml -f infra/docker-compose.replay.yml ...
+# Use `make eval-record-ci` / `make eval-ci`; the Makefile sets both variables below together.
+#
+#   WIREMOCK_MODE=record  WIREMOCK_MAPPINGS_DIR=./wiremock/proxy-mappings
+#       proxy stubs -> host Ollama and the reranker container; traffic is journaled for snapshotting
+#   WIREMOCK_MODE=replay  WIREMOCK_MAPPINGS_DIR=../evals/cassettes/ci/mappings
+#       only recorded stubs; unmatched requests get WireMock's 404 and nothing reaches a real model
+#
+# WIREMOCK_MAPPINGS_DIR is resolved against this file's directory (infra/).
+services:
+  wiremock:
+    image: wiremock/wiremock:3.9.1
+    command: ["--disable-banner"]
+    environment:
+      WIREMOCK_MODE: ${WIREMOCK_MODE:-record}
+    ports:
+      - "8089:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${WIREMOCK_MAPPINGS_DIR:-./wiremock/proxy-mappings}:/home/wiremock/mappings:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/__admin/health"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  service:
+    environment:
+      RAG_OLLAMA_URL: http://wiremock:8080
+      RAG_RERANKER_URL: http://wiremock:8080
+      RAG_RETRIEVAL_EXACT_VECTOR_SEARCH: "true"
+      OTEL_TRACES_EXPORTER: none
+    depends_on:
+      wiremock:
+        condition: service_healthy

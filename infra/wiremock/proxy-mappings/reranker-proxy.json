@@ -1,0 +1,9 @@
+{
+  "priority": 10,
+  "request": {
+    "urlPathPattern": "/(rerank|healthz)"
+  },
+  "response": {
+    "proxyBaseUrl": "http://host.docker.internal:8081"
+  }
+}
