@@ -1,0 +1,41 @@
+[project]
+name = "reranker"
+version = "0.1.0"
+description = "CPU-hosted cross-encoder reranking service"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "pydantic-settings>=2.6,<3",
+  "sentence-transformers>=3,<4",
+  "torch>=2.5",
+  "uvicorn[standard]>=0.32,<1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+  "httpx>=0.28,<1",
+  "pytest>=8.3,<9",
+  "ruff>=0.8,<1",
+]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.ruff]
+extend = "../ruff.toml"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+  "model: tests that download and run a real cross-encoder model",
+]
+addopts = "-m 'not model'"

@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-10T23:58:08.773973+00:00",
+  "git_sha": "ef17934",
+  "model_digests": {
+    "bge-m3": "7907646426070047a77226ac3e684fbbe8410524f7b4a74d02837e43f2146bab",
+    "llama3.1:8b": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e"
+  },
+  "reranker_model": "BAAI/bge-reranker-v2-m3",
+  "reranker_revision": "main",
+  "snapshot_sha256": "6c42821bde2704dbad7fd092abda0ea849ed4b34d7a8f955ead8b3b66b4a32ad",
+  "mapping_count": 171
+}

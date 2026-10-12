@@ -88,7 +88,8 @@ eval: ## Run the full ablation grid against the running stack
 	cd evals && uv run evals grid
 
 eval-record-ci: _require-env _require-reranker ## Record the CI cassettes (WireMock proxying live Ollama and the reranker)
-	$(COMPOSE) up -d --build --wait postgres flyway
+	$(COMPOSE) up -d --wait postgres
+	$(COMPOSE) run --rm flyway
 	$(REPLAY_RECORD) $(COMPOSE_REPLAY) up -d --build --wait --force-recreate --no-deps wiremock service
 	@rc=0; \
 	( cd evals && uv run evals grid --subset ci --no-generation --no-judge && uv run evals cassettes snapshot ) || rc=$$?; \
@@ -98,7 +99,8 @@ eval-record-ci: _require-env _require-reranker ## Record the CI cassettes (WireM
 eval-ci: _require-env ## Run the CI regression gate offline (snapshot restore + WireMock replay)
 	@test -n "$(SNAPSHOT)" || { echo "error: no snapshot found in $(SNAPSHOT_DIR)/; pass SNAPSHOT=<path>" >&2; exit 3; }
 	@test -d evals/cassettes/ci/mappings || { echo "error: evals/cassettes/ci/mappings is missing; run: make eval-record-ci" >&2; exit 3; }
-	$(COMPOSE) up -d --wait postgres flyway
+	$(COMPOSE) up -d --wait postgres
+	$(COMPOSE) run --rm flyway
 	$(MAKE) snapshot-restore SNAPSHOT=$(SNAPSHOT)
 	$(REPLAY_REPLAY) $(COMPOSE_REPLAY) up -d --build --wait --force-recreate --no-deps wiremock service
 	@rc=0; \

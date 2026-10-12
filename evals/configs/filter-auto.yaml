@@ -1,0 +1,19 @@
+name: filter-auto
+description: "filter pushdown benchmark: strategy=auto (row 4 pipeline, retrieval only)"
+question_types: [filter]
+pipeline:
+  retrieval: {vector: true, bm25: true, vector_k: 50, bm25_k: 50, fusion: {method: rrf, k: 60}, return_k: 50}
+  contextual: true
+  filters: {enabled: true, extract_from_question: true, strategy: auto, selectivity_threshold: 0.25, overfetch_factor: 5, explicit: null}
+  rerank: {enabled: false, candidates: 20}
+  routing: {enabled: false}
+  generation: {enabled: false, context_k: 6}
+judge:
+  enabled: false                      # faithfulness + answer relevance
+  provider: ollama                   # ollama | anthropic
+  model: llama3.1:8b
+run:
+  seed: 42
+  concurrency: 1
+  warmup_queries: 3                  # untimed queries before measurement
+  timeout_s: 120                     # client-side per-request timeout

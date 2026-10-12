@@ -1,0 +1,13 @@
+# Price table for the per-query cost estimate. Everything is local (Ollama + a CPU reranker), so
+# every default is 0 and the "Cost/query (est.)" column reads 0; tokens per query is always
+# reported next to it. To estimate a hosted deployment, put real prices here, e.g. USD per 1M
+# tokens for the LLM and per 1K (query, passage) pairs for the reranker.
+# cost = embed_prompt_tokens * embedding_per_1m / 1e6
+#      + llm_prompt_tokens * llm_prompt_per_1m / 1e6
+#      + llm_completion_tokens * llm_completion_per_1m / 1e6
+#      + rerank_pairs * rerank_per_1k / 1e3
+# Judge tokens are excluded (evaluation overhead, not serving cost).
+embedding_per_1m: 0
+llm_prompt_per_1m: 0
+llm_completion_per_1m: 0
+rerank_per_1k: 0

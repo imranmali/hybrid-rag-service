@@ -1,0 +1,130 @@
+{
+  "version": "v1",
+  "created_at": "2026-10-10T22:17:28.452810+00:00",
+  "sha256": "891fd1f3d3f45d506d44766acc80789f9542ae4aad5854663d5e609e248d67f9",
+  "counts": {
+    "factoid": 60,
+    "multi_chunk": 37,
+    "filter": 30,
+    "aggregate": 15,
+    "unanswerable": 8
+  },
+  "ci_counts": {
+    "factoid": 20,
+    "multi_chunk": 12,
+    "filter": 10,
+    "aggregate": 5,
+    "unanswerable": 3
+  },
+  "seed": 42,
+  "generator": "ollama:llama3.1:8b",
+  "generator_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+  "verifier": "agent:claude-sonnet-5-5",
+  "index_pipeline_fingerprint": "33b6d6becba537c6b8bbe2b22f1d27812f1fdcf64dae662693d0cabcef6583eb",
+  "sampling_scope": [
+    {
+      "at": "2026-10-10T20:04:07.287273+00:00",
+      "step": "sample",
+      "documents": 86,
+      "chunks": 4829,
+      "seed": 42,
+      "oversample": 1.4
+    },
+    {
+      "at": "2026-10-10T20:04:17.284875+00:00",
+      "step": "generate",
+      "documents": 86,
+      "chunks": 4829,
+      "type": "factoid",
+      "oversample": 1.4
+    },
+    {
+      "at": "2026-10-10T20:26:46.206995+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "multi_chunk",
+      "oversample": 1.4
+    },
+    {
+      "at": "2026-10-10T20:27:01.792922+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "aggregate",
+      "oversample": 1.4
+    },
+    {
+      "at": "2026-10-10T20:44:24.765142+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "filter",
+      "oversample": 1.4
+    },
+    {
+      "at": "2026-10-10T21:05:33.013453+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "filter",
+      "oversample": 2.0
+    },
+    {
+      "at": "2026-10-10T21:22:36.182288+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "unanswerable",
+      "oversample": 2.0
+    },
+    {
+      "at": "2026-10-10T21:23:25.678715+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "factoid",
+      "oversample": 2.0
+    },
+    {
+      "at": "2026-10-10T21:23:31.292905+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "filter",
+      "oversample": 2.0
+    },
+    {
+      "at": "2026-10-10T21:27:02.178520+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "multi_chunk",
+      "oversample": 2.0
+    },
+    {
+      "at": "2026-10-10T21:41:10.642426+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "aggregate",
+      "oversample": 1.4
+    },
+    {
+      "at": "2026-10-10T21:55:15.996326+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "multi_chunk",
+      "oversample": 2.0
+    },
+    {
+      "at": "2026-10-10T22:06:02.829903+00:00",
+      "step": "generate",
+      "documents": 92,
+      "chunks": 5486,
+      "type": "filter",
+      "oversample": 2.0
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "96129070-3747-4d49-a361-96090e9d42b3",
+  "name": "api_chat",
+  "request": {
+    "url": "/api/chat",
+    "method": "POST",
+    "bodyPatterns": [
+      {
+        "equalToJson": "{\"model\":\"llama3.1:8b\",\"messages\":[{\"role\":\"system\",\"content\":\"You route questions about a collection of arXiv computer-science papers.\\nAnswer \\\"sql\\\" when the question asks to count, list, rank or aggregate papers using only their metadata:\\ntitles, authors, categories (for example cs.IR, cs.CL, cs.DB) and publication dates. Such questions do not\\nneed to read what the papers say.\\nAnswer \\\"vector\\\" for anything about what papers say, propose, find, compare or evaluate.\\nReply with only a JSON object: {\\\"route\\\": \\\"sql\\\"} or {\\\"route\\\": \\\"vector\\\"}.\\n\\nExamples:\\nQ: How many cs.CL papers were published in 2025? -> {\\\"route\\\": \\\"sql\\\"}\\nQ: List the titles of papers co-authored by Jimmy Lin. -> {\\\"route\\\": \\\"sql\\\"}\\nQ: Which author has the most cs.IR papers since 2024? -> {\\\"route\\\": \\\"sql\\\"}\\nQ: Which reranking models are evaluated in the indexed cs.IR papers? -> {\\\"route\\\": \\\"vector\\\"}\\nQ: How does ColBERT's late interaction differ from a cross-encoder? -> {\\\"route\\\": \\\"vector\\\"}\\nQ: What datasets do the 2024 retrieval-augmented generation papers use for evaluation? -> {\\\"route\\\": \\\"vector\\\"}\"},{\"role\":\"user\",\"content\":\"How many papers about RL4REC were found in DBLP?\"}],\"stream\":false,\"format\":\"json\",\"keep_alive\":\"30m\",\"options\":{\"temperature\":0,\"seed\":42,\"num_ctx\":8192,\"num_predict\":32}}",
+        "ignoreArrayOrder": false,
+        "ignoreExtraElements": false
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "body": "{\"model\":\"llama3.1:8b\",\"created_at\":\"2026-10-10T23:52:17.143041Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"route\\\": \\\"sql\\\"}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":878288791,\"load_duration\":133661583,\"prompt_eval_count\":278,\"prompt_eval_duration\":327459000,\"eval_count\":7,\"eval_duration\":412340000}",
+    "headers": {
+      "Date": "Sat, 10 Oct 2026 23:52:17 GMT",
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  },
+  "uuid": "96129070-3747-4d49-a361-96090e9d42b3"
+}
